@@ -131,6 +131,57 @@
         .h2h-val { font-size: 28px; font-weight: 900; width: 30%; text-align: center; }
         .h2h-label { width: 40%; text-align: center; color: var(--text-muted); font-size: 14px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;}
         .val-win { color: var(--success); } .val-lose { color: var(--danger); }
+
+        /* --- BROADCAST GRAPHIC MODAL STYLES --- */
+        @font-face {
+            font-family: 'WinnerSans';
+            src: url('https://cdn.jsdelivr.net/gh/LajanStha-ux/Font-Hosting-New@main/fonts/WinnerSans-CondBold.ttf') format('truetype');
+        }
+
+        #playerModal .modal-content {
+            background: linear-gradient(180deg, #2a2a2a 0%, #111111 40%, #000000 100%);
+            border: 2px solid #555;
+            border-top: 3px solid #ccc;
+            border-bottom: 3px solid #111;
+            padding: 25px 40px;
+            border-radius: 8px;
+            width: 1000px;
+            max-width: 95vw;
+            color: white;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.3);
+        }
+        
+        #playerModal .cg-font-lock * {
+            font-family: 'WinnerSans', sans-serif !important;
+            font-weight: normal !important;
+            letter-spacing: 1px;
+        }
+
+        #playerModal .close-modal { z-index: 100; font-family: sans-serif !important; top: 15px; right: 15px; }
+
+        .cg-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 25px; box-shadow: 0 2px 0 #000; }
+        .cg-logo { height: 80px; width: auto; margin-right: 25px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
+        .neba-logo { height: 60px; width: auto; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+        .cg-title { font-size: 32px; letter-spacing: 2px; text-transform: uppercase; margin: 0; color: white; text-shadow: 0 2px 4px #000;}
+        .cg-subtitle { font-size: 14px; color: #d4af37; text-transform: uppercase; letter-spacing: 4px; margin: 5px 0 0 0;}
+        
+        .cg-content { display: flex; align-items: stretch; gap: 40px; text-align: left; }
+        
+        .player-col { display: flex; flex-direction: column; align-items: center; width: 300px; text-align: center; }
+        .photo-container { position: relative; margin-bottom: 25px; }
+        .cg-photo { width: 250px; height: 250px; object-fit: cover; object-position: top; border-radius: 8px; border: 3px solid #ccc; box-shadow: 0 10px 20px rgba(0,0,0,0.8); background: #000; position: relative; z-index: 2;}
+        .cg-photo-team-logo { position: absolute; bottom: -25px; right: -25px; width: 100px; height: 100px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); z-index: 3;}
+        
+        .cg-data-name { font-size: 36px; line-height: 1.1; text-shadow: 2px 2px 5px #000; color: #fff; margin-bottom: 5px;}
+        .cg-data-jersey { color: #d4af37; font-size: 24px; letter-spacing: 2px; }
+        .cg-data-team { font-size: 18px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;}
+        
+        .stats-grid-cg { flex-grow: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .stat-box-cg { background: linear-gradient(180deg, #333333 0%, #000000 100%); padding: 15px; border-radius: 8px; border: 1px solid #555; border-bottom: 1px solid #111; text-align: center; box-shadow: inset 0 2px 10px rgba(255,255,255,0.2), 0 5px 15px rgba(0,0,0,0.5);}
+        .stat-label-cg { color: #aaa; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px;}
+        .stat-val-cg { color: #fff; font-size: 48px; display: block; text-shadow: 0 2px 5px #000; line-height: 1;}
+        .val-gold { color: #d4af37 !important; }
+        .val-red { color: #e5142a !important; }
     </style>
 </head>
 <body>
@@ -349,18 +400,44 @@
 <div class="modal-overlay" id="playerModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('playerModal').style.display='none'">×</button>
-        <div id="modalPhoto" style="margin: 0 auto 20px auto; width: 100px; height: 100px;"></div>
-        <h2 id="modalPlayerName" style="margin: 0 0 5px 0;">Player Name</h2>
-        <p id="modalPlayerTeam" style="color: var(--accent); margin: 0 0 5px 0; font-weight: bold;">Team Name | #00</p>
-        <p id="modalPlayerInfo" style="color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px;">Pos: - | Ht: - | Age: -</p>
         
-        <div class="stat-grid">
-            <div class="stat-box"><span>Games</span><strong id="m-gp">0</strong></div>
-            <div class="stat-box"><span>Total Pts</span><strong id="m-pts">0</strong></div>
-            <div class="stat-box"><span>Rebounds</span><strong id="m-reb">0</strong></div>
-            <div class="stat-box"><span>Assists</span><strong id="m-ast">0</strong></div>
-            <div class="stat-box"><span>Steals</span><strong id="m-stl">0</strong></div>
-            <div class="stat-box"><span>Blocks</span><strong id="m-blk">0</strong></div>
+        <div class="cg-font-lock">
+            <div class="cg-header">
+                <div style="display: flex; align-items: center;">
+                    <img src="/assets/tour_logo.png" class="cg-logo" onerror="this.style.display='none'">
+                    <div>
+                        <h1 class="cg-title">TOURNAMENT STATS</h1>
+                        <p class="cg-subtitle">OVERALL PLAYER PERFORMANCE</p>
+                    </div>
+                </div>
+                <img src="/assets/NeBA.png" class="neba-logo" onerror="this.style.display='none'">
+            </div>
+            
+            <div class="cg-content">
+                <div class="player-col">
+                    <div class="photo-container">
+                        <img src="" id="cgModalPhoto" class="cg-photo" onerror="this.src='/assets/tour_logo.png'">
+                        <img src="" id="cgModalTeamLogo" class="cg-photo-team-logo" onerror="this.style.display='none'">
+                    </div>
+                    <div class="cg-data-name" id="cgModalName">PLAYER NAME</div>
+                    <div class="cg-data-jersey" id="cgModalJersey">JN: 00</div>
+                    <div class="cg-data-team" id="cgModalTeam">TEAM NAME</div>
+                </div>
+                
+                <div class="stats-grid-cg">
+                    <div class="stat-box-cg"><span class="stat-label-cg">GAMES PLAYED</span><span class="stat-val-cg" id="cg-gp">0</span></div>
+                    <div class="stat-box-cg"><span class="stat-label-cg">TOTAL POINTS</span><span class="stat-val-cg val-gold" id="cg-pts">0</span></div>
+                    <div class="stat-box-cg"><span class="stat-label-cg">POINTS PER GAME</span><span class="stat-val-cg val-red" id="cg-ppg">0.0</span></div>
+                    
+                    <div class="stat-box-cg"><span class="stat-label-cg">TOTAL REBOUNDS</span><span class="stat-val-cg" id="cg-reb">0</span></div>
+                    <div class="stat-box-cg"><span class="stat-label-cg">TOTAL ASSISTS</span><span class="stat-val-cg" id="cg-ast">0</span></div>
+                    <div class="stat-box-cg"><span class="stat-label-cg">TOTAL 3-POINTERS</span><span class="stat-val-cg val-gold" id="cg-threes">0</span></div>
+                    
+                    <div class="stat-box-cg"><span class="stat-label-cg">TOTAL STEALS</span><span class="stat-val-cg" id="cg-stl">0</span></div>
+                    <div class="stat-box-cg"><span class="stat-label-cg">TOTAL BLOCKS</span><span class="stat-val-cg" id="cg-blk">0</span></div>
+                    <div class="stat-box-cg"><span class="stat-label-cg">TURNOVERS</span><span class="stat-val-cg" id="cg-tov">0</span></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -746,20 +823,48 @@
         else { alert("Error: " + (result.error || "Could not save player")); }
     }
 
+    // UPDATED BROADCAST MODAL SCRIPT
     async function openPlayerModal(team, jersey) {
-        const res = await fetch(`/api/player-stats/${team}/${jersey}`); const stats = await res.json();
-        document.getElementById('modalPlayerName').textContent = stats.name; document.getElementById('modalPlayerTeam').textContent = `${team} | #${stats.jersey}`;
-        document.getElementById('modalPlayerInfo').textContent = `Pos: ${stats.position || '-'} | Ht: ${stats.height || '-'} | Age: ${stats.age || '-'}`;
+        const res = await fetch(`/api/player-stats/${team}/${jersey}`); 
+        const stats = await res.json();
         
+        // Calculate Points Per Game
+        const ppg = (stats.pts / Math.max(1, stats.gp)).toFixed(1);
+        
+        // Team Dictionary for Full Names
+        const teamDict = { "KIRTIPUR": "IIMS Kirtipur", "TIMES": "Times Club", "SOLO": "Solo Basketball Academy", "ARMY": "Tribhuwan Army Club", "ROYAL": "Royal", "KVC HOUNDS": "KVC Hounds", "GGIC": "Golden Gate International", "PLAYBOX": "Playbox Arena" };
+
+        // Populate Left Column
+        document.getElementById('cgModalName').textContent = stats.name;
+        document.getElementById('cgModalJersey').textContent = `JN: ${stats.jersey}`;
+        document.getElementById('cgModalTeam').textContent = teamDict[team] || team;
+        
+        // Handle Player Photo
         if(stats.photo && stats.photo !== 'undefined') {
-            document.getElementById('modalPhoto').innerHTML = `<img src="${stats.photo}" class="logo-img" style="width:100px; height:100px; border-radius:50%; object-fit:cover; display:block; margin: 0 auto;">`;
+            document.getElementById('cgModalPhoto').src = stats.photo;
         } else {
-            document.getElementById('modalPhoto').innerHTML = `<div class="logo-placeholder" style="width:100px; height:100px; border-radius:50%; margin: 0 auto;">PHOTO</div>`;
+            document.getElementById('cgModalPhoto').src = '/assets/tour_logo.png';
+        }
+        
+        // Handle Team Logo overlay
+        if(masterData.teamLogos && masterData.teamLogos[team]) {
+            document.getElementById('cgModalTeamLogo').src = masterData.teamLogos[team];
+            document.getElementById('cgModalTeamLogo').style.display = 'block';
+        } else {
+            document.getElementById('cgModalTeamLogo').style.display = 'none';
         }
 
-        document.getElementById('m-gp').textContent = stats.gp; document.getElementById('m-pts').textContent = stats.pts;
-        document.getElementById('m-reb').textContent = stats.reb; document.getElementById('m-ast').textContent = stats.ast;
-        document.getElementById('m-stl').textContent = stats.stl; document.getElementById('m-blk').textContent = stats.blk;
+        // Populate Stats Grid
+        document.getElementById('cg-gp').textContent = stats.gp || 0;
+        document.getElementById('cg-pts').textContent = stats.pts || 0;
+        document.getElementById('cg-ppg').textContent = ppg;
+        document.getElementById('cg-reb').textContent = stats.reb || 0;
+        document.getElementById('cg-ast').textContent = stats.ast || 0;
+        document.getElementById('cg-threes').textContent = stats.threes || 0;
+        document.getElementById('cg-stl').textContent = stats.stl || 0;
+        document.getElementById('cg-blk').textContent = stats.blk || 0;
+        document.getElementById('cg-tov').textContent = stats.tov || 0;
+
         document.getElementById('playerModal').style.display = 'flex';
     }
 
