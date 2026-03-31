@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HJNBL Advanced Dashboard</title>
+    <title>HJNBL 2026 Public Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -34,27 +34,21 @@
         .welcome-card { padding: 50px 40px; text-align: center; max-width: 800px; margin: 0 auto; }
         .welcome-card h2 { font-size: 32px; margin-bottom: 15px; color: var(--text-main);}
         .welcome-card p { font-size: 16px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
-        .db-controls { display: flex; justify-content: center; gap: 15px; margin-top: 30px; border-top: 1px solid var(--border-light); padding-top: 30px;}
-        .btn-db { padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid var(--border-light); background: rgba(15, 23, 42, 0.8); color: white; transition: 0.2s; display: flex; align-items: center; gap: 8px; text-decoration: none;}
-        .btn-db:hover { background: rgba(255,255,255,0.1); }
         
         .fixtures-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .match-card { background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-light); border-radius: 12px; padding: 20px; text-align: center; transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between;}
         .match-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        .match-actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+        .match-actions { display: flex; gap: 10px; justify-content: center; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;}
         .btn-action { padding: 8px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; font-size: 13px; transition: 0.2s; }
         .btn-enter { background: var(--accent); color: white; }
         .btn-enter:hover { background: var(--accent-hover); }
-        .btn-out { background: var(--success); color: white; text-decoration: none;}
+        .btn-out { background: rgba(255,255,255,0.1); color: white; text-decoration: none; border: 1px solid var(--border-light);}
+        .btn-out:hover { background: rgba(255,255,255,0.2); }
         .badge-final { background: var(--success); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 10px; letter-spacing: 1px;}
 
         .overlay-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: var(--bg-card); border-radius: 16px; margin-bottom: 20px; border: 1px solid var(--border-light); }
-        .btn-back { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        .period-selector-container { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; }
-        .period-selector { display: flex; justify-content: center; gap: 10px; }
-        .period-btn { background: rgba(15, 23, 42, 0.8); color: var(--text-muted); border: 1px solid var(--border-light); padding: 12px 25px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 16px;}
-        .period-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
+        .btn-back { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;}
+        .btn-back:hover { background: rgba(255,255,255,0.05); color: white;}
 
         .scoreboard-wrapper { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); border: 2px solid var(--border-light); border-radius: 16px; padding: 20px 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.1); }
         .sb-table { width: 100%; border-collapse: collapse; text-align: center; font-variant-numeric: tabular-nums; }
@@ -75,27 +69,14 @@
         th { color: #94a3b8; text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; padding-bottom: 16px; }
         tr:hover td { background-color: rgba(255,255,255,0.03); }
         
-        .stat-controls { display: flex; justify-content: center; align-items: center; gap: 6px; }
-        .btn-stat { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; border: 1px solid var(--border-light); font-weight: 600; padding: 0; background: rgba(255,255,255,0.05); color: white;}
-        .btn-minus { background-color: rgba(239, 68, 68, 0.1); color: #fca5a5;}
-        .btn-plus { background-color: rgba(16, 185, 129, 0.1); color: #6ee7b7;}
-        .stat-val { width: 26px; display: inline-block; font-weight: 600; font-size: 14px; }
         .total-pts { font-size: 18px; font-weight: 800; color: var(--gold); }
         .clean-val { font-size: 15px; font-weight: bold; color: var(--text-muted); }
 
-        .player-row:hover td { background: rgba(14, 165, 233, 0.1); cursor: pointer;}
-        .btn-edit { background: rgba(245, 158, 11, 0.2); color: var(--gold); border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold;}
-        .btn-edit:hover { background: var(--gold); color: #0f172a; }
+        .player-row { cursor: pointer; transition: 0.2s; }
+        .player-row:hover td { background: rgba(14, 165, 233, 0.1); }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; align-items: center; justify-content: center; }
-        .modal-content { background: #1e293b; border: 1px solid var(--border-light); border-radius: 16px; padding: 40px; width: 500px; text-align: center; position: relative;}
         .close-modal { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: white; font-size: 24px; cursor: pointer; }
-        .edit-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; text-align: left;}
-        .edit-form input, .edit-form select { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-light); color: white; padding: 10px; border-radius: 8px;}
-        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .stat-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid var(--border-light); }
-        .stat-box span { display: block; font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
-        .stat-box strong { font-size: 24px; color: var(--gold); }
         
         .splash-tracker { background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%); padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);}
         .splash-tracker h2 { margin: 0 0 10px 0; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.8); }
@@ -149,6 +130,7 @@
             max-width: 95vw;
             color: white;
             box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.3);
+            position: relative;
         }
         
         #playerModal .cg-font-lock * {
@@ -190,37 +172,29 @@
     <div class="header-section" id="mainHeader">
         <div class="header-title-wrapper">
             <img src="/assets/tour_logo.png" alt="HJNBL Logo" class="main-logo" onerror="this.style.display='none'">
-            <h1>HJNBL 2026 DASHBOARD</h1>
+            <h1>HJNBL 2026 STATS PORTAL</h1>
         </div>
         <div class="tab-navbar">
             <button class="tab-btn active" onclick="switchTab('tab-welcome')">Home</button>
             <button class="tab-btn" onclick="switchTab('tab-fixtures')">Matches</button>
             <button class="tab-btn" onclick="switchTab('tab-teams')">Teams Database</button>
             <button class="tab-btn" onclick="switchTab('tab-standings')">League Table</button>
-            <button class="tab-btn" style="color:var(--gold);" onclick="switchTab('tab-broadcast')">Broadcast Hub</button>
+            <button class="tab-btn" style="color:var(--gold);" onclick="switchTab('tab-broadcast')">Leaderboards</button>
         </div>
     </div>
 
     <div id="tab-welcome" class="tab-content active">
         <div class="controls-card welcome-card">
             <img src="/assets/tour_logo.png" alt="HJNBL Logo" style="height: 120px; margin-bottom: 20px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));" onerror="this.style.display='none'">
-            <h2>Welcome to HJNBL HQ</h2>
-            <p>Access fixtures to track live match data (Q1-Q4, OT, and advanced stats), view the automated League Table, or browse the complete Teams Database to view individual player performances.</p>
-            <button class="btn-action btn-enter" style="font-size: 16px; padding: 12px 24px;" onclick="switchTab('tab-fixtures')">Go to Fixtures →</button>
-            
-            <div class="db-controls">
-                <a href="/api/backup" download class="btn-db">💾 Download Backup (.json)</a>
-                <button class="btn-db" onclick="document.getElementById('restoreFile').click()">📂 Restore Backup</button>
-                <input type="file" id="restoreFile" style="display: none;" accept=".json" onchange="restoreDB(event)">
-            </div>
-            <p style="font-size: 12px; color: var(--success); margin-top: 10px;">*The database automatically saves to your hard drive every time a point is scored.</p>
+            <h2>Welcome to the Public Portal</h2>
+            <p>Explore official match statistics, view the live League Table, and click into our complete Teams Database to discover detailed player performances across the entire 2026 tournament.</p>
+            <button class="btn-action btn-enter" style="font-size: 16px; padding: 12px 24px;" onclick="switchTab('tab-fixtures')">View Matches →</button>
         </div>
     </div>
 
     <div id="tab-fixtures" class="tab-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h2 style="margin: 0;">Tournament Schedule</h2>
-            <button class="btn-action btn-enter" onclick="openAddMatchModal()">+ Add New Match</button>
         </div>
         <div class="fixtures-grid" id="fixturesGrid"></div>
     </div>
@@ -231,7 +205,6 @@
             <div class="overlay-header">
                 <h2 id="rosterTitle" style="margin:0; color:var(--accent);">Team Roster</h2>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn-action btn-enter" onclick="openAddPlayerModal()">+ Add New Player</button>
                     <button class="btn-back" onclick="closeTeamRoster()">← Back to Teams</button>
                 </div>
             </div>
@@ -243,7 +216,6 @@
         <div class="team-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <h2 class="team-title" style="margin: 0;">Official League Table</h2>
-                <a href="/api/export-standings" download class="btn-action btn-out" style="padding: 10px 20px; font-size: 14px;">💾 Export Standings</a>
             </div>
             <table>
                 <thead>
@@ -292,108 +264,15 @@
         </div>
     </div>
 
-    <div id="match-entry-overlay" style="display: none;">
-        <div class="overlay-header">
-            <h2 id="entryMatchTitle" style="margin: 0; color: var(--gold);">Match Data Entry</h2>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-action" id="btnCompleteMatch" onclick="toggleMatchStatus()" style="background: var(--success); color: white;">Mark as Final</button>
-                <button class="btn-back" onclick="closeMatchOverlay()">← Back to Fixtures</button>
-            </div>
-        </div>
-        <div id="entryScoreboard"></div>
-        <div class="period-selector-container">
-            <div class="period-selector">
-                <button class="period-btn active" id="btn-q1" onclick="setActivePeriod('q1')">Q1</button>
-                <button class="period-btn" id="btn-q2" onclick="setActivePeriod('q2')">Q2</button>
-                <button class="period-btn" id="btn-q3" onclick="setActivePeriod('q3')">Q3</button>
-                <button class="period-btn" id="btn-q4" onclick="setActivePeriod('q4')">Q4</button>
-                <button class="period-btn" id="btn-ot" onclick="setActivePeriod('ot')">OT</button>
-            </div>
-        </div>
-        <div id="entryTablesContainer"></div>
-    </div>
-
     <div id="match-output-overlay" style="display: none;">
         <div class="overlay-header">
-            <h2 id="outputMatchTitle" style="margin: 0; color: var(--success);">Clean Box Score</h2>
+            <h2 id="outputMatchTitle" style="margin: 0; color: var(--success);">Match Box Score</h2>
             <div style="display: flex; gap: 15px;">
-                <a id="exportBtn" class="btn-action btn-out" href="#" download>💾 Download CSV</a>
                 <button class="btn-back" onclick="closeMatchOverlay()">← Back to Fixtures</button>
             </div>
         </div>
         <div id="outputScoreboard"></div>
         <div id="outputTablesContainer"></div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="addMatchModal">
-    <div class="modal-content" style="width: 400px;">
-        <button class="close-modal" onclick="document.getElementById('addMatchModal').style.display='none'">×</button>
-        <h2 style="margin-top: 0;">Create New Match</h2>
-        <div class="edit-form">
-            <div>
-                <label>Date / Round</label>
-                <input type="text" id="newMatchDate" placeholder="e.g. March 20 - Semi Final" style="width: 100%; box-sizing: border-box;">
-            </div>
-            <div>
-                <label>Team A</label>
-                <select id="newMatchTeamA" style="width: 100%; box-sizing: border-box;"></select>
-            </div>
-            <div>
-                <label>Team B</label>
-                <select id="newMatchTeamB" style="width: 100%; box-sizing: border-box;"></select>
-            </div>
-            <button class="btn-action btn-enter" style="margin-top: 15px; padding: 12px;" onclick="saveNewMatch()">Create Match</button>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="editMatchModal">
-    <div class="modal-content" style="width: 400px;">
-        <button class="close-modal" onclick="document.getElementById('editMatchModal').style.display='none'">×</button>
-        <h2 style="margin-top: 0;">Edit Match</h2>
-        <div class="edit-form">
-            <input type="hidden" id="editMatchId">
-            <div>
-                <label>Date / Round</label>
-                <input type="text" id="editMatchDate" style="width: 100%; box-sizing: border-box;">
-            </div>
-            <div>
-                <label>Team A</label>
-                <select id="editMatchTeamA" style="width: 100%; box-sizing: border-box;"></select>
-            </div>
-            <div>
-                <label>Team B</label>
-                <select id="editMatchTeamB" style="width: 100%; box-sizing: border-box;"></select>
-            </div>
-            <button class="btn-action btn-enter" style="margin-top: 15px; padding: 12px;" onclick="saveMatchEdit()">Save Match</button>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="editModal">
-    <div class="modal-content" style="width: 400px;">
-        <button class="close-modal" onclick="document.getElementById('editModal').style.display='none'">×</button>
-        <h2 id="editModalTitle" style="margin-top: 0;">Edit Player Profile</h2>
-        <div class="edit-form">
-            <input type="hidden" id="editOriginalJersey">
-            <input type="hidden" id="editTeam">
-            <div class="edit-row">
-                <div><label>Jersey No.</label><input type="number" id="editJersey"></div>
-                <div><label>Age</label><input type="number" id="editAge" placeholder="e.g. 24"></div>
-            </div>
-            <div><label>Player Name</label><input type="text" id="editName"></div>
-            <div class="edit-row">
-                <div><label>Position</label><input type="text" id="editPosition" placeholder="e.g. PG/SG"></div>
-                <div><label>Height</label><input type="text" id="editHeight" placeholder="e.g. 6'2"></div>
-            </div>
-            <div>
-                <label>External Photo URL (Optional)</label>
-                <input type="text" id="editPhoto" placeholder="Only for http:// links">
-                <span style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 5px;">If you placed an image in the folder (like 77.png or Binod Maharjan.png), leave this blank. The system will find it automatically!</span>
-            </div>
-            <button class="btn-action btn-enter" style="margin-top: 15px; padding: 12px;" onclick="savePlayerEdit()">Save Changes</button>
-        </div>
     </div>
 </div>
 
@@ -444,9 +323,6 @@
 
 <script>
     let masterData = {};
-    let currentMatchId = null;
-    let activePeriod = 'q1';
-    let isEditMode = true; 
     let broadcastData = null;
 
     const getFullStats = () => ({ q1_1:0, q1_2:0, q1_3:0, q2_1:0, q2_2:0, q2_3:0, q3_1:0, q3_2:0, q3_3:0, q4_1:0, q4_2:0, q4_3:0, ot_1:0, ot_2:0, ot_3:0, reb: 0, ast: 0, stl: 0, blk: 0, tov: 0, foul: 0 });
@@ -478,33 +354,6 @@
         if(tabId === 'tab-broadcast') loadBroadcastHub();
     }
 
-    function restoreDB(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            try {
-                const db = JSON.parse(e.target.result);
-                const res = await fetch('/api/restore', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ db }) });
-                const result = await res.json();
-                if(result.success) { alert("Database successfully restored!"); location.reload(); } 
-                else { alert("Failed to restore database: " + result.error); }
-            } catch (err) { alert("Invalid JSON file."); }
-        };
-        reader.readAsText(file);
-    }
-
-    function setActivePeriod(period) {
-        activePeriod = period;
-        document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('btn-' + period).classList.add('active');
-        if(currentMatchId) {
-            fetch(`/api/match/${currentMatchId}`).then(r => r.json()).then(data => {
-                document.getElementById('entryTablesContainer').innerHTML = buildInteractiveTable(data.match.teamA, data.rosters[data.match.teamA], data.stats[data.match.teamA]) + buildInteractiveTable(data.match.teamB, data.rosters[data.match.teamB], data.stats[data.match.teamB]);
-            });
-        }
-    }
-
     function getTeamTotals(teamStats) {
         let t = { q1:0, q2:0, q3:0, q4:0, ot:0, total:0 };
         if(!teamStats) return t;
@@ -517,78 +366,6 @@
             t.ot += (s.ot_1||0)*1 + (s.ot_2||0)*2 + (s.ot_3||0)*3;
         });
         t.total = t.q1 + t.q2 + t.q3 + t.q4 + t.ot; return t;
-    }
-
-    // --- ADD MATCH LOGIC ---
-    function openAddMatchModal() {
-        const teams = Object.keys(masterData.rosters);
-        let tOpts = `<option value="">Select Team</option>` + teams.map(t => `<option value="${t}">${t}</option>`).join('');
-        document.getElementById('newMatchTeamA').innerHTML = tOpts;
-        document.getElementById('newMatchTeamB').innerHTML = tOpts;
-        document.getElementById('newMatchDate').value = "";
-        document.getElementById('addMatchModal').style.display = 'flex';
-    }
-
-    async function saveNewMatch() {
-        const date = document.getElementById('newMatchDate').value;
-        const teamA = document.getElementById('newMatchTeamA').value;
-        const teamB = document.getElementById('newMatchTeamB').value;
-
-        if (!date || !teamA || !teamB) { alert("Please fill out the Date and select both teams."); return; }
-        if (teamA === teamB) { alert("A team cannot play itself!"); return; }
-
-        const res = await fetch('/api/match', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ date, teamA, teamB }) });
-        const result = await res.json();
-        if (result.success) {
-            masterData.schedule = result.schedule;
-            masterData.matchStats = result.matchStats;
-            document.getElementById('addMatchModal').style.display = 'none';
-            renderFixtures();
-        }
-    }
-
-    // --- EDIT / DELETE MATCH LOGIC ---
-    function openEditMatchModal(id, date, teamA, teamB) {
-        const teams = Object.keys(masterData.rosters);
-        let tOpts = `<option value="">Select Team</option>` + teams.map(t => `<option value="${t}">${t}</option>`).join('');
-        document.getElementById('editMatchTeamA').innerHTML = tOpts;
-        document.getElementById('editMatchTeamB').innerHTML = tOpts;
-        
-        document.getElementById('editMatchId').value = id;
-        document.getElementById('editMatchDate').value = date;
-        document.getElementById('editMatchTeamA').value = teamA;
-        document.getElementById('editMatchTeamB').value = teamB;
-        
-        document.getElementById('editMatchModal').style.display = 'flex';
-    }
-
-    async function saveMatchEdit() {
-        const id = document.getElementById('editMatchId').value;
-        const date = document.getElementById('editMatchDate').value;
-        const teamA = document.getElementById('editMatchTeamA').value;
-        const teamB = document.getElementById('editMatchTeamB').value;
-
-        if (!date || !teamA || !teamB) { alert("Please fill all fields."); return; }
-        if (teamA === teamB) { alert("Teams must be different."); return; }
-
-        const res = await fetch('/api/edit-match', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, date, teamA, teamB }) });
-        const result = await res.json();
-        if (result.success) {
-            masterData.schedule = result.schedule;
-            if(result.matchStats) masterData.matchStats = result.matchStats;
-            document.getElementById('editMatchModal').style.display = 'none';
-            renderFixtures();
-        }
-    }
-
-    async function deleteMatch(id) {
-        if (!confirm("Are you sure you want to completely delete this match? All stats for this match will be lost permanently!")) return;
-        const res = await fetch('/api/delete-match', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
-        const result = await res.json();
-        if (result.success) {
-            masterData.schedule = result.schedule;
-            renderFixtures();
-        }
     }
 
     function renderFixtures() {
@@ -619,6 +396,10 @@
                 </div>`;
             }
 
+            let matchActionBtn = isCompleted 
+                ? `<button class="btn-action btn-out" style="width: 100%;" onclick="openMatchOutput(${m.id}, '${m.teamA}', '${m.teamB}')">View Box Score</button>`
+                : `<p style="color:var(--text-muted); font-size: 13px; margin: 0; padding: 8px;">Match Status: Pending / Live</p>`;
+
             grid.innerHTML += `
                 <div class="match-card" style="${isCompleted ? 'border-color: var(--success);' : ''}">
                     <p style="color: var(--accent); font-weight: bold; display:flex; justify-content:center; align-items:center; margin-bottom: 20px;">Game ${m.id} | ${m.date} ${badge}</p>
@@ -638,33 +419,11 @@
                     </div>
 
                     <div class="match-actions">
-                        <button class="btn-action btn-enter" onclick="openMatchEntry(${m.id}, '${m.teamA}', '${m.teamB}')">${isCompleted ? 'Edit Entry' : 'Live Entry'}</button>
-                        <button class="btn-action btn-out" onclick="openMatchOutput(${m.id}, '${m.teamA}', '${m.teamB}')">Box Score</button>
-                    </div>
-                    
-                    <div style="display:flex; justify-content:space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto;">
-                        <button style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:12px; font-weight:bold;" onclick="openEditMatchModal(${m.id}, '${m.date}', '${m.teamA}', '${m.teamB}')">✏️ Edit Match</button>
-                        <button style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:12px; font-weight:bold;" onclick="deleteMatch(${m.id})">🗑️ Delete</button>
+                        ${matchActionBtn}
                     </div>
                 </div>
             `;
         });
-    }
-
-    function updateCompleteButton(isCompleted) {
-        const btn = document.getElementById('btnCompleteMatch');
-        if (isCompleted) { btn.textContent = "Undo Final Status"; btn.style.background = "var(--danger)"; } 
-        else { btn.textContent = "Mark as Final"; btn.style.background = "var(--success)"; }
-    }
-
-    async function toggleMatchStatus() {
-        if (!currentMatchId) return;
-        const currentStats = masterData.matchStats[currentMatchId] || {};
-        const newVal = !currentStats.isCompleted;
-        await fetch('/api/match-status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ matchId: currentMatchId, isCompleted: newVal }) });
-        if (!masterData.matchStats[currentMatchId]) masterData.matchStats[currentMatchId] = {};
-        masterData.matchStats[currentMatchId].isCompleted = newVal;
-        updateCompleteButton(newVal); renderFixtures(); 
     }
 
     function renderScoreboard(teamA, teamB, statsA, statsB) {
@@ -685,59 +444,20 @@
         </tbody></table></div>`;
     }
 
-    async function openMatchEntry(id, tA, tB) {
-        currentMatchId = id;
-        document.getElementById('tab-welcome').classList.remove('active');
-        document.getElementById('tab-fixtures').classList.remove('active');
-        document.getElementById('match-entry-overlay').style.display = 'block';
-        document.getElementById('entryMatchTitle').textContent = `Tracking: ${tA} vs ${tB}`;
-        const res = await fetch(`/api/match/${id}`); const data = await res.json();
-        if (!masterData.matchStats[id]) masterData.matchStats[id] = {}; masterData.matchStats[id] = data.stats;
-        updateCompleteButton(data.stats.isCompleted);
-        document.getElementById('entryScoreboard').innerHTML = renderScoreboard(tA, tB, data.stats[tA], data.stats[tB]);
-        document.getElementById('entryTablesContainer').innerHTML = buildInteractiveTable(tA, data.rosters[tA], data.stats[tA]) + buildInteractiveTable(tB, data.rosters[tB], data.stats[tB]);
-    }
-
     async function openMatchOutput(id, tA, tB) {
         document.getElementById('tab-welcome').classList.remove('active');
         document.getElementById('tab-fixtures').classList.remove('active');
         document.getElementById('match-output-overlay').style.display = 'block';
         document.getElementById('outputMatchTitle').textContent = `Final Box Score: ${tA} vs ${tB}`;
-        document.getElementById('exportBtn').href = `/api/export/${id}`;
+        
         const res = await fetch(`/api/match/${id}`); const data = await res.json();
         document.getElementById('outputScoreboard').innerHTML = renderScoreboard(tA, tB, data.stats[tA], data.stats[tB]);
         document.getElementById('outputTablesContainer').innerHTML = buildCleanTable(tA, data.rosters[tA], data.stats[tA]) + buildCleanTable(tB, data.rosters[tB], data.stats[tB]);
     }
 
     function closeMatchOverlay() {
-        document.getElementById('match-entry-overlay').style.display = 'none'; document.getElementById('match-output-overlay').style.display = 'none';
+        document.getElementById('match-output-overlay').style.display = 'none';
         if(document.querySelector('.tab-btn[onclick="switchTab(\'tab-fixtures\')"]').classList.contains('active')){ document.getElementById('tab-fixtures').classList.add('active'); }
-    }
-
-    async function updateStat(team, jersey, stat, amount) {
-        await fetch('/api/stat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ matchId: currentMatchId, team, jersey, stat, amount }) });
-        const res = await fetch(`/api/match/${currentMatchId}`); const data = await res.json();
-        document.getElementById('entryScoreboard').innerHTML = renderScoreboard(data.match.teamA, data.match.teamB, data.stats[data.match.teamA], data.stats[data.match.teamB]);
-        document.getElementById('entryTablesContainer').innerHTML = buildInteractiveTable(data.match.teamA, data.rosters[data.match.teamA], data.stats[data.match.teamA]) + buildInteractiveTable(data.match.teamB, data.rosters[data.match.teamB], data.stats[data.match.teamB]);
-    }
-
-    function renderBtn(t, j, s, v) { return `<div class="stat-controls"><button class="btn-stat btn-minus" onclick="updateStat('${t}', ${j}, '${s}', -1)">-</button><span class="stat-val">${v}</span><button class="btn-stat btn-plus" onclick="updateStat('${t}', ${j}, '${s}', 1)">+</button></div>`; }
-
-    function buildInteractiveTable(team, roster, stats) {
-        let h = `<div class="team-section"><h2 class="team-title">${team}</h2><table><thead><tr>
-            <th style="width: 40px;">No.</th><th style="text-align:left;">Player Name</th>
-            <th style="color:var(--accent); font-size:12px;">1 PT</th><th style="color:var(--accent); font-size:12px;">2 PT</th><th style="color:var(--accent); font-size:12px;">3 PT</th>
-            <th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>OT</th><th>PTS</th>
-            <th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>TOV</th><th>FL</th></tr></thead><tbody>`;
-        (roster||[]).forEach(p => {
-            const raw = stats[p.jersey] || {}; const s = Object.assign(getFullStats(), raw);
-            const q1 = s.q1_1*1 + s.q1_2*2 + s.q1_3*3; const q2 = s.q2_1*1 + s.q2_2*2 + s.q2_3*3; const q3 = s.q3_1*1 + s.q3_2*2 + s.q3_3*3; const q4 = s.q4_1*1 + s.q4_2*2 + s.q4_3*3; const ot = s.ot_1*1 + s.ot_2*2 + s.ot_3*3;
-            const tot = q1+q2+q3+q4+ot;
-            h += `<tr><td class="jersey-num">${p.jersey}</td><td class="player-name">${p.name}</td>
-                <td>${renderBtn(team, p.jersey, activePeriod+'_1', s[activePeriod+'_1'])}</td><td>${renderBtn(team, p.jersey, activePeriod+'_2', s[activePeriod+'_2'])}</td><td>${renderBtn(team, p.jersey, activePeriod+'_3', s[activePeriod+'_3'])}</td>
-                <td class="clean-val">${q1}</td><td class="clean-val">${q2}</td><td class="clean-val">${q3}</td><td class="clean-val">${q4}</td><td class="clean-val">${ot}</td><td class="total-pts">${tot}</td>
-                <td>${renderBtn(team, p.jersey, 'reb', s.reb)}</td><td>${renderBtn(team, p.jersey, 'ast', s.ast)}</td><td>${renderBtn(team, p.jersey, 'stl', s.stl)}</td><td>${renderBtn(team, p.jersey, 'blk', s.blk)}</td><td>${renderBtn(team, p.jersey, 'tov', s.tov)}</td><td>${renderBtn(team, p.jersey, 'foul', s.foul)}</td></tr>`;
-        }); return h + `</tbody></table></div>`;
     }
 
     function buildCleanTable(team, roster, stats) {
@@ -748,7 +468,7 @@
             const tot = q1+q2+q3+q4+ot;
             const tot1pt = s.q1_1 + s.q2_1 + s.q3_1 + s.q4_1 + s.ot_1; const tot2pt = s.q1_2 + s.q2_2 + s.q3_2 + s.q4_2 + s.ot_2; const tot3pt = s.q1_3 + s.q2_3 + s.q3_3 + s.q4_3 + s.ot_3;
             if (tot > 0 || s.reb>0 || s.ast>0 || s.stl>0 || s.blk>0 || s.foul>0) {
-                h += `<tr><td class="jersey-num">${p.jersey}</td><td style="text-align:left; font-weight:bold;">${p.name}</td><td class="clean-val">${tot1pt}</td><td class="clean-val">${tot2pt}</td><td class="clean-val">${tot3pt}</td>
+                h += `<tr class="player-row" onclick="openPlayerModal('${team}', ${p.jersey})" title="View Full Stats"><td class="jersey-num">${p.jersey}</td><td style="text-align:left; font-weight:bold;">${p.name}</td><td class="clean-val">${tot1pt}</td><td class="clean-val">${tot2pt}</td><td class="clean-val">${tot3pt}</td>
                 <td class="clean-val">${q1}</td><td class="clean-val">${q2}</td><td class="clean-val">${q3}</td><td class="clean-val">${q4}</td><td class="clean-val">${ot}</td>
                 <td class="total-pts">${tot}</td><td>${s.reb}</td><td>${s.ast}</td><td>${s.stl}</td><td>${s.blk}</td><td>${s.tov}</td><td>${s.foul}</td></tr>`;
             }
@@ -771,59 +491,21 @@
         document.getElementById('teamRosterContainer').style.display = 'block'; 
         document.getElementById('rosterTitle').textContent = `${team} Official Roster`;
         
-        let h = `<div class="team-section"><table><thead><tr><th>Jersey</th><th style="text-align:left;">Player Name</th><th>Position</th><th>Height</th><th>Age</th><th>Actions</th></tr></thead><tbody>`;
+        let h = `<div class="team-section"><table><thead><tr><th>Jersey</th><th style="text-align:left;">Player Name</th><th>Position</th><th>Height</th><th>Age</th></tr></thead><tbody>`;
         masterData.rosters[team].forEach(p => {
             const photoHtml = (p.photo && p.photo !== 'undefined') ? `<img src="${p.photo}" class="roster-thumb">` : `<div class="roster-thumb placeholder"></div>`;
-            h += `<tr class="player-row" onclick="openPlayerModal('${team}', ${p.jersey})">
+            h += `<tr class="player-row" onclick="openPlayerModal('${team}', ${p.jersey})" title="Click to view full player stats">
                     <td class="jersey-num" style="font-size:16px;">#${p.jersey}</td>
                     <td class="player-name"><div style="display:flex; align-items:center; gap:12px;">${photoHtml}${p.name}</div></td>
                     <td style="color:var(--accent); font-weight:bold;">${p.position || '-'}</td><td>${p.height || '-'}</td><td>${p.age || '-'}</td>
-                    <td><button class="btn-edit" onclick="event.stopPropagation(); openEditModal('${team}', ${p.jersey})">Edit Profile</button></td></tr>`;
+                  </tr>`;
         });
         document.getElementById('rosterTableArea').innerHTML = h + `</tbody></table></div>`;
     }
 
     function closeTeamRoster() { document.getElementById('teamRosterContainer').style.display = 'none'; document.getElementById('teamsGrid').style.display = 'grid'; }
     
-    function openAddPlayerModal() {
-        isEditMode = false;
-        document.getElementById('editModalTitle').textContent = "Add New Player";
-        document.getElementById('editTeam').value = document.getElementById('rosterTitle').textContent.replace(' Official Roster', '');
-        document.getElementById('editOriginalJersey').value = ""; document.getElementById('editJersey').value = "";
-        document.getElementById('editName').value = ""; document.getElementById('editAge').value = "";
-        document.getElementById('editHeight').value = ""; document.getElementById('editPosition').value = ""; document.getElementById('editPhoto').value = "";
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    function openEditModal(team, jersey) {
-        isEditMode = true; document.getElementById('editModalTitle').textContent = "Edit Player Profile";
-        let p = masterData.rosters[team].find(player => player.jersey === jersey);
-        document.getElementById('editTeam').value = team; document.getElementById('editOriginalJersey').value = p.jersey;
-        document.getElementById('editJersey').value = p.jersey; document.getElementById('editName').value = p.name;
-        document.getElementById('editAge').value = p.age !== '-' ? p.age : ''; document.getElementById('editHeight').value = p.height !== '-' ? p.height : '';
-        document.getElementById('editPosition').value = p.position !== '-' ? p.position : ''; 
-        document.getElementById('editPhoto').value = (p.photo && p.photo.startsWith('http')) ? p.photo : ''; // Only show if it's an external link
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    async function savePlayerEdit() {
-        const payload = {
-            team: document.getElementById('editTeam').value, originalJersey: document.getElementById('editOriginalJersey').value,
-            newJersey: document.getElementById('editJersey').value, newName: document.getElementById('editName').value,
-            age: document.getElementById('editAge').value || '-', height: document.getElementById('editHeight').value || '-',
-            position: document.getElementById('editPosition').value || '-', photo: document.getElementById('editPhoto').value || ''
-        };
-        const endpoint = isEditMode ? '/api/edit-player' : '/api/player';
-        if (!isEditMode) payload.jersey = payload.newJersey; 
-
-        const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        const result = await res.json();
-        
-        if(result.success) { masterData.rosters = result.rosters; document.getElementById('editModal').style.display = 'none'; openTeamRoster(payload.team); } 
-        else { alert("Error: " + (result.error || "Could not save player")); }
-    }
-
-    // UPDATED BROADCAST MODAL SCRIPT
+    // PUBLIC PLAYER MODAL HANDLER
     async function openPlayerModal(team, jersey) {
         const res = await fetch(`/api/player-stats/${team}/${jersey}`); 
         const stats = await res.json();
@@ -911,9 +593,9 @@
             
             for(let i=1; i<Math.min(arr.length, 3); i++) {
                 const p = arr[i];
-                h += `<div class="leader-list-item">
+                h += `<div class="leader-list-item" style="cursor: pointer;" onclick="openPlayerModal('${p.team}', ${p.jersey})" title="View Player">
                         <div style="display:flex; align-items:center;">
-                            <span class="list-rank">${i+1}</span> ${p.name} <span style="color:var(--text-muted); font-size:10px; margin-left: 5px;">(${p.team})</span>
+                            <span class="list-rank">${i+1}</span> <span class="player-row" style="color:white;">${p.name}</span> <span style="color:var(--text-muted); font-size:10px; margin-left: 5px;">(${p.team})</span>
                         </div>
                         <div class="list-item-stat">${p[metric]}</div>
                       </div>`;
@@ -966,8 +648,8 @@
         const sA = broadcastData.allPlayers.find(p => p.team === tA && p.jersey === parseInt(jA));
         const sB = broadcastData.allPlayers.find(p => p.team === tB && p.jersey === parseInt(jB));
         
-        const photoA = (sA.photo && sA.photo !== 'undefined') ? `<img src="${sA.photo}" class="hero-photo">` : `<div class="hero-photo placeholder"></div>`;
-        const photoB = (sB.photo && sB.photo !== 'undefined') ? `<img src="${sB.photo}" class="hero-photo">` : `<div class="hero-photo placeholder"></div>`;
+        const photoA = (sA.photo && sA.photo !== 'undefined') ? `<img src="${sA.photo}" class="hero-photo" style="cursor:pointer;" onclick="openPlayerModal('${tA}', ${jA})">` : `<div class="hero-photo placeholder"></div>`;
+        const photoB = (sB.photo && sB.photo !== 'undefined') ? `<img src="${sB.photo}" class="hero-photo" style="cursor:pointer;" onclick="openPlayerModal('${tB}', ${jB})">` : `<div class="hero-photo placeholder"></div>`;
 
         const buildRow = (label, valA, valB) => {
             let cA = valA > valB ? 'val-win' : (valA < valB ? 'val-lose' : ''); let cB = valB > valA ? 'val-win' : (valB < valA ? 'val-lose' : '');
