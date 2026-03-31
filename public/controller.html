@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HJNBL Broadcast Controller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: white; margin: 0; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; position: relative;}
+        
+        #controlStatus { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 15px 30px; border-radius: 8px; font-weight: 900; font-size: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 1000;}
+
+        h1 { color: #fbbf24; font-weight: 900; text-align: center; font-size: 32px; letter-spacing: 1px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 20px;}
+        
+        .info-box { background: rgba(14, 165, 233, 0.1); border: 1px solid #0ea5e9; padding: 15px 25px; border-radius: 8px; margin-bottom: 30px; }
+        .info-box h3 { margin: 0 0 10px 0; color: #0ea5e9; font-size: 16px;}
+        .info-box ul { margin: 0; padding-left: 20px;}
+        .info-box li { color: #94a3b8; font-size: 14px; margin-bottom: 5px;}
+        .info-box span { color: white; font-weight: bold; font-family: monospace; background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px;}
+
+        #playerPreview { display: none; background: #1e293b; border: 2px solid #fbbf24; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        #playerPreview h3 { margin: 0 0 10px 0; color: #fbbf24; font-size: 20px; text-transform: uppercase;}
+        .preview-grid { display: flex; gap: 20px; font-size: 18px; font-weight: bold;}
+        .preview-stat { background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 6px; border: 1px solid #555;}
+        .preview-stat span { color: #10b981; margin-left: 5px;}
+
+        .panel { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 30px; margin-bottom: 30px; }
+        .panel h2 { margin-top: 0; color: #0ea5e9; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;}
+        
+        .control-row { display: flex; gap: 15px; margin-bottom: 20px; align-items: center;}
+        select { flex-grow: 1; padding: 15px; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid #0ea5e9; border-radius: 8px; font-size: 16px; font-weight: bold; outline: none;}
+        
+        .btn-in { background: #10b981; color: white; border: none; padding: 15px 20px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; white-space: nowrap; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);}
+        .btn-in:hover { background: #059669; transform: translateY(-2px);}
+        
+        .btn-out { background: #ef4444; color: white; border: none; padding: 20px; border-radius: 12px; font-weight: 900; font-size: 20px; cursor: pointer; transition: 0.2s; width: 100%; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); text-transform: uppercase; letter-spacing: 2px;}
+        .btn-out:hover { background: #dc2626; transform: translateY(-2px);}
+
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;}
+    </style>
+</head>
+<body>
+
+<div id="controlStatus">🟢 Graphic Pushed to Screen!</div>
+
+<div class="container">
+    <h1>🔴 BROADCAST CG CONTROLLER</h1>
+
+    <div class="info-box">
+        <h3>vMix / OBS Setup Links:</h3>
+        <ul>
+            <li>Add <span>http://localhost:3000/cg.html</span> for Single Player/Team Graphics.</li>
+            <li>Add <span>http://localhost:3000/cg-h2h.html</span> for Team Matchup Graphics.</li>
+            <li>Add <span>http://localhost:3000/cg-standings.html</span> for the League Table.</li>
+            <li>Add <span style="color:#d4af37;">http://localhost:3000/cg-player-overall.html</span> for the Overall Stats Grid.</li>
+            <li>Add <span style="color:#10b981;">http://localhost:3000/cg-recent-matches.html</span> for the Last 7 Matches Graphic.</li>
+            <li>Add <span style="color:#f43f5e;">http://localhost:3000/cg-records.html</span> for Top 5 Leaderboards! <strong style="color: yellow;">(NEW)</strong></li>
+        </ul>
+    </div>
+
+    <div id="playerPreview"></div>
+
+    <div class="panel">
+        <h2>1. Global Master Clear</h2>
+        <button class="btn-out" onclick="triggerCG('hide')">WIPE ALL GRAPHICS OUT</button>
+    </div>
+    
+    <div class="panel" style="border-color: #e5142a; background: rgba(30, 0, 0, 0.4);">
+        <h2 style="color: #e5142a;">🔴 2. LIVE MATCH GRAPHICS (Current Game Stats)</h2>
+        <div class="control-row">
+            <select id="liveMatchSelect" onchange="loadLiveMatch()"><option value="">Loading Matches...</option></select>
+            <button class="btn-in" style="background:#e5142a; box-shadow: 0 4px 15px rgba(229,20,42,0.4);" onclick="sendLiveTeamComp()">Push LIVE QUARTER SCORE (H2H)</button>
+        </div>
+        
+        <div class="control-row" style="margin-bottom: 20px;">
+            <button class="btn-in" style="background:#f97316; width: 100%; font-size: 18px; padding: 15px; box-shadow: 0 4px 15px rgba(249,115,22,0.4);" onclick="sendLiveBoxScoreCombined()">Push H2H LIVE TOP SCORERS (IN)</button>
+        </div>
+        
+        <div class="control-row">
+            <select id="livePlayerSelect" onchange="updatePreview('live')"><option value="">Select a Match First...</option></select>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-in" style="background:#e5142a; box-shadow: 0 4px 15px rgba(229,20,42,0.4);" onclick="sendLivePlayerProfile()">Push CURRENT vs TOTALS PROFILE</button>
+                <button class="btn-in" style="background:#f43f5e; box-shadow: 0 4px 15px rgba(244,63,94,0.4);" onclick="sendLivePlayerQuarters()">Push QUARTERS COMPARISON</button>
+            </div>
+        </div>
+        
+        <div class="grid-3">
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('pts', 'POINTS')">Push GAME POINTS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('threes', '3-POINTERS')">Push GAME 3-POINTERS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('reb', 'REBOUNDS')">Push GAME REBOUNDS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('ast', 'ASSISTS')">Push GAME ASSISTS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('stl', 'STEALS')">Push GAME STEALS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('blk', 'BLOCKS')">Push GAME BLOCKS</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>3. Tournament Player Graphics (All Games)</h2>
+        <div class="control-row">
+            <select id="playerSelect" onchange="updatePreview('total')"><option value="">Loading Players...</option></select>
+            <button class="btn-in" style="background:#3b82f6; box-shadow: 0 4px 15px rgba(59,130,246,0.4);" onclick="sendPlayerProfile()">Push FULL PROFILE + PPG</button>
+        </div>
+        <div class="grid-3">
+            <button class="btn-in" onclick="sendPlayerStat('pts')">Push TOTAL POINTS</button>
+            <button class="btn-in" onclick="sendPlayerStat('twos')">Push 2-POINTERS</button>
+            <button class="btn-in" onclick="sendPlayerStat('threes')">Push 3-POINTERS</button>
+            <button class="btn-in" onclick="sendPlayerStat('reb')">Push REBOUNDS</button>
+            <button class="btn-in" onclick="sendPlayerStat('ast')">Push ASSISTS</button>
+            <button class="btn-in" onclick="sendPlayerStat('stl')">Push STEALS</button>
+            <button class="btn-in" style="background:#8b5cf6; grid-column: span 3;" onclick="sendPlayerVsOpponents()">Push POINTS VS OPPONENTS</button>
+            <button class="btn-in" style="background:#d946ef; grid-column: span 3; font-size: 16px; padding: 18px;" onclick="sendPlayerOverall()">Push OVERALL TOURNAMENT STATS GRID</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>4. Team Graphics & Head-to-Head</h2>
+        <div class="control-row">
+            <select id="singleTeamSelect"></select>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-in" style="background:#f59e0b; box-shadow: 0 4px 15px rgba(245,158,11,0.4);" onclick="sendTeamStat()">Push TEAM TOTALS</button>
+                <button class="btn-in" style="background:#14b8a6; box-shadow: 0 4px 15px rgba(20,184,166,0.4);" onclick="sendTeamLeaders()">Push TOP PERFORMERS</button>
+            </div>
+        </div>
+        
+        <h2 style="margin-top: 30px;">Matchup Comparison</h2>
+        <div class="control-row">
+            <select id="teamASelect"></select><span style="font-weight: 900; color: #94a3b8;">VS</span><select id="teamBSelect"></select>
+        </div>
+        <div class="grid-2">
+            <button class="btn-in" onclick="sendTeamComp()">Push QUARTER COMP</button>
+            <button class="btn-in" style="background:#8b5cf6; box-shadow: 0 4px 15px rgba(139,92,246,0.4);" onclick="sendTeamCompOverall()">Push OVERALL STATS COMP</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>5. Tournament Leaders (Top 3)</h2>
+        <div class="control-row" style="margin-bottom: 20px;">
+            <button class="btn-in" style="background:#8b5cf6; box-shadow: 0 4px 15px rgba(139,92,246,0.4); width: 100%; font-size: 18px; padding: 15px;" onclick="sendOverallTop3()">Push OVERALL TOP 3 PERFORMERS (IN)</button>
+        </div>
+        <div class="grid-3">
+            <button class="btn-in" style="background:#0ea5e9;" onclick="sendLeaderboard('pts', 'TOP SCORERS')">Push TOP 3 SCORERS</button>
+            <button class="btn-in" style="background:#0ea5e9;" onclick="sendLeaderboard('threes', 'TOP 3-POINT SHOOTERS')">Push TOP 3 3-POINTERS</button>
+            <button class="btn-in" style="background:#0ea5e9;" onclick="sendLeaderboard('reb', 'TOP REBOUNDERS')">Push TOP 3 REBOUNDERS</button>
+            <button class="btn-in" style="background:#0ea5e9;" onclick="sendLeaderboard('ast', 'TOP ASSIST LEADERS')">Push TOP 3 ASSISTS</button>
+            <button class="btn-in" style="background:#0ea5e9;" onclick="sendLeaderboard('stl', 'TOP STEAL LEADERS')">Push TOP 3 STEALS</button>
+            <button class="btn-in" style="background:#0ea5e9;" onclick="sendLeaderboard('blk', 'TOP BLOCK LEADERS')">Push TOP 3 BLOCKS</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>6. Tournament Splash, Standings & Recent Matches</h2>
+        <div class="grid-2" style="margin-bottom: 20px;">
+            <button class="btn-in" style="background: #10b981; font-size: 16px;" onclick="sendTourneySplash()">Push TOURNAMENT 3-POINTERS</button>
+            <button class="btn-in" style="background: #fbbf24; color: #000; font-size: 16px;" onclick="sendLeagueTable()">Push TOP 8 LEAGUE TABLE</button>
+        </div>
+        <h3 style="color: #0ea5e9; font-size: 16px; margin-bottom: 10px;">Team Recent Matches (1280x720 Graphic)</h3>
+        <div class="control-row">
+            <select id="recentTeamSelect"></select>
+            <button class="btn-in" style="background: #10b981; font-size: 16px;" onclick="sendRecentMatches()">Push RECENT MATCHES (Last 7)</button>
+        </div>
+    </div>
+
+    <div class="panel" style="border-color: #f43f5e; background: rgba(80, 0, 30, 0.4);">
+        <h2 style="color: #f43f5e;">🏆 7. Top 5 Leaderboards (cg-records.html)</h2>
+        <div class="grid-3">
+            <button class="btn-in" style="background:#b91c1c; box-shadow: 0 4px 15px rgba(185,28,28,0.4);" onclick="sendTop5List('pts', 'HIGHEST POINTS SCORED')">Push TOP 5 POINTS</button>
+            <button class="btn-in" style="background:#b91c1c; box-shadow: 0 4px 15px rgba(185,28,28,0.4);" onclick="sendTop5List('threes', 'MOST 3-POINTERS')">Push TOP 5 3-POINTERS</button>
+            <button class="btn-in" style="background:#b91c1c; box-shadow: 0 4px 15px rgba(185,28,28,0.4);" onclick="sendTop5List('reb', 'MOST REBOUNDS')">Push TOP 5 REBOUNDS</button>
+            <button class="btn-in" style="background:#b91c1c; box-shadow: 0 4px 15px rgba(185,28,28,0.4);" onclick="sendTop5List('ast', 'MOST ASSISTS')">Push TOP 5 ASSISTS</button>
+            <button class="btn-in" style="background:#b91c1c; box-shadow: 0 4px 15px rgba(185,28,28,0.4);" onclick="sendTop5List('stl', 'MOST STEALS')">Push TOP 5 STEALS</button>
+            <button class="btn-in" style="background:#b91c1c; box-shadow: 0 4px 15px rgba(185,28,28,0.4);" onclick="sendTop5List('blk', 'MOST BLOCKS')">Push TOP 5 BLOCKS</button>
+        </div>
+
+        <h2 style="color: #f59e0b; margin-top: 30px;">🌟 8. Single Game Records (IPL Style)</h2>
+        <p style="color: #aaa; font-size: 12px; margin-bottom: 15px;">Note: Server must supply <code>singleGameLeaders</code> data for these to work perfectly.</p>
+        <div class="grid-2">
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('pts', 'HIGHEST INDIVIDUAL SCORE IN A MATCH')">Push HIGHEST INDIVIDUAL SCORE</button>
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('threes', 'MOST 3-POINTERS IN A SINGLE MATCH')">Push MOST 3-POINTERS IN MATCH</button>
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('reb', 'MOST REBOUNDS IN A SINGLE MATCH')">Push MOST REBOUNDS IN MATCH</button>
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('ast', 'MOST ASSISTS IN A SINGLE MATCH')">Push MOST ASSISTS IN MATCH</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let bData = null; let sData = null; let liveMatchData = null;
+    const teamDict = { "KIRTIPUR": "IIMS Kirtipur", "TIMES": "Times Club", "SOLO": "Solo Basketball Academy", "ARMY": "Tribhuwan Army Club", "ROYAL": "Royal", "KVC HOUNDS": "KVC Hounds", "GGIC": "Golden Gate International", "PLAYBOX": "Playbox Arena" };
+    const getFullName = (shortName) => teamDict[shortName] || shortName;
+
+    async function init() {
+        const [res1, res2, res3] = await Promise.all([ fetch('/api/tournament-stats'), fetch('/api/standings'), fetch('/api/schedule') ]);
+        bData = await res1.json(); sData = await res2.json(); const schedData = await res3.json();
+
+        let pOpts = `<option value="">-- Select a Player to Feature --</option>` + bData.allPlayers.sort((a,b)=>a.name.localeCompare(b.name)).map(p => `<option value="${p.team}|${p.jersey}">${p.name} (JN: ${p.jersey} | ${getFullName(p.team)})</option>`).join('');
+        document.getElementById('playerSelect').innerHTML = pOpts;
+
+        const teams = Object.keys(bData.teamTotals);
+        let tOpts = `<option value="">-- Select Team --</option>` + teams.map(t => `<option value="${t}">${getFullName(t)}</option>`).join('');
+        document.getElementById('singleTeamSelect').innerHTML = tOpts; document.getElementById('teamASelect').innerHTML = tOpts; document.getElementById('teamBSelect').innerHTML = tOpts;
+        
+        document.getElementById('recentTeamSelect').innerHTML = tOpts;
+
+        let liveOpts = `<option value="">-- Select Active Match --</option>` + schedData.schedule.map(m => `<option value="${m.id}">Match ${m.id}: ${getFullName(m.teamA)} vs ${getFullName(m.teamB)}</option>`).join('');
+        document.getElementById('liveMatchSelect').innerHTML = liveOpts;
+    }
+
+    async function loadLiveMatch() {
+        const mId = document.getElementById('liveMatchSelect').value; if(!mId) return;
+        const res = await fetch(`/api/match/${mId}`); liveMatchData = await res.json();
+        
+        let pOpts = `<option value="">-- Select Player in this Game --</option>`;
+        [liveMatchData.match.teamA, liveMatchData.match.teamB].forEach(team => {
+            (liveMatchData.rosters[team] || []).forEach(p => { pOpts += `<option value="${team}|${p.jersey}">${p.name} (JN: ${p.jersey} | ${getFullName(team)})</option>`; });
+        });
+        document.getElementById('livePlayerSelect').innerHTML = pOpts;
+    }
+
+    function updatePreview(mode) {
+        let selectId = mode === 'live' ? 'livePlayerSelect' : 'playerSelect';
+        let val = document.getElementById(selectId).value;
+        let previewBox = document.getElementById('playerPreview');
+        
+        if (!val) { previewBox.style.display = 'none'; return; }
+        
+        const [t, j] = val.split('|');
+        const pTotal = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j));
+        
+        if (mode === 'live') {
+            const sLive = liveMatchData.calculatedStats[t][j];
+            previewBox.innerHTML = `
+                <h3>${pTotal.name} | LIVE PREVIEW</h3>
+                <div class="preview-grid">
+                    <div class="preview-stat">GAME PTS: <span>${sLive.pts}</span></div>
+                    <div class="preview-stat">GAME REB: <span>${sLive.reb}</span></div>
+                    <div class="preview-stat">GAME AST: <span>${sLive.ast}</span></div>
+                    <div class="preview-stat" style="border-left: 2px solid #fbbf24; margin-left: 10px;">TOTAL PTS: <span>${pTotal.pts}</span></div>
+                </div>`;
+        } else {
+            previewBox.innerHTML = `
+                <h3>${pTotal.name} | TOURNAMENT TOTAL PREVIEW</h3>
+                <div class="preview-grid">
+                    <div class="preview-stat">TOTAL PTS: <span>${pTotal.pts}</span></div>
+                    <div class="preview-stat">TOTAL REB: <span>${pTotal.reb}</span></div>
+                    <div class="preview-stat">TOTAL AST: <span>${pTotal.ast}</span></div>
+                    <div class="preview-stat">TOTAL 3PT: <span>${pTotal.threes}</span></div>
+                </div>`;
+        }
+        previewBox.style.display = 'block';
+    }
+
+    function showStatus(isClear) {
+        const statusDiv = document.getElementById('controlStatus'); statusDiv.textContent = isClear ? "🔴 Screen Cleared" : "🟢 Graphic Pushed to Screen!";
+        statusDiv.style.background = isClear ? "#ef4444" : "#10b981"; statusDiv.style.opacity = '1'; setTimeout(() => { statusDiv.style.opacity = '0'; }, 2000);
+    }
+
+    async function triggerCG(action, type = '', payload = null) {
+        if (payload) payload.logos = bData ? bData.logos : liveMatchData.logos; 
+        try { await fetch('/api/cg-state', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, type, payload }) }); showStatus(action === 'hide'); } 
+        catch(err) { alert("⚠️ Error: Cannot connect to server."); }
+    }
+
+    // --- NEW: TOP 5 RECORDS PUSHER ---
+    function sendTop5List(statKey, subtitleLabel) {
+        if(!bData || !bData.leaders || !bData.leaders[statKey]) return alert("Data not loaded yet!");
+        
+        // Grab top 5 players for this stat
+        let top5 = bData.leaders[statKey].slice(0, 5).map(p => ({
+            name: p.name,
+            team: p.team,
+            photo: p.photo,
+            value: p[statKey]
+        }));
+        
+        if(top5.length === 0) return alert("No stats available to show!");
+
+        triggerCG('show', 'top5-records', {
+            title: "TOURNAMENT LEADERS",
+            subtitle: subtitleLabel,
+            records: top5
+        });
+    }
+
+    // --- SINGLE GAME RECORDS (IPL STYLE) ---
+    function sendSingleGameRecords(statKey, subtitleLabel) {
+        if(!bData) return alert("Data not loaded yet!");
+        
+        // 1. Try to fetch singleGameLeaders if backend provides it
+        if (bData.singleGameLeaders && bData.singleGameLeaders[statKey]) {
+            let top5 = bData.singleGameLeaders[statKey].slice(0, 5).map(p => ({
+                name: p.name, team: p.team, photo: p.photo, value: p[statKey]
+            }));
+            triggerCG('show', 'top5-records', { title: "SINGLE MATCH RECORDS", subtitle: subtitleLabel, records: top5 });
+        } 
+        // 2. Fallback: If backend doesn't provide it, fall back to Tournament Totals with a warning
+        else {
+            console.warn("Backend missing 'singleGameLeaders'. Falling back to Tournament Totals.");
+            if (!bData.leaders || !bData.leaders[statKey]) return alert("No stats available to show!");
+            let top5 = bData.leaders[statKey].slice(0, 5).map(p => ({
+                name: p.name, team: p.team, photo: p.photo, value: p[statKey]
+            }));
+            triggerCG('show', 'top5-records', { title: "SINGLE MATCH RECORDS (DATA MISSING)", subtitle: "SHOWING TOURNAMENT TOTALS INSTEAD", records: top5 });
+        }
+    }
+    // ----------------------------------
+
+    function sendLiveTeamComp() {
+        if(!liveMatchData) return alert("Select a match first!");
+        const m = liveMatchData.match;
+        const mA = m.teamA; const mB = m.teamB; 
+        const sA = liveMatchData.teamTotals[mA]; const sB = liveMatchData.teamTotals[mB];
+        triggerCG('show', 'live-team-comp', { matchId: m.id, teamA: mA, aQ1: sA.q1, aQ2: sA.q2, aQ3: sA.q3, aQ4: sA.q4, aTotal: sA.total, teamB: mB, bQ1: sB.q1, bQ2: sB.q2, bQ3: sB.q3, bQ4: sB.q4, bTotal: sB.total });
+    }
+
+    function sendLiveBoxScoreCombined() {
+        if(!liveMatchData) return alert("Select a match first!");
+        const tA = liveMatchData.match.teamA;
+        const tB = liveMatchData.match.teamB;
+
+        const getTopPlayers = (teamCode) => {
+            return liveMatchData.rosters[teamCode].map(p => {
+                let s = liveMatchData.calculatedStats[teamCode][p.jersey];
+                return { name: p.name, jersey: p.jersey, pts: s.pts, threes: s.threes, photo: p.photo };
+            }).filter(p => p.pts > 0)
+              .sort((a,b) => b.pts - a.pts).slice(0, 4);
+        };
+
+        const playersA = getTopPlayers(tA);
+        const playersB = getTopPlayers(tB);
+
+        if(playersA.length === 0 && playersB.length === 0) return alert("No points recorded for either team yet!");
+
+        triggerCG('show', 'live-boxscore-combined', { teamA: tA, playersA: playersA, teamB: tB, playersB: playersB });
+    }
+
+    function sendLivePlayerQuarters() {
+        const val = document.getElementById('livePlayerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); 
+        const p = liveMatchData.rosters[t].find(x => x.jersey === parseInt(j)); 
+        const currentStats = liveMatchData.calculatedStats[t][j];
+        const totalStats = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j)) || {q1:0, q2:0, q3:0, q4:0, pts:0};
+        triggerCG('show', 'live-player-quarters', { team: t, jersey: p.jersey, name: p.name, photo: p.photo, current: currentStats, total: totalStats });
+    }
+
+    function sendLivePlayerProfile() {
+        const val = document.getElementById('livePlayerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); 
+        const p = liveMatchData.rosters[t].find(x => x.jersey === parseInt(j)); 
+        const currentStats = liveMatchData.calculatedStats[t][j];
+        const totalStats = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j)) || {pts:0, reb:0, ast:0};
+        triggerCG('show', 'live-player-profile', { team: t, jersey: p.jersey, name: p.name, photo: p.photo, current: currentStats, total: totalStats });
+    }
+    
+    function sendLivePlayerStat(statKey, label) {
+        const val = document.getElementById('livePlayerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); const p = liveMatchData.rosters[t].find(x => x.jersey === parseInt(j)); const s = liveMatchData.calculatedStats[t][j];
+        triggerCG('show', 'live-player-stat', { title: "CURRENT GAME", name: p.name, team: t, jersey: p.jersey, photo: p.photo, statLabel: label, statValue: s[statKey] });
+    }
+
+    function sendPlayerProfile() {
+        const val = document.getElementById('playerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); const p = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j)); triggerCG('show', 'player-profile', p);
+    }
+    function sendPlayerStat(statType) {
+        const val = document.getElementById('playerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); const p = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j));
+        let titles = { 'twos': 'TOTAL 2-POINTERS', 'threes': 'TOTAL 3-POINTERS', 'pts': 'TOTAL POINTS', 'reb': 'TOTAL REBOUNDS', 'ast': 'TOTAL ASSISTS', 'stl': 'TOTAL STEALS', 'blk': 'TOTAL BLOCKS' };
+        triggerCG('show', 'player-stat', { title: titles[statType], name: p.name, team: p.team, jersey: p.jersey, photo: p.photo, statLabel: titles[statType].replace("TOTAL ", ""), statValue: p[statType] });
+    }
+    function sendPlayerVsOpponents() {
+        const val = document.getElementById('playerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); const p = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j)); triggerCG('show', 'player-vs-opponents', p);
+    }
+    
+    function sendPlayerOverall() {
+        const val = document.getElementById('playerSelect').value; if(!val) return alert("Select a player first!");
+        const [t, j] = val.split('|'); const p = bData.allPlayers.find(x => x.team === t && x.jersey === parseInt(j)); triggerCG('show', 'player-overall', p);
+    }
+
+    function sendTeamStat() {
+        const t = document.getElementById('singleTeamSelect').value; if(!t) return alert("Select a team first!");
+        const s = bData.teamTotals[t]; triggerCG('show', 'team-stat', { team: t, logo: s.logo, pts: s.pts, reb: s.reb, ast: s.ast, stl: s.stl, blk: s.blk });
+    }
+    function sendTeamLeaders() {
+        const t = document.getElementById('singleTeamSelect').value; if(!t) return alert("Select a team first!");
+        const teamPlayers = bData.allPlayers.filter(p => p.team === t);
+        const topPts = [...teamPlayers].sort((a,b)=>b.pts-a.pts)[0] || {name:'-', pts:0, photo:''};
+        const topReb = [...teamPlayers].sort((a,b)=>b.reb-a.reb)[0] || {name:'-', reb:0, photo:''};
+        const topAst = [...teamPlayers].sort((a,b)=>b.ast-a.ast)[0] || {name:'-', ast:0, photo:''};
+        triggerCG('show', 'team-leaders', { team: t, ptsLeader: topPts, rebLeader: topReb, astLeader: topAst });
+    }
+
+    function sendOverallTop3() {
+        const topPts = bData.leaders.pts[0] || {name:'-', pts:0, photo:'', team:''};
+        const topReb = bData.leaders.reb[0] || {name:'-', reb:0, photo:'', team:''};
+        const topAst = bData.leaders.ast[0] || {name:'-', ast:0, photo:'', team:''};
+        triggerCG('show', 'overall-top3', { ptsLeader: topPts, rebLeader: topReb, astLeader: topAst });
+    }
+
+    function sendTeamComp() {
+        const tA = document.getElementById('teamASelect').value; const tB = document.getElementById('teamBSelect').value; if(!tA || !tB || tA===tB) return alert("Select two different teams!");
+        
+        const sA = bData.teamTotals[tA]; 
+        const sB = bData.teamTotals[tB]; 
+
+        let statA = sData.find(s => s.team === tA) || {played: 1};
+        let statB = sData.find(s => s.team === tB) || {played: 1};
+
+        let gpA = Math.max(statA.played || sA.gp || 1, 1);
+        let gpB = Math.max(statB.played || sB.gp || 1, 1);
+
+        triggerCG('show', 'team-comp', { 
+            teamA: tA, 
+            aQ1: (sA.q1 / gpA).toFixed(1), 
+            aQ2: (sA.q2 / gpA).toFixed(1), 
+            aQ3: (sA.q3 / gpA).toFixed(1), 
+            aQ4: (sA.q4 / gpA).toFixed(1), 
+            aTotal: (sA.pts / gpA).toFixed(1), 
+            
+            teamB: tB, 
+            bQ1: (sB.q1 / gpB).toFixed(1), 
+            bQ2: (sB.q2 / gpB).toFixed(1), 
+            bQ3: (sB.q3 / gpB).toFixed(1), 
+            bQ4: (sB.q4 / gpB).toFixed(1), 
+            bTotal: (sB.pts / gpB).toFixed(1) 
+        });
+    }
+    
+    function sendTeamCompOverall() {
+        const tA = document.getElementById('teamASelect').value; 
+        const tB = document.getElementById('teamBSelect').value; 
+        if(!tA || !tB || tA===tB) return alert("Select two different teams!");
+        
+        const sA = bData.teamTotals[tA]; 
+        const sB = bData.teamTotals[tB]; 
+        
+        let rankA = sData.findIndex(s => s.team === tA) + 1 || '-';
+        let rankB = sData.findIndex(s => s.team === tB) + 1 || '-';
+        let statA = sData.find(s => s.team === tA) || {pts: 0, wins: 0, played: 1};
+        let statB = sData.find(s => s.team === tB) || {pts: 0, wins: 0, played: 1};
+
+        let gpA = Math.max(statA.played || sA.gp || 1, 1);
+        let gpB = Math.max(statB.played || sB.gp || 1, 1);
+
+        triggerCG('show', 'team-comp-overall', { 
+            teamA: tA, 
+            aRank: rankA, aTP: statA.pts, aWins: statA.wins, 
+            aPts: (sA.pts / gpA).toFixed(1), 
+            aReb: (sA.reb / gpA).toFixed(1), 
+            aAst: (sA.ast / gpA).toFixed(1),
+            
+            teamB: tB, 
+            bRank: rankB, bTP: statB.pts, bWins: statB.wins, 
+            bPts: (sB.pts / gpB).toFixed(1), 
+            bReb: (sB.reb / gpB).toFixed(1), 
+            bAst: (sB.ast / gpB).toFixed(1) 
+        });
+    }
+
+    function sendLeaderboard(statKey, title) {
+        const leaders = bData.leaders[statKey].slice(0, 3); if(leaders.length === 0) return alert("No stats available yet!"); triggerCG('show', 'leaderboard', { title, statKey, leaders });
+    }
+
+    async function sendTourneySplash() { 
+        try {
+            const res = await fetch('/api/tournament-stats');
+            bData = await res.json();
+            triggerCG('show', 'tourney-splash', { threes: bData.totalTournament3s }); 
+        } catch(err) {
+            console.error(err);
+        }
+    }
+    
+    async function sendLeagueTable() { 
+        try {
+            const res = await fetch('/api/standings');
+            sData = await res.json();
+            triggerCG('show', 'league-table', { top8: sData.slice(0, 8) }); 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function sendRecentMatches() {
+        const t = document.getElementById('recentTeamSelect').value;
+        if(!t) return alert("Please select a team from the dropdown first!");
+        
+        try {
+            const res = await fetch('/api/recent-matches?team=' + t);
+            const data = await res.json();
+            if(data.recent.length === 0) return alert("No completed matches found for this team yet!");
+            
+            let photoUrl = null;
+            if (bData && bData.allPlayers) {
+                let playersWithPhotos = bData.allPlayers.filter(p => p.team === t && p.photo && p.photo.trim() !== "");
+                playersWithPhotos.sort((a, b) => b.pts - a.pts);
+                if (playersWithPhotos.length > 0) { photoUrl = playersWithPhotos[0].photo; }
+            }
+            
+            triggerCG('show', 'recent-matches', { team: t, photo: photoUrl, data: data });
+        } catch(err) {
+            console.error(err);
+            alert("Error fetching recent matches!");
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>

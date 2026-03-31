@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HJNBL Live Broadcast Output</title>
+    <style>
+        /* IMPORT WINNER SANS CONDENSED BOLD */
+        @font-face {
+            font-family: 'WinnerSans';
+            src: url('https://cdn.jsdelivr.net/gh/LajanStha-ux/Font-Hosting-New@main/fonts/WinnerSans-CondBold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* UNIVERSAL FONT LOCK - Forces Winner Sans on every single element and prevents faux-bolding */
+        * {
+            font-family: 'WinnerSans', sans-serif !important;
+            font-weight: normal !important; 
+        }
+
+        /* CANVAS LOCKED TO 1920x1080 */
+        html, body { 
+            margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; 
+            background-color: rgba(0, 0, 0, 0) !important; background: transparent !important; 
+            color: white; position: relative; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .cg-wrapper { 
+            position: absolute; bottom: 155px; left: 0px; top: auto; transform: none; 
+            width: 550px; height: auto; 
+            overflow: hidden; border-radius: 4px; padding: 2px; opacity: 0; 
+            transition: opacity 0.1s; pointer-events: none; box-sizing: border-box;
+        }
+        .cg-wrapper.show { opacity: 1; }
+        
+        .wipe-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, #444 0%, #fff 50%, #444 100%); z-index: 10; transform: translateX(-110%); transition: transform 0.4s cubic-bezier(0.8, 0, 0.2, 1); box-shadow: 0 0 10px rgba(255,255,255,0.8); }
+        .wipe-block.in-middle { transform: translateX(0%); }
+        .wipe-block.in-done { transform: translateX(110%); }
+        
+        .cg-box { 
+            background: linear-gradient(180deg, #2a2a2a 0%, #111111 40%, #000000 100%); 
+            border: 1px solid #555; border-top: 2px solid #ccc; border-bottom: 2px solid #111;
+            padding: 15px 18px; position: relative; width: 100%; height: auto;
+            opacity: 0; border-radius: 4px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.9), inset 0 1px 5px rgba(255,255,255,0.3); 
+            box-sizing: border-box; display: flex; flex-direction: column;
+        }
+
+        .roll-num { display: inline-block; transition: transform 0.2s ease-in, opacity 0.2s; transform-origin: center center; }
+        .roll-num.flip { transform: scaleY(0); opacity: 0; }
+
+        .cg-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 10px; width: 100%; box-sizing: border-box; flex-shrink: 0;}
+        .header-left-group { display: flex; align-items: center; gap: 15px; }
+        .cg-logo { height: 46px; width: auto; filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); display: block; }
+        
+        .header-text-group { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+        .cg-title { font-size: 26px; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin: 0; text-shadow: 0 1px 2px #000; line-height: 1; white-space: nowrap;}
+        .cg-subtitle { font-size: 10px; color: #d4af37; text-transform: uppercase; letter-spacing: 1.5px; margin: 3px 0 0 0; white-space: nowrap;}
+        .neba-logo { height: 36px; width: auto; filter: drop-shadow(0 0 4px rgba(255,255,255,0.3)); display: block; }
+        .header-line { display: none; width: 100%; height: 2px; background: linear-gradient(90deg, #555 0%, #222 100%); margin-bottom: 20px; box-shadow: 0 1px 0 #000; flex-shrink: 0;}
+
+        .cg-content { display: flex; align-items: stretch; gap: 15px; flex-grow: 1; height: auto; overflow: visible; padding-top: 2px; padding-bottom: 12px;}
+        
+        .photo-container-large { position: relative; flex-shrink: 0; width: 140px; height: 140px; display: block; margin: auto 0; }
+        .photo-container-large .cg-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 4px; border: 2px solid #ccc; background: #000; position: relative; z-index: 2; }
+        .photo-container-large .cg-photo-team-logo { position: absolute; bottom: -12px; right: -12px; width: 55px; height: 55px; object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)); z-index: 3; }
+
+        .photo-container { position: relative; flex-shrink: 0; width: 120px; height: 120px; display: block; margin: auto 0; }
+        .photo-container .cg-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 4px; border: 2px solid #ccc; background: #000; position: relative; z-index: 2; }
+        .photo-container .cg-photo-team-logo { position: absolute; bottom: -10px; right: -10px; width: 45px; height: 45px; object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)); z-index: 3; }
+
+        .photo-container-medium { position: relative; flex-shrink: 0; width: 110px; height: 110px; display: block; margin: auto 0; }
+        .photo-container-medium .cg-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 4px; border: 2px solid #ccc; background: #000; position: relative; z-index: 2; }
+        .photo-container-medium .cg-photo-team-logo { position: absolute; bottom: -10px; right: -10px; width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)); z-index: 3; }
+
+        .cg-team-logo-big { width: 130px; height: 130px; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.8)); margin: auto 0; }
+
+        .cg-data-area { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-evenly; height: 100%; min-width: 0;}
+        .cg-data-name { font-size: 24px; line-height: 1; text-shadow: 1px 1px 3px #000; color: #fff; margin-bottom: 0; white-space: nowrap;}
+        .cg-data-jersey { color: #d4af37; font-size: 16px; margin-left: 6px; }
+
+        .team-name-badge { font-size: 10px; color: #0f172a; background-color: #ffffff; padding: 2px 8px; border-radius: 2px; text-transform: uppercase; box-shadow: 0 2px 4px rgba(0,0,0,0.6); display: inline-block; margin-top: 4px; }
+        
+        .dual-stat-row { display: flex; gap: 10px; margin-top: 15px; align-items: stretch; align-self: flex-start; }
+        .dual-stat-left { background: linear-gradient(180deg, #222 0%, #000 100%); border: 1px solid #444; border-radius: 4px; padding: 8px 16px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 5px rgba(255,255,255,0.1), 0 3px 8px rgba(0,0,0,0.5); }
+        .dual-stat-label { font-size: 13px; color: #fff; text-transform: uppercase; letter-spacing: 1px; text-align: center; line-height: 1.2; }
+        .dual-stat-right { background: linear-gradient(180deg, #222 0%, #000 100%); border: 1px solid #444; border-radius: 4px; padding: 8px 24px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 5px rgba(255,255,255,0.1), 0 3px 8px rgba(0,0,0,0.5); }
+        .dual-stat-val { font-size: 46px; color: #e5142a; line-height: 1; text-shadow: 0 2px 5px #000; padding-bottom: 2px;}
+
+        .stat-box-row { display: flex; gap: 8px; width: 100%; margin-top: 6px;}
+        .stat-box-item { background: linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%); border: 1px solid #444; border-bottom: 1px solid #111; border-radius: 4px; padding: 8px 4px; text-align: center; flex: 1; box-shadow: inset 0 1px 5px rgba(255,255,255,0.1), 0 3px 8px rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .stat-box-label { color: #94a3b8; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.1;}
+        .stat-box-val { color: #fff; font-size: 24px; line-height: 1; text-shadow: 0 2px 5px #000;}
+        .val-gold { color: #fbbf24 !important; }
+
+        .stat-box-row-small { display: flex; gap: 6px; width: 100%; margin-top: 2px;}
+        .stat-box-item-small { background: linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%); border: 1px solid #444; border-bottom: 1px solid #111; border-radius: 3px; padding: 6px 4px; text-align: center; flex: 1; box-shadow: inset 0 1px 5px rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .stat-box-label-small { color: #94a3b8; font-size: 7px; text-transform: uppercase; margin-bottom: 2px;}
+        .stat-box-val-small { color: #fff; font-size: 16px; line-height: 1;}
+        
+        table { width: 100%; border-collapse: separate; border-spacing: 0 4px; font-variant-numeric: tabular-nums; margin-top: 4px;}
+        th { font-size: 10px; color: #fff; padding: 6px 8px; background: linear-gradient(180deg, #b91c1c 0%, #7f1d1d 100%); text-align: center; text-transform: uppercase; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.6);}
+        th.td-left { text-align: left; padding-left: 10px;}
+        .td-left { background: linear-gradient(180deg, #f8f9fa 0%, #cbd5e1 100%); color: #0f172a; text-align: left; padding: 6px 10px; border: 1px solid #ccc; border-bottom: 1px solid #888; border-radius: 3px; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        .td-score { background: linear-gradient(180deg, #333333 0%, #000000 100%); color: #fff; text-align: center; padding: 6px; border: 1px solid #555; border-radius: 3px; font-size: 14px; box-shadow: inset 0 1px 3px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.6); }
+        .td-score-gold { color: #fbbf24 !important; }
+        
+        /* RESTORED: OPPONENTS LIST CSS */
+        .opp-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px;}
+        .opp-row { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(180deg, #f8f9fa 0%, #cbd5e1 100%); padding: 4px 8px; border-radius: 3px; border: 1px solid #ccc; border-bottom: 1px solid #888; border-left: 3px solid #e5142a; box-shadow: 0 2px 4px rgba(0,0,0,0.6); height: 30px; box-sizing: border-box; }
+        .opp-name { font-size: 11px; color: #0f172a; text-transform: uppercase; display: flex; align-items: center; white-space: nowrap;}
+        .opp-pts { font-size: 13px; color: #fff; background: linear-gradient(180deg, #334155 0%, #0f172a 100%); border-radius: 2px; border: 1px solid #475569; box-shadow: inset 0 1px 3px rgba(255,255,255,0.1); width: 28px; text-align: center; padding: 2px 0; display: inline-block; }
+
+        /* RESTORED: SPLASH SCREEN CSS */
+        .splash-text { font-size: 18px; color: #fff; letter-spacing: 2px; margin-bottom: 6px; text-transform: uppercase; text-shadow: 1px 2px 5px rgba(0,0,0,0.8);}
+        .splash-num { font-size: 86px; color: #e5142a; line-height: 1; text-shadow: 3px 5px 12px rgba(0,0,0,0.9); }
+
+        /* TALL MODE */
+        .cg-wrapper.tall-mode { width: 760px; height: auto; }
+        .tall-mode .cg-box { padding: 20px 25px; display: flex; flex-direction: column; justify-content: flex-start;}
+        .tall-mode .cg-header { height: 50px; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 3px solid #333;}
+        .tall-mode .cg-logo { height: 50px; }
+        .tall-mode .neba-logo { height: 40px; }
+        .tall-mode .cg-title { font-size: 28px; white-space: nowrap; margin-top: 0;}
+        .tall-mode .cg-subtitle { font-size: 14px; white-space: nowrap; margin-top: 2px;}
+        .tall-mode .cg-content { gap: 20px; padding-top: 5px; }
+
+        .tall-mode .leader-card { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            background: linear-gradient(180deg, #222 0%, #000 100%); border: 1px solid #555; border-bottom: 3px solid #111; 
+            border-radius: 6px; padding: 12px 8px; flex: 1; box-shadow: inset 0 1px 5px rgba(255,255,255,0.1), 0 5px 15px rgba(0,0,0,0.5); 
+            box-sizing: border-box; gap: 0;
+        }
+        
+        .tall-mode .photo-container-leaderboard { position: relative; width: 95px; height: 95px; margin-top: 0px; margin-bottom: 5px; }
+        .tall-mode .photo-container-leaderboard .cg-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 6px; border: 3px solid #ccc; background: #000; position: relative; z-index: 2; }
+        .tall-mode .photo-container-leaderboard .cg-photo-team-logo { width: 40px; height: 40px; position: absolute; bottom: -8px; right: -8px; object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)); z-index: 3; }
+        .tall-mode .leader-card-name { font-size: 21px; color: #fff; text-align: center; text-transform: uppercase; white-space: nowrap; line-height: 1.1; margin-top: 8px; margin-bottom: 4px;}
+        .tall-mode .leader-badge { font-size: 12px; padding: 3px 8px; margin-top: 2px; margin-bottom: 6px; background: #fff; color: #000; border-radius: 3px; text-transform: uppercase; white-space: nowrap;}
+        .tall-mode .lb-val { font-size: 48px; color: #d4af37; line-height: 0.9; margin: 2px 0 4px 0; text-shadow: 0 2px 6px #000; padding-bottom: 0;}
+        .tall-mode .leader-card-label { font-size: 11px; color: #aaa; text-transform: uppercase; text-align: center; letter-spacing: 1px; margin-top: 2px;}
+
+        /* STANDINGS MODE */
+        .cg-wrapper.standings-mode { 
+            top: 50% !important; left: 50% !important; bottom: auto !important; 
+            transform: translate(-50%, -50%) !important; width: 1180px !important; height: auto !important; 
+        }
+        .standings-mode .cg-box { 
+            position: relative !important; top: 0 !important; left: 0 !important; width: 100% !important; height: auto !important;
+            padding: 30px 40px !important; display: flex !important; flex-direction: column !important; 
+        }
+        .standings-mode .cg-header { border-bottom: none !important; padding-bottom: 0 !important; margin-bottom: 12px !important; height: 80px !important; align-items: center !important; justify-content: flex-start !important; position: relative !important;}
+        .standings-mode .header-left-group { gap: 25px !important; width: auto !important;}
+        .standings-mode .cg-logo { height: 80px !important; }
+        .standings-mode .neba-logo { height: 60px !important; position: absolute !important; right: 0px !important;}
+        .standings-mode .header-text-group { margin-left: 0 !important; align-items: flex-start !important; }
+        .standings-mode .cg-title { font-size: 46px !important; margin-top: 5px !important; text-shadow: 0 2px 4px #000 !important; letter-spacing: 1px !important; text-align: left !important;}
+        .standings-mode .cg-subtitle { display: none !important; } 
+        .standings-mode .header-line { display: block !important; width: 100% !important; height: 2px !important; background: linear-gradient(90deg, #555 0%, #222 100%) !important; margin-bottom: 20px !important; box-shadow: 0 1px 0 #000 !important;}
+        .standings-mode .cg-content { display: block !important; padding-top: 0 !important; height: auto !important; overflow: visible !important; }
+        
+        .standings-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; font-variant-numeric: tabular-nums; margin-top: 0; }
+        .standings-table th { font-size: 22px; color: #fff; padding: 12px 10px; background: linear-gradient(180deg, #111 0%, #000 100%); text-align: center; text-transform: uppercase; border-radius: 0; box-shadow: none;}
+        .standings-table th.th-pos { border-radius: 3px 0 0 3px; width: 60px;}
+        .standings-table th.th-last { border-radius: 0 3px 3px 0; }
+        .standings-table th.th-team { background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%); text-align: left; padding-left: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.6);}
+        .standings-table .td-pos { background: linear-gradient(180deg, #222 0%, #000 100%); color: #fff; text-align: center; font-size: 28px; border-radius: 3px 0 0 3px; width: 60px; padding: 0;}
+        .standings-table .td-team { background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%); color: #0f172a; padding: 6px 20px; font-size: 26px; text-transform: uppercase; }
+        .standings-table .td-team-flex { display: flex; align-items: center; }
+        .standings-table .td-team-flex span { margin-top: 2px; }
+        .standings-table .td-team img { width: 38px; height: 38px; object-fit: contain; flex-shrink: 0; }
+        .standings-table .team-sep { width: 2px; height: 38px; background: #cbd5e1; margin: 0 15px; flex-shrink: 0; box-shadow: 1px 0 0 #fff; }
+        .standings-table .td-stat { background: linear-gradient(180deg, #222 0%, #000 100%); color: #fff; text-align: center; padding: 8px 10px; font-size: 26px; border-left: 1px solid #333; width: 60px; }
+        .standings-table .td-stat-total { background: linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%); color: #fff; text-align: center; padding: 8px 10px; font-size: 26px; border-radius: 0 3px 3px 0; border-left: 1px solid #444; width: 60px; }
+
+        /* LIVE MATCH COMBINED BOXSCORE */
+        .cg-wrapper.boxscore-combined-mode { 
+            top: 50% !important; left: 50% !important; bottom: auto !important; 
+            transform: translate(-50%, -50%) !important; width: 1400px !important; height: auto !important; 
+        }
+        .boxscore-combined-mode .cg-box { 
+            position: relative !important; top: 0 !important; left: 0 !important; width: 100% !important; height: auto !important;
+            padding: 30px 40px !important; display: flex !important; flex-direction: column !important; 
+        }
+        .boxscore-combined-mode .cg-header { 
+            border-bottom: 2px solid #333 !important; padding-bottom: 12px !important; margin-bottom: 20px !important; 
+            height: 70px !important; align-items: center !important; justify-content: flex-start !important; position: relative !important;
+        }
+        .boxscore-combined-mode .header-left-group { gap: 20px !important; width: auto !important;}
+        .boxscore-combined-mode .cg-logo { height: 70px !important; }
+        .boxscore-combined-mode .neba-logo { height: 50px !important; position: absolute !important; right: 0px !important;}
+        .boxscore-combined-mode .cg-title { font-size: 38px !important; margin-top: 0 !important; text-shadow: 0 2px 4px #000 !important; letter-spacing: 1px !important;}
+        .boxscore-combined-mode .cg-subtitle { font-size: 16px !important; display: block !important; margin-top: 2px !important; }
+        .boxscore-combined-mode .cg-content { display: flex !important; flex-direction: row !important; gap: 30px !important; padding-top: 0 !important; height: auto !important; overflow: visible !important; }
+        
+        .boxscore-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; font-variant-numeric: tabular-nums; margin-top: 0; }
+        .boxscore-table th { font-size: 18px; color: #fff; padding: 10px; background: linear-gradient(180deg, #111 0%, #000 100%); text-align: center; text-transform: uppercase; border-radius: 0;}
+        .boxscore-table th.th-player { background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%); text-align: left; padding-left: 15px;}
+        .boxscore-table th.th-last { border-radius: 0 3px 3px 0; }
+        
+        .boxscore-table .td-player { background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%); color: #0f172a; padding: 8px 15px; font-size: 22px; text-transform: uppercase; }
+        .boxscore-table .td-jn { color: #e5142a; font-size: 16px; margin-left: 8px; }
+        .boxscore-table .td-stat { background: linear-gradient(180deg, #222 0%, #000 100%); color: #fff; text-align: center; padding: 8px; font-size: 26px; border-left: 1px solid #333; width: 60px; }
+        .boxscore-table .td-stat-gold { color: #d4af37 !important; background: linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%); border-radius: 0 3px 3px 0; width: 80px; font-size: 30px;}
+
+    </style>
+</head>
+<body>
+    <div class="cg-wrapper" id="cgWrapper">
+        <div class="wipe-block" id="wipeBlock"></div>
+        <div class="cg-box" id="cgBox">
+            
+            <div class="cg-header">
+                <div class="header-left-group">
+                    <img src="/assets/tour_logo.png" class="cg-logo" alt="HJNBL" onerror="this.style.display='none'">
+                    <div class="header-text-group">
+                        <h1 class="cg-title" id="cgTitle">PLAYER STATS</h1>
+                        <p class="cg-subtitle" id="cgSubtitle">HJNBL 2026</p>
+                    </div>
+                </div>
+                <img src="/assets/NeBA.png" class="neba-logo" alt="NeBA" onerror="this.style.display='none'">
+            </div>
+            
+            <div class="header-line"></div>
+            
+            <div class="cg-content" id="cgContent"></div>
+            
+        </div>
+    </div>
+
+    <script>
+        let lastTimestamp = 0; let currentLogos = {};
+        
+        const teamDict = { "KIRTIPUR": "IIMS Kirtipur", "TIMES": "Times Club", "SOLO": "Solo Basketball Academy", "ARMY": "Tribhuwan Army Club", "ROYAL": "Royal", "KVC HOUNDS": "KVC Hounds", "GGIC": "Golden Gate International", "PLAYBOX": "Playbox Arena" };
+        const getFullName = (shortName) => teamDict[shortName] || shortName;
+
+        const formatName = (name) => {
+            if (!name) return "";
+            const parts = name.trim().split(' ');
+            if (parts.length > 2) { return parts[0] + ' ' + parts[parts.length - 1]; }
+            return name;
+        };
+
+        const formatTeamName = (name) => {
+            if (!name) return "";
+            const parts = name.trim().split(' ');
+            if (parts.length > 2) { return parts[0] + ' ' + parts[1]; }
+            return name;
+        };
+
+        async function pollServer() {
+            try {
+                const res = await fetch('/api/cg-state'); const state = await res.json();
+                if (state.timestamp !== lastTimestamp) { lastTimestamp = state.timestamp; updateGraphic(state); }
+            } catch(e) {}
+            setTimeout(pollServer, 500); 
+        }
+
+        const rollHTML = (val) => { return `<span class="roll-num" data-val="${val}">${parseInt(val) > 0 ? parseInt(val) - 1 : 0}</span>`; };
+        const triggerRollers = () => { setTimeout(() => { document.querySelectorAll('.roll-num').forEach(el => { const finalVal = el.getAttribute('data-val'); if (el.textContent !== finalVal) { el.classList.add('flip'); setTimeout(() => { el.textContent = finalVal; el.classList.remove('flip'); }, 200); } }); }, 600); };
+        function getLogo(teamName) { return currentLogos[teamName] || '/assets/tour_logo.png'; }
+
+        function playTechWipe(contentHtml, title, subtitle, mode = '') {
+            const wrapper = document.getElementById('cgWrapper'); 
+            const wipe = document.getElementById('wipeBlock'); 
+            const box = document.getElementById('cgBox');
+            
+            if (contentHtml === 'HIDE') {
+                wipe.className = 'wipe-block in-done'; 
+                setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); 
+                setTimeout(() => { box.style.opacity = '0'; }, 400); 
+                setTimeout(() => { wipe.className = 'wipe-block'; }, 450); 
+                setTimeout(() => { 
+                    wrapper.classList.remove('show', 'tall-mode', 'standings-mode', 'boxscore-combined-mode'); 
+                }, 850); 
+                return;
+            }
+            
+            // DYNAMIC STATE MANAGEMENT
+            wrapper.classList.remove('tall-mode', 'standings-mode', 'boxscore-combined-mode');
+            if (mode) wrapper.classList.add(mode);
+            
+            wrapper.classList.add('show'); wipe.className = 'wipe-block'; box.style.opacity = '0';
+            
+            document.getElementById('cgTitle').textContent = title; 
+            
+            const subEl = document.getElementById('cgSubtitle');
+            if(subtitle && mode !== 'standings-mode') {
+                subEl.innerHTML = subtitle;
+                subEl.style.display = 'block';
+            } else {
+                subEl.style.display = 'none';
+            }
+            
+            document.getElementById('cgContent').innerHTML = contentHtml;
+            setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); setTimeout(() => { box.style.opacity = '1'; }, 400); setTimeout(() => { wipe.className = 'wipe-block in-done'; triggerRollers(); }, 450); 
+        }
+
+        const generateBoxscoreColumn = (teamCode, players) => {
+            let rows = '';
+            players.forEach(p => {
+                let photoSrc = p.photo && p.photo.trim() !== "" ? p.photo : '/assets/tour_logo.png';
+                rows += `
+                    <tr>
+                        <td style="background: linear-gradient(180deg, #333 0%, #111 100%); border-radius: 3px 0 0 3px; padding: 4px; text-align: center; width: 60px;">
+                            <img src="${photoSrc}" style="width: 50px; height: 50px; object-fit: cover; object-position: top; border-radius: 4px; border: 1px solid #777; display: block; margin: 0 auto;" onerror="this.src='/assets/tour_logo.png'">
+                        </td>
+                        <td class="td-player" style="border-radius: 0;">${formatName(p.name)} <span class="td-jn">| JN: ${p.jersey}</span></td>
+                        <td class="td-stat">${p.threes}</td>
+                        <td class="td-stat td-stat-gold">${p.pts}</td>
+                    </tr>
+                `;
+            });
+            
+            return `
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; gap: 15px; background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%); padding: 10px 20px; border-radius: 4px; border: 1px solid #ef4444; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                        <img src="${getLogo(teamCode)}" style="width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));" onerror="this.style.display='none'">
+                        <div style="font-size: 26px; font-weight: bold; color: #fff; text-transform: uppercase; text-shadow: 0 2px 4px #000;">${getFullName(teamCode)}</div>
+                    </div>
+                    <table class="boxscore-table">
+                        <tr>
+                            <th colspan="2" class="th-player" style="border-radius: 3px 0 0 3px;">TOP SCORERS</th>
+                            <th>3PM</th>
+                            <th class="th-last">PTS</th>
+                        </tr>
+                        ${rows || `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #aaa; background: #111; font-size: 18px;">NO POINTS RECORDED YET</td></tr>`}
+                    </table>
+                </div>
+            `;
+        };
+
+        function updateGraphic(state) {
+            if (state.type === 'team-comp' || state.type === 'team-comp-overall' || state.type === 'live-team-comp') return;
+            
+            if (state.action === 'hide') { playTechWipe('HIDE'); return; }
+
+            let mode = '';
+            if (['overall-top3', 'leaderboard', 'team-leaders'].includes(state.type)) {
+                mode = 'tall-mode';
+            } else if (state.type === 'league-table') {
+                mode = 'standings-mode';
+            } else if (state.type === 'live-boxscore-combined') {
+                mode = 'boxscore-combined-mode';
+            }
+
+            const data = state.payload; currentLogos = data.logos || {}; let html = '';
+            
+            if (state.type === 'live-boxscore-combined') {
+                let colA = generateBoxscoreColumn(data.teamA, data.playersA);
+                let colB = generateBoxscoreColumn(data.teamB, data.playersB);
+                
+                html = `
+                    <div style="display: flex; width: 100%; gap: 30px;">
+                        ${colA}
+                        ${colB}
+                    </div>
+                `;
+                playTechWipe(html, "LIVE MATCH TOP SCORERS", "CURRENT GAME STATS", mode);
+            }
+
+            else if (state.type === 'league-table') {
+                let top8 = data.top8 || data.standings || [];
+                html = `
+                    <table class="standings-table">
+                        <tr>
+                            <th class="th-pos">POS</th>
+                            <th class="th-team">TEAM</th>
+                            <th>MP</th>
+                            <th>W</th>
+                            <th>L</th>
+                            <th>PF</th>
+                            <th>PA</th>
+                            <th>DIFF</th>
+                            <th class="th-last">TP</th>
+                        </tr>
+                `;
+                top8.forEach((t, index) => {
+                    let diffStr = t.pd > 0 ? '+' + t.pd : t.pd;
+                    html += `
+                        <tr>
+                            <td class="td-pos">${index + 1}</td>
+                            <td class="td-team">
+                                <div class="td-team-flex">
+                                    <img src="${getLogo(t.team)}" onerror="this.style.display='none'">
+                                    <div class="team-sep"></div>
+                                    <span>${t.team === 'GGIC' ? "GOLDEN GATE INT'L COLLEGE" : getFullName(t.team)}</span>
+                                </div>
+                            </td>
+                            <td class="td-stat">${t.played}</td>
+                            <td class="td-stat">${t.wins}</td>
+                            <td class="td-stat">${t.losses}</td>
+                            <td class="td-stat">${t.pf}</td>
+                            <td class="td-stat">${t.pa}</td>
+                            <td class="td-stat" style="color: ${t.pd > 0 ? '#10b981' : (t.pd < 0 ? '#ef4444' : '#fff')};">${diffStr}</td>
+                            <td class="td-stat-total">${t.pts}</td>
+                        </tr>
+                    `;
+                });
+                html += `</table>`;
+                playTechWipe(html, "LEAGUE STANDINGS", "", mode);
+            }
+            
+            else if (state.type === 'overall-top3') {
+                html = `
+                    <div class="leader-card">
+                        <div class="photo-container-leaderboard">
+                            <img src="${data.ptsLeader.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.ptsLeader.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="leader-card-name">${formatName(data.ptsLeader.name)}</div>
+                        <div class="leader-badge">${formatTeamName(getFullName(data.ptsLeader.team))}</div>
+                        <div class="lb-val">${data.ptsLeader.pts}</div>
+                        <div class="leader-card-label">TOP SCORER</div>
+                    </div>
+                    <div class="leader-card">
+                        <div class="photo-container-leaderboard">
+                            <img src="${data.rebLeader.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.rebLeader.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="leader-card-name">${formatName(data.rebLeader.name)}</div>
+                        <div class="leader-badge">${formatTeamName(getFullName(data.rebLeader.team))}</div>
+                        <div class="lb-val">${data.rebLeader.reb}</div>
+                        <div class="leader-card-label">TOP REBOUNDER</div>
+                    </div>
+                    <div class="leader-card">
+                        <div class="photo-container-leaderboard">
+                            <img src="${data.astLeader.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.astLeader.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="leader-card-name">${formatName(data.astLeader.name)}</div>
+                        <div class="leader-badge">${formatTeamName(getFullName(data.astLeader.team))}</div>
+                        <div class="lb-val">${data.astLeader.ast}</div>
+                        <div class="leader-card-label">TOP ASSISTS</div>
+                    </div>
+                `;
+                playTechWipe(html, "HJNBL TOURNAMENT LEADERS", "OVERALL TOP PERFORMERS", mode);
+            }
+
+            else if (state.type === 'live-player-profile') {
+                let ppg = (data.pts / Math.max(1, data.gp)).toFixed(1);
+                html = `
+                    <div class="photo-container">
+                        <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                        <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                    </div>
+                    <div class="cg-data-area" style="justify-content: flex-start; padding-top: 4px;">
+                        <div class="cg-data-name">
+                            ${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span>
+                        </div>
+                        <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                        
+                        <div style="font-size: 11px; color: #e5142a; letter-spacing: 1px; margin-top: 8px; margin-bottom: 2px;">CURRENT MATCH</div>
+                        <div class="stat-box-row-small">
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">PTS</span><span class="stat-box-val-small val-gold">${data.current.pts}</span></div>
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">3PM</span><span class="stat-box-val-small val-gold">${data.current.threes}</span></div>
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">REB</span><span class="stat-box-val-small val-gold">${data.current.reb}</span></div>
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">AST</span><span class="stat-box-val-small val-gold">${data.current.ast}</span></div>
+                        </div>
+
+                        <div style="font-size: 11px; color: #d4af37; letter-spacing: 1px; margin-top: 6px; margin-bottom: 2px;">TOURNAMENT TOTALS</div>
+                        <div class="stat-box-row-small">
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">PTS</span><span class="stat-box-val-small">${data.total.pts}</span></div>
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">3PM</span><span class="stat-box-val-small">${data.total.threes}</span></div>
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">REB</span><span class="stat-box-val-small">${data.total.reb}</span></div>
+                            <div class="stat-box-item-small"><span class="stat-box-label-small">AST</span><span class="stat-box-val-small">${data.total.ast}</span></div>
+                        </div>
+                    </div>
+                `;
+                playTechWipe(html, "PLAYER STATS", "LIVE ANALYSIS", mode);
+            }
+            
+            else if (state.type === 'live-player-quarters') {
+                html = `
+                    <div class="photo-container">
+                        <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                        <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                    </div>
+                    <div class="cg-data-area">
+                        <div class="cg-data-name">
+                            ${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span> 
+                        </div>
+                        <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                        
+                        <table style="margin-top: 8px;">
+                            <tr><th style="text-align: left; padding-left: 8px;">SPLIT</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>TOTAL PTS</th></tr>
+                            <tr>
+                                <td class="td-left" style="color: #e5142a;">CURRENT GAME</td>
+                                <td class="td-score">${data.current.q1}</td>
+                                <td class="td-score">${data.current.q2}</td>
+                                <td class="td-score">${data.current.q3}</td>
+                                <td class="td-score">${data.current.q4}</td>
+                                <td class="td-score td-score-gold" style="font-size: 16px; vertical-align: middle;">${data.current.pts}</td>
+                            </tr>
+                            <tr>
+                                <td class="td-left">TOURNAMENT</td>
+                                <td class="td-score">${data.total.q1}</td>
+                                <td class="td-score">${data.total.q2}</td>
+                                <td class="td-score">${data.total.q3}</td>
+                                <td class="td-score">${data.total.q4}</td>
+                                <td class="td-score td-score-gold" style="font-size: 16px; vertical-align: middle;">${data.total.pts}</td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+                playTechWipe(html, "SCORING BREAKDOWN", "QUARTER-BY-QUARTER", mode);
+            }
+            
+            else if (state.type === 'live-player-stat') {
+                html = `
+                    <div style="display:flex; width:100%; justify-content: center; align-items: center; gap: 20px;">
+                        <div class="photo-container-large" style="margin: 0;">
+                            <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="cg-data-area" style="flex-grow: 0; min-width: 220px;">
+                            <div class="cg-data-name">
+                                ${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span> 
+                            </div>
+                            <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                            
+                            <div class="dual-stat-row">
+                                <div class="dual-stat-left"><span class="dual-stat-label">GAME<br>${data.statLabel}</span></div>
+                                <div class="dual-stat-right"><span class="dual-stat-val">${data.statValue}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                playTechWipe(html, "CURRENT GAME HIGHLIGHT", getFullName(data.team).toUpperCase(), mode);
+            }
+            
+            else if (state.type === 'player-profile') {
+                let ppg = (data.pts / Math.max(1, data.gp)).toFixed(1);
+                html = `
+                    <div class="photo-container">
+                        <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                        <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                    </div>
+                    <div class="cg-data-area" style="justify-content: flex-start; padding-top: 4px;">
+                        <div class="cg-data-name">
+                            ${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span>
+                        </div>
+                        <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                        
+                        <div style="font-size:15px; color:#aaa; letter-spacing:1px; text-transform:uppercase; margin-top: 12px; margin-bottom: 8px;">POSITION: <span style="color:#e5142a;">${data.position}</span> &nbsp;|&nbsp; HEIGHT: <span style="color:#e5142a;">${data.height}</span></div>
+                        
+                        <div class="stat-box-row">
+                            <div class="stat-box-item"><span class="stat-box-label">PPG<br>(AVG)</span><span class="stat-box-val val-gold">${ppg}</span></div>
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>PTS</span><span class="stat-box-val">${data.pts}</span></div>
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>REB</span><span class="stat-box-val">${data.reb}</span></div>
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>AST</span><span class="stat-box-val">${data.ast}</span></div>
+                        </div>
+                    </div>
+                `;
+                playTechWipe(html, "PLAYER PROFILE", getFullName(data.team).toUpperCase(), mode);
+            }
+            
+            else if (state.type === 'player-stat') {
+                html = `
+                    <div style="display:flex; width:100%; justify-content: center; align-items: center; gap: 25px;">
+                        <div class="photo-container-large" style="margin: 0;">
+                            <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="cg-data-area" style="flex-grow: 0; min-width: 250px;">
+                            <div class="cg-data-name">
+                                ${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span> 
+                            </div>
+                            <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                            
+                            <div class="dual-stat-row">
+                                <div class="dual-stat-left"><span class="dual-stat-label">TOTAL<br>${data.statLabel}</span></div>
+                                <div class="dual-stat-right"><span class="dual-stat-val">${data.statValue}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                playTechWipe(html, data.title, "PLAYER HIGHLIGHT", mode);
+            } 
+            
+            else if (state.type === 'player-vs-opponents') {
+                let oppRows = '';
+                if(data.vsTeams && Object.keys(data.vsTeams).length > 0) {
+                    Object.keys(data.vsTeams).forEach(opp => { let fullName = getFullName(opp); let displayName = fullName.length > 14 && fullName.includes(' ') ? fullName.substring(0, fullName.lastIndexOf(' ')) : fullName; oppRows += `<div class="opp-row"><div class="opp-name"><img src="${getLogo(opp)}" style="width:16px; height:16px; margin-right:8px; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5));">${displayName}</div><div class="opp-pts">${data.vsTeams[opp]}</div></div>`; });
+                } else { oppRows = `<div class="opp-row" style="grid-column: span 2; justify-content:center;"><div class="opp-name" style="color:#666;">NO MATCHES PLAYED YET</div></div>`; }
+                html = `
+                    <div class="photo-container-medium">
+                        <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                        <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                    </div>
+                    <div class="cg-data-area">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 8px;">
+                            <div>
+                                <div class="cg-data-name">${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span></div>
+                                <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                            </div>
+                            <div style="font-size: 13px; color: #aaa; letter-spacing: 0.5px; margin-bottom: 2px;">TOTAL POINTS: <span style="color:#d4af37; font-size: 24px; margin-left: 6px;">${data.pts}</span></div>
+                        </div>
+                        <div class="opp-list">${oppRows}</div>
+                    </div>
+                `;
+                playTechWipe(html, "SCORING BREAKDOWN", "POINTS VS OPPONENTS", mode);
+            }
+            
+            else if (state.type === 'player-quarters') {
+                html = `
+                    <div class="photo-container">
+                        <img src="${data.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                        <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                    </div>
+                    <div class="cg-data-area">
+                        <div class="cg-data-name">
+                            ${formatName(data.name)} <span class="cg-data-jersey">| JN: ${data.jersey}</span>
+                        </div>
+                        <div><span class="team-name-badge">${getFullName(data.team)}</span></div>
+                        
+                        <table style="margin-top:auto; margin-bottom:auto;">
+                            <tr><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>TOTAL PTS</th></tr>
+                            <tr>
+                                <td class="td-score">${data.q1}</td>
+                                <td class="td-score">${data.q2}</td>
+                                <td class="td-score">${data.q3}</td>
+                                <td class="td-score">${data.q4}</td>
+                                <td class="td-score td-score-gold">${data.total}</td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+                playTechWipe(html, "QUARTER BREAKDOWN", "TOURNAMENT STATS", mode);
+            }
+            
+            else if (state.type === 'team-stat') {
+                html = `
+                    <img src="${data.logo || '/assets/tour_logo.png'}" class="cg-team-logo-big">
+                    <div class="cg-data-area" style="justify-content: flex-start; padding-top: 20px;">
+                        <div class="cg-data-name">${getFullName(data.team)}</div>
+                        <div style="font-size:12px; color:#aaa; letter-spacing:1px; margin-bottom: 12px;">TEAM TOTALS</div>
+                        
+                        <div class="stat-box-row">
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>PTS</span><span class="stat-box-val val-gold">${data.pts}</span></div>
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>REB</span><span class="stat-box-val">${data.reb}</span></div>
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>AST</span><span class="stat-box-val">${data.ast}</span></div>
+                            <div class="stat-box-item"><span class="stat-box-label">TOTAL<br>STL</span><span class="stat-box-val">${data.stl}</span></div>
+                        </div>
+                    </div>
+                `;
+                playTechWipe(html, "TEAM PERFORMANCE", "TOURNAMENT TOTALS", mode);
+            }
+            
+            else if (state.type === 'team-leaders') {
+                html = `
+                    <div class="leader-card">
+                        <div class="photo-container-leaderboard">
+                            <img src="${data.ptsLeader.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="leader-card-name">${formatName(data.ptsLeader.name)}</div>
+                        <div class="leader-badge">${formatTeamName(getFullName(data.team))}</div>
+                        <div class="leader-card-val">${data.ptsLeader.pts}</div>
+                        <div class="leader-card-label">TOP SCORER</div>
+                    </div>
+                    <div class="leader-card">
+                        <div class="photo-container-leaderboard">
+                            <img src="${data.rebLeader.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="leader-card-name">${formatName(data.rebLeader.name)}</div>
+                        <div class="leader-badge">${formatTeamName(getFullName(data.team))}</div>
+                        <div class="leader-card-val">${data.rebLeader.reb}</div>
+                        <div class="leader-card-label">TOP REBOUNDER</div>
+                    </div>
+                    <div class="leader-card">
+                        <div class="photo-container-leaderboard">
+                            <img src="${data.astLeader.photo || '/assets/tour_logo.png'}" class="cg-photo">
+                            <img src="${getLogo(data.team)}" class="cg-photo-team-logo">
+                        </div>
+                        <div class="leader-card-name">${formatName(data.astLeader.name)}</div>
+                        <div class="leader-badge">${formatTeamName(getFullName(data.team))}</div>
+                        <div class="leader-card-val">${data.astLeader.ast}</div>
+                        <div class="leader-card-label">TOP ASSISTS</div>
+                    </div>
+                `;
+                playTechWipe(html, getFullName(data.team).toUpperCase(), "TOP PERFORMERS", mode);
+            }
+            
+            else if (state.type === 'leaderboard') {
+                let cards = '';
+                let top3 = data.leaders.slice(0, 3);
+                
+                while(top3.length < 3) {
+                    top3.push({ name: '-', photo: '', team: '', [data.statKey]: 0, jersey: '-' });
+                }
+
+                top3.forEach((p, index) => {
+                    let fullName = getFullName(p.team); 
+                    
+                    cards += `
+                        <div class="leader-card">
+                            <div class="photo-container-leaderboard">
+                                <img src="${p.photo || '/assets/tour_logo.png'}" class="cg-photo" style="border-width: 3px;">
+                                <img src="${getLogo(p.team)}" class="cg-photo-team-logo">
+                            </div>
+                            <div class="leader-card-name">${formatName(p.name)}</div>
+                            <div class="leader-badge">${formatTeamName(fullName)}</div>
+                            <div class="lb-val">${p[data.statKey]}</div>
+                            <div class="leader-card-label"></div>
+                        </div>
+                    `;
+                });
+                
+                html = `
+                    <div style="display:flex; width:100%; gap:12px; height: 100%;">
+                        ${cards}
+                    </div>
+                `;
+                playTechWipe(html, data.title, "TOURNAMENT LEADERS", mode);
+            }
+            
+            else if (state.type === 'tourney-splash') {
+                html = `
+                    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; padding: 25px 0; text-align:center;">
+                        <div class="splash-text">TOTAL TOURNAMENT 3-POINTERS</div>
+                        <div class="splash-num">${rollHTML(data.threes || 0)}</div>
+                    </div>
+                `;
+                playTechWipe(html, "TOURNAMENT MILESTONES", "HJNBL 2026", mode);
+            }
+        }
+        pollServer();
+    </script>
+</body>
+</html>

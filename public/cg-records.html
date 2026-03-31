@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HJNBL Records & Leaderboards</title>
+    <style>
+        /* IMPORT WINNER SANS CONDENSED BOLD */
+        @font-face {
+            font-family: 'WinnerSans';
+            src: url('https://cdn.jsdelivr.net/gh/LajanStha-ux/Font-Hosting-New@main/fonts/WinnerSans-CondBold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * { font-family: 'WinnerSans', sans-serif !important; font-weight: normal !important; }
+
+        html, body { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent !important; color: white; display: flex; justify-content: center; align-items: center; letter-spacing: 1px; }
+        
+        .cg-wrapper { position: relative; width: 850px; height: auto; overflow: hidden; border-radius: 8px; padding: 4px; opacity: 0; transition: opacity 0.1s; pointer-events: none;}
+        .cg-wrapper.show { opacity: 1; }
+        
+        .wipe-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, #444 0%, #fff 50%, #444 100%); z-index: 10; transform: translateX(-101%); transition: transform 0.4s cubic-bezier(0.8, 0, 0.2, 1); box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+        .wipe-block.in-middle { transform: translateX(0%); }
+        .wipe-block.in-done { transform: translateX(101%); }
+        
+        .cg-box { 
+            background: linear-gradient(180deg, #2a2a2a 0%, #111111 40%, #000000 100%); 
+            border: 2px solid #555; border-top: 3px solid #ccc; border-bottom: 3px solid #111;
+            padding: 25px 35px; position: relative; width: 100%; height: auto; opacity: 0; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.3); 
+            box-sizing: border-box; display: flex; flex-direction: column;
+        }
+
+        .cg-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 20px; box-shadow: 0 2px 0 #000; flex-shrink: 0;}
+        .cg-logo { height: 70px; width: auto; margin-right: 25px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); display: block;}
+        .neba-logo { height: 50px; width: auto; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); display: block;}
+        
+        .cg-title { font-size: 36px; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin: 0; text-shadow: 0 2px 4px #000; line-height: 1;}
+        .cg-subtitle { font-size: 16px; color: #d4af37; text-transform: uppercase; letter-spacing: 3px; margin: 4px 0 0 0;}
+
+        /* -----------------------------------------------------------
+           STAGGERED ANIMATIONS
+           ----------------------------------------------------------- */
+        @keyframes revealBox {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUpPhoto {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* HERO ROW (RANK 1) */
+        .hero-row {
+            display: flex; align-items: center; background: linear-gradient(90deg, #7f1d1d 0%, #450a0a 100%);
+            border: 2px solid #b91c1c; border-radius: 8px; padding: 15px 25px; margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.2);
+            opacity: 0; animation: revealBox 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.4s;
+        }
+        .hero-rank { font-size: 56px; color: #fbbf24; text-shadow: 0 2px 5px #000; width: 60px; text-align: center; border-right: 2px solid rgba(255,255,255,0.2); padding-right: 20px; margin-right: 20px; line-height: 1;}
+        
+        .hero-photo-container { position: relative; width: 100px; height: 100px; flex-shrink: 0; margin-right: 25px; overflow: hidden; border-radius: 6px; border: 2px solid #fbbf24; background: #000;}
+        .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; transform: translateY(100%); animation: slideUpPhoto 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.6s;}
+        .hero-team-logo { position: absolute; bottom: -10px; right: -10px; width: 45px; height: 45px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); z-index: 10;}
+        
+        .hero-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center;}
+        .hero-name { font-size: 34px; color: #fff; text-transform: uppercase; line-height: 1; text-shadow: 0 2px 4px #000;}
+        .hero-team { font-size: 16px; color: #fca5a5; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;}
+        .hero-val { font-size: 72px; color: #fbbf24; text-shadow: 0 4px 10px rgba(0,0,0,0.8); line-height: 1; text-align: right; min-width: 120px;}
+
+        /* LIST ROWS (RANKS 2-5) */
+        .list-container { display: flex; flex-direction: column; gap: 8px; }
+        .list-row {
+            display: flex; align-items: center; background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155; border-radius: 6px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            opacity: 0; animation: revealBox 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        
+        /* Cascade Animation Delays */
+        .list-row:nth-child(1) { animation-delay: 0.50s; }
+        .list-row:nth-child(2) { animation-delay: 0.55s; }
+        .list-row:nth-child(3) { animation-delay: 0.60s; }
+        .list-row:nth-child(4) { animation-delay: 0.65s; }
+
+        .list-rank { font-size: 28px; color: #94a3b8; width: 40px; text-align: center; border-right: 1px solid #334155; padding-right: 15px; margin-right: 15px; line-height: 1;}
+        .list-photo-container { position: relative; width: 60px; height: 60px; flex-shrink: 0; margin-right: 20px;}
+        .list-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 4px; border: 1px solid #94a3b8; background: #000;}
+        .list-team-logo { position: absolute; bottom: -6px; right: -6px; width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));}
+        .list-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center;}
+        .list-name { font-size: 24px; color: #fff; text-transform: uppercase; line-height: 1;}
+        .list-team { font-size: 14px; color: #94a3b8; text-transform: uppercase; margin-top: 2px;}
+        .list-val { font-size: 42px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); line-height: 1; text-align: right; min-width: 100px;}
+    </style>
+</head>
+<body>
+    <div class="cg-wrapper" id="cgWrapper">
+        <div class="wipe-block" id="wipeBlock"></div>
+        <div class="cg-box" id="cgBox">
+            <div class="cg-header">
+                <div style="display: flex; align-items: center;">
+                    <img src="/assets/tour_logo.png" class="cg-logo">
+                    <div><h1 class="cg-title" id="cgTitle">TOURNAMENT LEADERS</h1><p class="cg-subtitle" id="cgSubtitle">TOP 5 RANKINGS</p></div>
+                </div>
+                <img src="/assets/NeBA.png" class="neba-logo">
+            </div>
+            <div id="cgContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let lastTimestamp = 0; let currentLogos = {};
+        const teamDict = { "KIRTIPUR": "IIMS Kirtipur", "TIMES": "Times Club", "SOLO": "Solo Basketball Academy", "ARMY": "Tribhuwan Army Club", "ROYAL": "Royal", "KVC HOUNDS": "KVC Hounds", "GGIC": "Golden Gate International", "PLAYBOX": "Playbox Arena" };
+        const getFullName = (s) => teamDict[s] || s;
+        function getLogo(t) { return currentLogos[t] || '/assets/tour_logo.png'; }
+
+        const formatName = (name) => {
+            if (!name) return "";
+            const parts = name.trim().split(' ');
+            if (parts.length > 2) { return parts[0] + ' ' + parts[parts.length - 1]; }
+            return name;
+        };
+
+        async function pollServer() {
+            try {
+                const res = await fetch('/api/cg-state'); const state = await res.json();
+                if (state.timestamp !== lastTimestamp) { lastTimestamp = state.timestamp; updateGraphic(state); }
+            } catch(e) {} 
+            setTimeout(pollServer, 500); 
+        }
+
+        function playTechWipe(contentHtml, title, subtitle) {
+            const wrapper = document.getElementById('cgWrapper'); const wipe = document.getElementById('wipeBlock'); const box = document.getElementById('cgBox');
+            if (contentHtml === 'HIDE') {
+                wipe.className = 'wipe-block in-done'; setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); setTimeout(() => { box.style.opacity = '0'; }, 400); setTimeout(() => { wipe.className = 'wipe-block'; }, 450); setTimeout(() => { wrapper.classList.remove('show'); }, 850); return;
+            }
+            wrapper.classList.add('show'); wipe.className = 'wipe-block'; box.style.opacity = '0';
+            document.getElementById('cgTitle').textContent = title; 
+            document.getElementById('cgSubtitle').innerHTML = subtitle;
+            document.getElementById('cgContent').innerHTML = contentHtml;
+            setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); setTimeout(() => { box.style.opacity = '1'; }, 400); setTimeout(() => { wipe.className = 'wipe-block in-done'; }, 450); 
+        }
+
+        function updateGraphic(state) {
+            if (state.action === 'hide') { playTechWipe('HIDE'); return; }
+            if (state.type !== 'top5-records') return; 
+
+            const data = state.payload; currentLogos = data.logos || {}; 
+            const records = data.records || [];
+            
+            if (records.length === 0) return;
+
+            // Generate Hero Rank 1
+            const p1 = records[0];
+            let html = `
+                <div class="hero-row">
+                    <div class="hero-rank">1</div>
+                    <div class="hero-photo-container">
+                        <img src="${p1.photo || '/assets/tour_logo.png'}" class="hero-photo" onerror="this.src='/assets/tour_logo.png'">
+                    </div>
+                    <img src="${getLogo(p1.team)}" class="hero-team-logo" style="position:absolute; margin-left:85px; margin-top:80px;" onerror="this.style.display='none'">
+                    
+                    <div class="hero-details">
+                        <div class="hero-name">${formatName(p1.name)}</div>
+                        <div class="hero-team">${getFullName(p1.team)}</div>
+                    </div>
+                    <div class="hero-val">${p1.value}</div>
+                </div>
+                <div class="list-container">
+            `;
+
+            // Generate Ranks 2-5
+            for (let i = 1; i < records.length; i++) {
+                const p = records[i];
+                html += `
+                    <div class="list-row">
+                        <div class="list-rank">${i + 1}</div>
+                        <div class="list-photo-container">
+                            <img src="${p.photo || '/assets/tour_logo.png'}" class="list-photo" onerror="this.src='/assets/tour_logo.png'">
+                            <img src="${getLogo(p.team)}" class="list-team-logo" onerror="this.style.display='none'">
+                        </div>
+                        <div class="list-details">
+                            <div class="list-name">${formatName(p.name)}</div>
+                            <div class="list-team">${getFullName(p.team)}</div>
+                        </div>
+                        <div class="list-val">${p.value}</div>
+                    </div>
+                `;
+            }
+            html += `</div>`;
+
+            playTechWipe(html, data.title, data.subtitle);
+        }
+        pollServer();
+    </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HJNBL League Standings</title>
+    <style>
+        /* IMPORT WINNER SANS CONDENSED BOLD DIRECTLY FROM YOUR GITHUB REPO */
+        @font-face {
+            font-family: 'WinnerSans';
+            src: url('https://cdn.jsdelivr.net/gh/LajanStha-ux/Font-Hosting-New@main/fonts/WinnerSans-CondBold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* CANVAS LOCKED TO 1920x1080 - ALL TEXT NOW USES WINNERSANS */
+        html, body { 
+            margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; 
+            background-color: rgba(0, 0, 0, 0) !important; background: transparent !important; 
+            font-family: 'WinnerSans', sans-serif; /* GLOBAL FONT SET HERE */
+            color: white; position: relative; 
+            letter-spacing: 1px; /* Adds a nice sporty spacing to the condensed font */
+        }
+        
+        /* INCREASED WIDTH SLIGHTLY FOR THE NEW COLUMN, KEPT PERFECTLY CENTERED */
+        .cg-wrapper { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1180px; height: auto; overflow: hidden; border-radius: 8px; padding: 4px; opacity: 0; transition: opacity 0.1s; pointer-events: none;}
+        .cg-wrapper.show { opacity: 1; }
+        
+        .wipe-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, #444 0%, #fff 50%, #444 100%); z-index: 10; transform: translateX(-101%); transition: transform 0.4s cubic-bezier(0.8, 0, 0.2, 1); box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+        .wipe-block.in-middle { transform: translateX(0%); }
+        .wipe-block.in-done { transform: translateX(101%); }
+        
+        .cg-box { 
+            background: linear-gradient(180deg, #1f1f1f 0%, #0a0a0a 100%); 
+            border: 1px solid #444; border-top: 3px solid #ccc; border-bottom: 3px solid #000;
+            padding: 30px 40px; position: relative; width: 100%; height: 100%; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.1); 
+            box-sizing: border-box; display: flex; flex-direction: column;
+        }
+
+        .cg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; height: 80px; flex-shrink: 0;}
+        .cg-logo { height: 80px; width: auto; margin-right: 25px; display: block;}
+        .neba-logo { height: 60px; width: auto; display: block;}
+        
+        .cg-title { font-size: 46px; text-transform: uppercase; color: #fff; margin: 0; text-shadow: 0 2px 4px #000; margin-top: 5px;}
+
+        /* SEPARATOR LINE UNDER HEADER */
+        .header-line { width: 100%; height: 2px; background: linear-gradient(90deg, #555 0%, #222 100%); margin-bottom: 20px; box-shadow: 0 1px 0 #000;}
+
+        /* THE STANDINGS TABLE CSS */
+        table { width: 100%; border-collapse: separate; border-spacing: 0 4px; font-variant-numeric: tabular-nums; }
+        
+        /* BLACK HEADERS FOR ALL STATS */
+        th { 
+            font-size: 22px; color: #fff; padding: 12px 10px; 
+            background: linear-gradient(180deg, #111 0%, #000 100%); 
+            text-align: center; text-transform: uppercase; 
+        }
+        th.th-pos { border-radius: 3px 0 0 3px; width: 60px;}
+        th.th-last { border-radius: 0 3px 3px 0; }
+
+        /* RED HEADER ONLY FOR TEAM COLUMN */
+        th.th-team {
+            background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%); 
+            text-align: left; padding-left: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        /* RANK NUMBER (POS) COLUMN */
+        .td-pos { 
+            background: linear-gradient(180deg, #222 0%, #000 100%); 
+            color: #fff; text-align: center; font-size: 28px; 
+            border-radius: 3px 0 0 3px; width: 60px;
+        }
+
+        /* WHITE TEAM NAME COLUMN WITH FLEX LAYOUT AND SEPARATOR LINE */
+        .td-team { 
+            background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%); 
+            color: #0f172a; padding: 6px 20px; 
+            font-size: 26px; text-transform: uppercase;
+        }
+        
+        .td-team-flex { display: flex; align-items: center; }
+        .td-team img { width: 38px; height: 38px; object-fit: contain; flex-shrink: 0; }
+        
+        /* THE VERTICAL LINE BETWEEN LOGO AND TEXT */
+        .team-sep { 
+            width: 2px; height: 38px; 
+            background: #cbd5e1; 
+            margin: 0 15px; 
+            flex-shrink: 0; 
+            box-shadow: 1px 0 0 #fff; 
+        }
+
+        /* DARK STAT COLUMNS */
+        .td-stat { 
+            background: linear-gradient(180deg, #222 0%, #000 100%); 
+            color: #fff; text-align: center; padding: 8px 10px; 
+            font-size: 26px; 
+            border-left: 1px solid #333; width: 60px;
+        }
+        
+        /* TOTAL POINTS COLUMN */
+        .td-stat-total {
+            background: linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%); 
+            color: #fff; text-align: center; padding: 8px 10px; 
+            font-size: 26px; 
+            border-radius: 0 3px 3px 0; border-left: 1px solid #444; width: 60px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="cg-wrapper" id="cgWrapper">
+        <div class="wipe-block" id="wipeBlock"></div>
+        <div class="cg-box" id="cgBox">
+            <div class="cg-header">
+                <div style="display: flex; align-items: center;">
+                    <img src="/assets/tour_logo.png" class="cg-logo" onerror="this.style.display='none'">
+                    <div><h1 class="cg-title">LEAGUE STANDINGS</h1></div>
+                </div>
+                <img src="/assets/NeBA.png" class="neba-logo" onerror="this.style.display='none'">
+            </div>
+            
+            <div class="header-line"></div>
+            
+            <table id="standingsTable">
+                </table>
+        </div>
+    </div>
+
+    <script>
+        let lastTimestamp = 0; let currentLogos = {};
+        
+        // DICTIONARY FOR THE STANDINGS PAGE TO MATCH SCREENSHOT (GGIC -> GOLDEN GATE INT'L COLLEGE)
+        const teamDict = { 
+            "KIRTIPUR": "IIMS KIRTIPUR", 
+            "TIMES": "TIMES CLUB", 
+            "SOLO": "SOLO BASKETBALL", 
+            "ARMY": "TRIBHUWAN ARMY CLUB", 
+            "ROYAL": "ROYAL", 
+            "KVC HOUNDS": "KVC HOUNDS", 
+            "GGIC": "GOLDEN GATE INT'L COLLEGE", 
+            "PLAYBOX": "PLAYBOX ARENA" 
+        };
+        const getFullName = (shortName) => teamDict[shortName] || shortName;
+        function getLogo(teamName) { return currentLogos[teamName] || '/assets/tour_logo.png'; }
+
+        async function pollServer() {
+            try {
+                const res = await fetch('/api/cg-state'); const state = await res.json();
+                if (state.timestamp !== lastTimestamp) { lastTimestamp = state.timestamp; updateGraphic(state); }
+            } catch(e) {}
+            setTimeout(pollServer, 500); 
+        }
+
+        function playTechWipe(contentHtml) {
+            const wrapper = document.getElementById('cgWrapper'); 
+            const wipe = document.getElementById('wipeBlock'); 
+            const box = document.getElementById('cgBox');
+
+            if (contentHtml === 'HIDE') {
+                wipe.className = 'wipe-block in-done'; 
+                setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); 
+                setTimeout(() => { box.style.opacity = '0'; }, 400); 
+                setTimeout(() => { wipe.className = 'wipe-block'; }, 450); 
+                setTimeout(() => { wrapper.classList.remove('show'); }, 850); 
+                return;
+            }
+            
+            wrapper.classList.add('show'); 
+            wipe.className = 'wipe-block'; 
+            box.style.opacity = '0';
+            document.getElementById('standingsTable').innerHTML = contentHtml;
+            
+            setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); 
+            setTimeout(() => { box.style.opacity = '1'; }, 400); 
+            setTimeout(() => { wipe.className = 'wipe-block in-done'; }, 450); 
+        }
+
+        function updateGraphic(state) {
+            // IGNORE EVERYTHING EXCEPT LEAGUE TABLE COMMANDS
+            if (state.type !== 'league-table') {
+                if (state.action === 'hide') playTechWipe('HIDE');
+                return; 
+            }
+            if (state.action === 'hide') { playTechWipe('HIDE'); return; }
+
+            currentLogos = state.payload.logos || {}; 
+            const top8 = state.payload.top8;
+
+            // ADDED DIFF (DIFFERENCE) COLUMN BEFORE TP
+            let html = `
+                <tr>
+                    <th class="th-pos">POS</th>
+                    <th class="th-team">TEAM</th>
+                    <th>MP</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>PF</th>
+                    <th>PA</th>
+                    <th>DIFF</th>
+                    <th class="th-last">TP</th>
+                </tr>
+            `;
+            
+            top8.forEach((t, index) => {
+                // FORMAT DIFFERENCE WITH + SIGN FOR POSITIVE NUMBERS
+                let diffStr = t.pd > 0 ? '+' + t.pd : t.pd;
+                
+                html += `
+                <tr>
+                    <td class="td-pos">${index + 1}</td>
+                    <td class="td-team">
+                        <div class="td-team-flex">
+                            <img src="${getLogo(t.team)}" onerror="this.style.display='none'">
+                            <div class="team-sep"></div>
+                            <span>${getFullName(t.team)}</span>
+                        </div>
+                    </td>
+                    <td class="td-stat">${t.played}</td>
+                    <td class="td-stat">${t.wins}</td>
+                    <td class="td-stat">${t.losses}</td>
+                    <td class="td-stat">${t.pf}</td>
+                    <td class="td-stat">${t.pa}</td>
+                    <td class="td-stat" style="color: ${t.pd > 0 ? '#10b981' : (t.pd < 0 ? '#ef4444' : '#fff')};">${diffStr}</td>
+                    <td class="td-stat-total">${t.pts}</td>
+                </tr>
+                `;
+            });
+
+            playTechWipe(html);
+        }
+        
+        pollServer();
+    </script>
+</body>
+</html>

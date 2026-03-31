@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HJNBL Recent Matches Graphics</title>
+    <style>
+        /* IMPORT WINNER SANS CONDENSED BOLD */
+        @font-face {
+            font-family: 'WinnerSans';
+            src: url('https://cdn.jsdelivr.net/gh/LajanStha-ux/Font-Hosting-New@main/fonts/WinnerSans-CondBold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * { font-family: 'WinnerSans', sans-serif !important; font-weight: normal !important; }
+
+        html, body { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent !important; color: white; display: flex; justify-content: center; align-items: center; letter-spacing: 0.5px; }
+        
+        .cg-wrapper { position: relative; width: 1380px; height: fit-content; min-height: 200px; border-radius: 8px; padding: 4px; opacity: 0; transition: opacity 0.1s; pointer-events: none; overflow: hidden;}
+        .cg-wrapper.show { opacity: 1; }
+        
+        .wipe-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, #444 0%, #fff 50%, #444 100%); z-index: 10; transform: translateX(-101%); transition: transform 0.4s cubic-bezier(0.8, 0, 0.2, 1); box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+        .wipe-block.in-middle { transform: translateX(0%); }
+        .wipe-block.in-done { transform: translateX(101%); }
+        
+        .cg-box { 
+            background: linear-gradient(180deg, #2a2a2a 0%, #111111 40%, #000000 100%); 
+            border: 2px solid #555; border-top: 3px solid #ccc; border-bottom: 3px solid #111;
+            padding: 25px 30px; position: relative; width: 100%; height: auto; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.3); 
+            box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden;
+        }
+        
+        .cg-box::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); transform: rotate(45deg); animation: beam 4s infinite linear; pointer-events: none;}
+        @keyframes beam { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+
+        .cg-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 15px; box-shadow: 0 2px 0 #000; height: 90px; flex-shrink: 0;}
+        .cg-logo { height: 90px; width: auto; margin-right: 30px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); display: block;}
+        .neba-logo { height: 65px; width: auto; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); display: block;}
+        
+        .cg-title { font-size: 38px; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin: 0; text-shadow: 0 2px 4px #000;}
+        .cg-subtitle { font-size: 16px; color: #d4af37; text-transform: uppercase; letter-spacing: 4px; margin: 2px 0 0 0;}
+
+        .cg-content { display: flex; flex-direction: row; gap: 25px; flex-grow: 1; height: auto; align-items: stretch;}
+        .table-container { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+        table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0 6px; font-variant-numeric: tabular-nums; margin-top: 0px;}
+        th { font-size: 18px; color: #fff; padding: 10px; background: linear-gradient(180deg, #b91c1c 0%, #7f1d1d 100%); text-align: center; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
+        
+        .td-left { background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%); color: #000; text-align: left; padding: 10px 15px; border: 2px solid #ccc; border-bottom: 2px solid #888; border-radius: 6px; font-size: 26px; box-shadow: 0 4px 8px rgba(0,0,0,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center;}
+        .td-score { background: linear-gradient(180deg, #333333 0%, #000000 100%); color: #fff; text-align: center; padding: 10px; border: 1px solid #555; border-radius: 6px; font-size: 30px; box-shadow: inset 0 2px 5px rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.6); white-space: nowrap; overflow: hidden;}
+        
+        .td-score-gold { color: #d4af37 !important;}
+        .td-score-diff { font-size: 24px !important;} 
+
+        /* -----------------------------------------------------------
+           THE NEW PLAYER SHOWCASE (BACKGROUND, PHOTO & ANIMATION)
+           ----------------------------------------------------------- */
+        .player-showcase {
+            width: 320px; 
+            background: #000;
+            border: 2px solid #444;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        /* 1. FADED WATERMARK BACKGROUND */
+        .showcase-bg-logo {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 130%; 
+            opacity: 0.15; /* Makes it look like a cool faded watermark */
+            filter: grayscale(100%);
+            z-index: 0;
+        }
+
+        /* 2. REAL PLAYER PHOTO & SLIDE UP ANIMATION */
+        .player-showcase-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+            transform: translateY(100%); /* Start hidden at the bottom */
+            opacity: 0;
+            animation: slideUpPhoto 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation-delay: 0.5s; /* Wait for the main wipe to finish before sliding up */
+        }
+
+        @keyframes slideUpPhoto {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* 3. SMOOTH BOTTOM GRADIENT */
+        .player-showcase-gradient {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 45%, transparent 100%);
+            z-index: 2;
+        }
+
+        /* 4. TEAM LOGO */
+        .player-showcase-logo {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            z-index: 3;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9));
+        }
+
+    </style>
+</head>
+<body>
+    <div class="cg-wrapper" id="cgWrapper">
+        <div class="wipe-block" id="wipeBlock"></div>
+        <div class="cg-box" id="cgBox">
+            <div class="cg-header">
+                <div style="display: flex; align-items: center;">
+                    <img src="/assets/tour_logo.png" class="cg-logo" onerror="this.style.display='none'">
+                    <div>
+                        <h1 class="cg-title" id="cgTitle">RECENT MATCH RESULTS</h1>
+                        <p class="cg-subtitle" id="cgSubtitle">HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE</p>
+                    </div>
+                </div>
+                <img src="/assets/NeBA.png" class="neba-logo" onerror="this.style.display='none'">
+            </div>
+            <div class="cg-content" id="cgContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let lastTimestamp = 0; let currentLogos = {};
+        const teamDict = { "KIRTIPUR": "IIMS Kirtipur", "TIMES": "Times Club", "SOLO": "Solo Basketball Academy", "ARMY": "Tribhuwan Army Club", "ROYAL": "Royal", "KVC HOUNDS": "KVC Hounds", "GGIC": "Golden Gate International", "PLAYBOX": "Playbox Arena" };
+        
+        const getFullName = (s) => teamDict[s] || s;
+        function getLogo(t) { return currentLogos[t] || '/assets/tour_logo.png'; }
+
+        const getShortTeamName = (shortName) => {
+            let fullName = getFullName(shortName);
+            let parts = fullName.split(' ');
+            if (parts.length > 2) { return parts[0] + ' ' + parts[1]; }
+            return fullName;
+        };
+
+        async function pollServer() {
+            try {
+                const res = await fetch('/api/cg-state'); const state = await res.json();
+                if (state.timestamp !== lastTimestamp) { lastTimestamp = state.timestamp; updateGraphic(state); }
+            } catch(e) {}
+            setTimeout(pollServer, 500); 
+        }
+
+        function playTechWipe(contentHtml, titleText, subtitleText) {
+            const wrapper = document.getElementById('cgWrapper'); const wipe = document.getElementById('wipeBlock'); const box = document.getElementById('cgBox');
+            if (contentHtml === 'HIDE') {
+                wipe.className = 'wipe-block in-done'; setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); setTimeout(() => { box.style.opacity = '0'; }, 400); setTimeout(() => { wipe.className = 'wipe-block'; }, 450); setTimeout(() => { wrapper.classList.remove('show'); }, 850); return;
+            }
+            wrapper.classList.add('show'); wipe.className = 'wipe-block'; box.style.opacity = '0'; 
+            document.getElementById('cgTitle').textContent = titleText;
+            document.getElementById('cgSubtitle').innerHTML = subtitleText;
+            document.getElementById('cgContent').innerHTML = contentHtml;
+            setTimeout(() => { wipe.className = 'wipe-block in-middle'; }, 50); setTimeout(() => { box.style.opacity = '1'; }, 400); setTimeout(() => { wipe.className = 'wipe-block in-done'; }, 450); 
+        }
+
+        function updateGraphic(state) {
+            if (state.action === 'hide') { playTechWipe('HIDE'); return; }
+            
+            if (state.type === 'recent-matches') {
+                const selectedTeam = state.payload.team;
+                const matchData = state.payload.data;
+                currentLogos = matchData.logos || {}; 
+                
+                let rows = '';
+                matchData.recent.forEach((m) => {
+                    let shortA = getShortTeamName(m.teamA);
+                    let shortB = getShortTeamName(m.teamB);
+
+                    let scoreHTML = '';
+                    if (m.scoreA > m.scoreB) {
+                        scoreHTML = `<span style="color:#d4af37;">${m.scoreA}</span> &nbsp;<span style="color:#666;">-</span>&nbsp; <span style="color:#aaa;">${m.scoreB}</span>`;
+                    } else if (m.scoreB > m.scoreA) {
+                        scoreHTML = `<span style="color:#aaa;">${m.scoreA}</span> &nbsp;<span style="color:#666;">-</span>&nbsp; <span style="color:#d4af37;">${m.scoreB}</span>`;
+                    } else {
+                        scoreHTML = `<span style="color:#fff;">${m.scoreA}</span> &nbsp;<span style="color:#666;">-</span>&nbsp; <span style="color:#fff;">${m.scoreB}</span>`;
+                    }
+
+                    let isTeamA = m.teamA === selectedTeam;
+                    let focusScore = isTeamA ? m.scoreA : m.scoreB;
+                    let oppScore = isTeamA ? m.scoreB : m.scoreA;
+                    
+                    let marginHTML = '';
+                    if (focusScore > oppScore) { marginHTML = `<span style="color:#10b981;">WIN (+${m.margin})</span>`; } 
+                    else if (oppScore > focusScore) { marginHTML = `<span style="color:#ef4444;">LOSS (-${m.margin})</span>`; } 
+                    else { marginHTML = `<span style="color:#fbbf24;">DRAW</span>`; }
+
+                    rows += `<tr>
+                        <td class="td-score" style="color:#aaa; font-size:22px;">MATCH ${m.id}</td>
+                        <td class="td-left"><img src="${getLogo(m.teamA)}" style="width:28px; height:28px; vertical-align:middle; margin-right:12px; filter:drop-shadow(0 2px 4px #000);">${shortA}</td>
+                        <td class="td-score" style="letter-spacing: 2px;">${scoreHTML}</td>
+                        <td class="td-left"><img src="${getLogo(m.teamB)}" style="width:28px; height:28px; vertical-align:middle; margin-right:12px; filter:drop-shadow(0 2px 4px #000);">${shortB}</td>
+                        <td class="td-score td-score-diff">${marginHTML}</td>
+                    </tr>`;
+                });
+                
+                // ONLY inject the <img> tag if the payload actually has a photo URL. 
+                // Otherwise, it stays blank and just shows the watermark!
+                let playerPhotoHtml = '';
+                if (state.payload.photo) {
+                    playerPhotoHtml = `<img src="${state.payload.photo}" class="player-showcase-img" onerror="this.style.display='none'">`;
+                }
+
+                let selectedTeamLogo = getLogo(selectedTeam);
+
+                // Build the final HTML with the New Layers
+                let html = `
+                    <div class="table-container">
+                        <table style="margin-top: 0;">
+                            <tr>
+                                <th style="width: 12%;">MATCH</th>
+                                <th style="text-align: left; padding-left: 20px; width: 28%;">TEAM A</th>
+                                <th style="width: 20%;">FINAL SCORE</th>
+                                <th style="text-align: left; padding-left: 20px; width: 28%;">TEAM B</th>
+                                <th style="width: 12%;">RESULT</th>
+                            </tr>
+                            ${rows}
+                        </table>
+                    </div>
+                    <div class="player-showcase">
+                        <img src="/assets/tour_logo.png" class="showcase-bg-logo" onerror="this.style.display='none'">
+                        
+                        ${playerPhotoHtml}
+                        
+                        <div class="player-showcase-gradient"></div>
+                        
+                        <img src="${selectedTeamLogo}" class="player-showcase-logo" onerror="this.style.display='none'">
+                    </div>
+                `;
+                
+                let mainTitle = `${getShortTeamName(selectedTeam)} RECENT RESULTS`;
+                let subTitle = `LAST 7 MATCHES <span style='color:#aaa;'>|</span> HJNBL 2026`;
+                
+                playTechWipe(html, mainTitle, subTitle);
+            }
+        }
+        pollServer();
+    </script>
+</body>
+</html>

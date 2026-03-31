@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HJNBL Broadcast Controller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: white; margin: 0; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; position: relative;}
+        
+        #controlStatus { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 15px 30px; border-radius: 8px; font-weight: 900; font-size: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 1000;}
+
+        h1 { color: #fbbf24; font-weight: 900; text-align: center; font-size: 32px; letter-spacing: 1px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 20px;}
+        
+        .info-box { background: rgba(14, 165, 233, 0.1); border: 1px solid #0ea5e9; padding: 15px 25px; border-radius: 8px; margin-bottom: 30px; }
+        .info-box h3 { margin: 0 0 10px 0; color: #0ea5e9; font-size: 16px;}
+        .info-box ul { margin: 0; padding-left: 20px;}
+        .info-box li { color: #94a3b8; font-size: 14px; margin-bottom: 5px;}
+        .info-box span { color: white; font-weight: bold; font-family: monospace; background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px;}
+
+        #playerPreview { display: none; background: #1e293b; border: 2px solid #fbbf24; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        #playerPreview h3 { margin: 0 0 10px 0; color: #fbbf24; font-size: 20px; text-transform: uppercase;}
+        .preview-grid { display: flex; gap: 20px; font-size: 18px; font-weight: bold;}
+        .preview-stat { background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 6px; border: 1px solid #555;}
+        .preview-stat span { color: #10b981; margin-left: 5px;}
+
+        .panel { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 30px; margin-bottom: 30px; }
+        .panel h2 { margin-top: 0; color: #0ea5e9; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;}
+        
+        .control-row { display: flex; gap: 15px; margin-bottom: 20px; align-items: center;}
+        select { flex-grow: 1; padding: 15px; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid #0ea5e9; border-radius: 8px; font-size: 16px; font-weight: bold; outline: none;}
+        
+        .btn-in { background: #10b981; color: white; border: none; padding: 15px 20px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; white-space: nowrap; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);}
+        .btn-in:hover { background: #059669; transform: translateY(-2px);}
+        
+        .btn-out { background: #ef4444; color: white; border: none; padding: 20px; border-radius: 12px; font-weight: 900; font-size: 20px; cursor: pointer; transition: 0.2s; width: 100%; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); text-transform: uppercase; letter-spacing: 2px;}
+        .btn-out:hover { background: #dc2626; transform: translateY(-2px);}
+
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;}
+    </style>
+</head>
+<body>
+
+<div id="controlStatus">🟢 Graphic Pushed to Screen!</div>
+
+<div class="container">
+    <h1>🔴 BROADCAST CG CONTROLLER</h1>
+
+    <div class="info-box">
+        <h3>vMix / OBS Setup Links:</h3>
+        <ul>
+            <li>Add <span>http://localhost:3000/cg.html</span> for Single Player/Team Graphics.</li>
+            <li>Add <span>http://localhost:3000/cg-h2h.html</span> for Team Matchup Graphics.</li>
+            <li>Add <span>http://localhost:3000/cg-standings.html</span> for the League Table.</li>
+            <li>Add <span style="color:#d4af37;">http://localhost:3000/cg-player-overall.html</span> for the Overall Stats Grid.</li>
+            <li>Add <span style="color:#10b981;">http://localhost:3000/cg-recent-matches.html</span> for the Last 7 Matches Graphic.</li>
+            <li>Add <span style="color:#f43f5e;">http://localhost:3000/cg-records.html</span> for Top 5 Leaderboards!</li>
+        </ul>
+    </div>
+
+    <div id="playerPreview"></div>
+
+    <div class="panel">
+        <h2>1. Global Master Clear</h2>
+        <button class="btn-out" onclick="triggerCG('hide')">WIPE ALL GRAPHICS OUT</button>
+    </div>
+    
+    <div class="panel" style="border-color: #e5142a; background: rgba(30, 0, 0, 0.4);">
+        <h2 style="color: #e5142a;">🔴 2. LIVE MATCH GRAPHICS (Current Game Stats)</h2>
+        <div class="control-row">
+            <select id="liveMatchSelect" onchange="loadLiveMatch()"><option value="">Loading Matches...</option></select>
+            <button class="btn-in" style="background:#e5142a; box-shadow: 0 4px 15px rgba(229,20,42,0.4);" onclick="sendLiveTeamComp()">Push LIVE QUARTER SCORE (H2H)</button>
+        </div>
+        
+        <div class="control-row" style="margin-bottom: 20px;">
+            <button class="btn-in" style="background:#f97316; width: 100%; font-size: 18px; padding: 15px; box-shadow: 0 4px 15px rgba(249,115,22,0.4);" onclick="sendLiveBoxScoreCombined()">Push H2H LIVE TOP SCORERS (IN)</button>
+        </div>
+        
+        <div class="control-row">
+            <select id="livePlayerSelect" onchange="updatePreview('live')"><option value="">Select a Match First...</option></select>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-in" style="background:#e5142a; box-shadow: 0 4px 15px rgba(229,20,42,0.4);" onclick="sendLivePlayerProfile()">Push CURRENT vs TOTALS PROFILE</button>
+                <button class="btn-in" style="background:#f43f5e; box-shadow: 0 4px 15px rgba(244,63,94,0.4);" onclick="sendLivePlayerQuarters()">Push QUARTERS COMPARISON</button>
+            </div>
+        </div>
+        
+        <div class="grid-3">
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('pts', 'POINTS')">Push GAME POINTS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('threes', '3-POINTERS')">Push GAME 3-POINTERS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('reb', 'REBOUNDS')">Push GAME REBOUNDS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('ast', 'ASSISTS')">Push GAME ASSISTS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('stl', 'STEALS')">Push GAME STEALS</button>
+            <button class="btn-in" style="background:#f43f5e;" onclick="sendLivePlayerStat('blk', 'BLOCKS')">Push GAME BLOCKS</button>
+        </div>
+    </div>
+
+    <div class="panel" style="border-color: #8b5cf6; background: rgba(50, 0, 80, 0.4);">
+        <h2 style="color: #a78bfa;">🏆 7. Tournament TOTALS Leaders (Top 5)</h2>
+        <div class="grid-3">
+            <button class="btn-in" style="background:#7c3aed; box-shadow: 0 4px 15px rgba(124,58,237,0.4);" onclick="sendTop5List('pts', 'MOST TOTAL POINTS')">Push TOP 5 POINTS</button>
+            <button class="btn-in" style="background:#7c3aed; box-shadow: 0 4px 15px rgba(124,58,237,0.4);" onclick="sendTop5List('threes', 'MOST 3-POINTERS TOTAL')">Push TOP 5 3-POINTERS</button>
+            <button class="btn-in" style="background:#7c3aed; box-shadow: 0 4px 15px rgba(124,58,237,0.4);" onclick="sendTop5List('reb', 'MOST TOTAL REBOUNDS')">Push TOP 5 REBOUNDS</button>
+            <button class="btn-in" style="background:#7c3aed; box-shadow: 0 4px 15px rgba(124,58,237,0.4);" onclick="sendTop5List('ast', 'MOST TOTAL ASSISTS')">Push TOP 5 ASSISTS</button>
+            <button class="btn-in" style="background:#7c3aed; box-shadow: 0 4px 15px rgba(124,58,237,0.4);" onclick="sendTop5List('stl', 'MOST TOTAL STEALS')">Push TOP 5 STEALS</button>
+            <button class="btn-in" style="background:#7c3aed; box-shadow: 0 4px 15px rgba(124,58,237,0.4);" onclick="sendTop5List('blk', 'MOST TOTAL BLOCKS')">Push TOP 5 BLOCKS</button>
+        </div>
+        
+        <h2 style="color: #fcd34d; margin-top: 30px;">🌟 8. SINGLE GAME RECORDS (IPL STYLE)</h2>
+        <p style="color: #aaa; font-size: 12px; margin-bottom: 15px;">Note: Server must supply <code>singleGameLeaders</code> data for these to work perfectly.</p>
+        <div class="grid-2">
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('pts', 'HIGHEST INDIVIDUAL SCORE IN A MATCH')">Push HIGHEST INDIVIDUAL SCORE</button>
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('threes', 'MOST 3-POINTERS IN A SINGLE MATCH')">Push MOST 3-POINTERS IN MATCH</button>
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('reb', 'MOST REBOUNDS IN A SINGLE MATCH')">Push MOST REBOUNDS IN MATCH</button>
+            <button class="btn-in" style="background:#d97706; box-shadow: 0 4px 15px rgba(217,119,6,0.4); font-size: 16px; padding: 20px;" onclick="sendSingleGameRecords('ast', 'MOST ASSISTS IN A SINGLE MATCH')">Push MOST ASSISTS IN MATCH</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let bData = null; let sData = null; let liveMatchData = null;
+    const teamDict = { "KIRTIPUR": "IIMS Kirtipur", "TIMES": "Times Club", "SOLO": "Solo Basketball Academy", "ARMY": "Tribhuwan Army Club", "ROYAL": "Royal", "KVC HOUNDS": "KVC Hounds", "GGIC": "Golden Gate International", "PLAYBOX": "Playbox Arena" };
+    const getFullName = (shortName) => teamDict[shortName] || shortName;
+
+    async function init() {
+        const [res1, res2, res3] = await Promise.all([ fetch('/api/tournament-stats'), fetch('/api/standings'), fetch('/api/schedule') ]);
+        bData = await res1.json(); sData = await res2.json(); const schedData = await res3.json();
+
+        let pOpts = `<option value="">-- Select a Player to Feature --</option>` + bData.allPlayers.sort((a,b)=>a.name.localeCompare(b.name)).map(p => `<option value="${p.team}|${p.jersey}">${p.name} (JN: ${p.jersey} | ${getFullName(p.team)})</option>`).join('');
+        document.getElementById('playerSelect').innerHTML = pOpts;
+
+        const teams = Object.keys(bData.teamTotals);
+        let tOpts = `<option value="">-- Select Team --</option>` + teams.map(t => `<option value="${t}">${getFullName(t)}</option>`).join('');
+        // Ensure you populate the dropdowns for the other panels here as you normally would
+        // document.getElementById('singleTeamSelect').innerHTML = tOpts; ...
+    }
+
+    function showStatus(isClear) {
+        const statusDiv = document.getElementById('controlStatus'); statusDiv.textContent = isClear ? "🔴 Screen Cleared" : "🟢 Graphic Pushed to Screen!";
+        statusDiv.style.background = isClear ? "#ef4444" : "#10b981"; statusDiv.style.opacity = '1'; setTimeout(() => { statusDiv.style.opacity = '0'; }, 2000);
+    }
+
+    async function triggerCG(action, type = '', payload = null) {
+        if (payload) payload.logos = bData ? bData.logos : liveMatchData.logos; 
+        try { await fetch('/api/cg-state', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, type, payload }) }); showStatus(action === 'hide'); } 
+        catch(err) { alert("⚠️ Error: Cannot connect to server."); }
+    }
+
+    // --- TOURNAMENT TOTALS TOP 5 ---
+    function sendTop5List(statKey, subtitleLabel) {
+        if(!bData || !bData.leaders || !bData.leaders[statKey]) return alert("Data not loaded yet!");
+        
+        let top5 = bData.leaders[statKey].slice(0, 5).map(p => ({
+            name: p.name,
+            team: p.team,
+            photo: p.photo,
+            value: p[statKey]
+        }));
+        
+        if(top5.length === 0) return alert("No stats available to show!");
+
+        triggerCG('show', 'top5-records', { title: "TOURNAMENT LEADERS", subtitle: subtitleLabel, records: top5 });
+    }
+
+    // --- SINGLE GAME RECORDS (IPL STYLE) ---
+    function sendSingleGameRecords(statKey, subtitleLabel) {
+        if(!bData) return alert("Data not loaded yet!");
+        
+        // 1. Try to fetch singleGameLeaders if your backend provides it
+        if (bData.singleGameLeaders && bData.singleGameLeaders[statKey]) {
+            let top5 = bData.singleGameLeaders[statKey].slice(0, 5).map(p => ({
+                name: p.name, team: p.team, photo: p.photo, value: p[statKey]
+            }));
+            triggerCG('show', 'top5-records', { title: "SINGLE MATCH RECORDS", subtitle: subtitleLabel, records: top5 });
+        } 
+        // 2. Fallback: If backend doesn't provide it, fall back to Tournament Totals with a warning
+        else {
+            console.warn("Backend missing 'singleGameLeaders'. Falling back to Tournament Totals.");
+            let top5 = bData.leaders[statKey].slice(0, 5).map(p => ({
+                name: p.name, team: p.team, photo: p.photo, value: p[statKey]
+            }));
+            triggerCG('show', 'top5-records', { title: "SINGLE MATCH RECORDS (DATA MISSING)", subtitle: "SHOWING TOURNAMENT TOTALS INSTEAD", records: top5 });
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>
