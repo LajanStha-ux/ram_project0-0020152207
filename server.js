@@ -15,7 +15,6 @@ app.listen = (...args) => {
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/photos', express.static(path.join(__dirname, 'player_photo')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 const DB_FILE = path.join(__dirname, 'database.json');
@@ -123,6 +122,35 @@ const findPlayerPhotoFile = (teamPath, player) => {
         || files.find((fileName) => normalizeKey(path.parse(fileName).name).startsWith(normalizedJersey))
         || null;
 };
+
+const resolveCaseInsensitivePath = (rootDir, relativePath = '') => {
+    const parts = String(relativePath).split('/').filter(Boolean);
+    let currentPath = rootDir;
+
+    for (const part of parts) {
+        if (!fs.existsSync(currentPath)) return null;
+        const entries = fs.readdirSync(currentPath, { withFileTypes: true });
+        const match = entries.find((entry) => normalizeKey(entry.name) === normalizeKey(part));
+        if (!match) return null;
+        currentPath = path.join(currentPath, match.name);
+    }
+
+    return currentPath;
+};
+
+app.use('/photos', (req, res, next) => {
+    const requestPath = decodeURIComponent(req.path || '/');
+    const cleanPath = requestPath.replace(/^\/+/, '').split('?')[0];
+    const resolvedPath = resolveCaseInsensitivePath(PHOTOS_DIR, cleanPath);
+
+    if (resolvedPath && fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()) {
+        return res.sendFile(resolvedPath);
+    }
+
+    next();
+});
+
+app.use('/photos', express.static(path.join(__dirname, 'player_photo')));
 
 const getDynamicLogos = () => {
     let logos = {};
