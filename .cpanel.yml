@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/hjnblcom/public_html/myapp
+    - export DEPLOYPATH=/home2/hjnblcom/myapp
     - /usr/local/bin/npm install
