@@ -15,7 +15,11 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
+}
 a { color: inherit; text-decoration: none; }
 button, select, input { font: inherit; }
 img { max-width: 100%; display: block; }
@@ -23,6 +27,9 @@ img { max-width: 100%; display: block; }
 body {
     margin: 0;
     min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
     font-family: 'Manrope', sans-serif;
     color: var(--text);
     background:
@@ -44,6 +51,7 @@ body::before {
 
 .page-shell {
     width: var(--content);
+    max-width: 100%;
     margin: 0 auto;
     padding: 24px 0 72px;
     position: relative;
@@ -78,6 +86,7 @@ body::before {
 }
 
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.brand > div { min-width: 0; }
 .brand-logo {
     width: 54px;
     height: 54px;
@@ -128,6 +137,19 @@ body::before {
 .brand-title { margin: 2px 0 0; font-size: 30px; text-transform: uppercase; }
 .brand-subtitle, .feature-copy, .section-copy, .muted, .team-meta, .card-label, .feature-label, .footer-note { color: var(--muted); }
 .brand-subtitle { margin: 2px 0 0; font-size: 13px; }
+.brand-title,
+.brand-subtitle,
+.section-title,
+.hero-title,
+.feature-title,
+.leader-name,
+.player-name,
+.team-card h3,
+.bracket-team strong,
+.record-card h3,
+.playoff-card h3 {
+    overflow-wrap: anywhere;
+}
 
 .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
 .nav-links a {
@@ -280,6 +302,27 @@ body::before {
     gap: 14px;
 }
 
+.hero > *,
+.metric-grid > *,
+.games-grid > *,
+.leaders-grid > *,
+.players-grid > *,
+.teams-grid > *,
+.sheet-stats > *,
+.roster-grid > *,
+.identity-grid > *,
+.sponsor-logo-grid > *,
+.records-grid > *,
+.playoff-grid > *,
+.box-columns > *,
+.playoff-seeds > *,
+.playoff-bracket > *,
+.players-toolbar > *,
+.section-header > *,
+.two-col > * {
+    min-width: 0;
+}
+
 .metric-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 22px; }
 .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .leaders-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -311,6 +354,25 @@ section { margin-bottom: 22px; }
 .sheet-title { margin: 6px 0 0; font-size: clamp(34px, 4vw, 50px); text-transform: uppercase; }
 .section-copy { margin: 8px 0 0; max-width: 740px; line-height: 1.6; }
 .surface, .modal-content, .team-drawer, .player-sheet { padding: 22px; }
+.hero,
+.hero-main,
+.hero-side,
+.surface,
+.two-col,
+.table-wrap,
+.playoff-picture,
+.playoff-bracket,
+.bracket-column,
+.seed-card,
+.record-card,
+.team-card,
+.player-spotlight,
+.leader-card,
+.game-card,
+.identity-card,
+.sponsor-logo-card {
+    min-width: 0;
+}
 
 .game-meta { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; color: var(--muted); font-size: 13px; }
 .status-pill,
@@ -580,43 +642,44 @@ tbody tr:last-child td { border-bottom: 0; }
 .identity-card p { margin: 0; line-height: 1.6; }
 .identity-logo {
     width: 100%;
-    max-width: 210px;
-    height: 86px;
+    max-width: 240px;
+    height: 98px;
     object-fit: contain;
     margin-top: 12px;
     filter: drop-shadow(0 6px 18px rgba(0,0,0,.22));
 }
-.neba-logo-card { max-width: 160px; }
+.neba-logo-card { max-width: 190px; }
 .governance-card { background: linear-gradient(135deg, rgba(0,194,255,.12), rgba(255,255,255,.03)); }
 .title-sponsor-card { background: linear-gradient(135deg, rgba(255,107,53,.18), rgba(244,197,66,.08)); }
 .power-card { background: linear-gradient(135deg, rgba(34,197,94,.12), rgba(0,194,255,.08)); }
 .partners-block { margin-top: 8px; }
 .sponsor-logo-card {
-    min-height: 156px;
+    min-height: 176px;
     display: grid;
     place-items: center;
-    padding: 22px 18px;
+    padding: 24px 20px;
     gap: 10px;
     background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
 }
 .sponsor-logo-card img {
     width: 100%;
-    max-width: 210px;
-    max-height: 108px;
+    max-width: 240px;
+    max-height: 130px;
     object-fit: contain;
     filter: saturate(1.02);
 }
 .sponsor-logo-card.priority {
     background: linear-gradient(135deg, rgba(0,194,255,.12), rgba(255,255,255,.04));
     border-color: rgba(100,220,255,.24);
+    min-height: 190px;
 }
 .sponsor-logo-card img.logo-wide {
-    max-width: 230px;
-    max-height: 96px;
+    max-width: 270px;
+    max-height: 116px;
 }
 .sponsor-logo-card img.logo-standard {
-    max-width: 170px;
-    max-height: 118px;
+    max-width: 195px;
+    max-height: 142px;
 }
 
 .modal-overlay,
@@ -710,11 +773,20 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 
 @media (max-width: 760px) {
-    .page-shell { padding: 14px 0 84px; }
+    .page-shell {
+        width: min(100%, calc(100vw - 18px));
+        padding: 14px 0 104px;
+    }
     .topbar { position: static; flex-direction: column; align-items: stretch; }
     .nav-links { justify-content: flex-start; overflow: auto; padding-bottom: 2px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }
-    .hero-title { font-size: 56px; }
+    .brand-logo {
+        width: 48px;
+        height: 48px;
+    }
+    .brand-title { font-size: 24px; }
+    .brand-subtitle { font-size: 12px; }
+    .hero-title { font-size: clamp(40px, 13vw, 54px); }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
     .games-grid, .players-grid, .teams-grid, .leaders-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
@@ -723,6 +795,26 @@ tbody tr:last-child td { border-bottom: 0; }
     .score-ribbon-divider { font-size: 46px; }
     .mobile-shortcuts { display: grid; }
     .team-line-score { font-size: 34px; }
+    .playoff-picture,
+    .bracket-match { padding: 14px; }
+    .bracket-team strong { font-size: 22px; }
+    .sponsor-logo-card {
+        min-height: 160px;
+        padding: 22px 18px;
+    }
+    .sponsor-logo-card.priority { min-height: 172px; }
+    .sponsor-logo-card img {
+        max-width: 250px;
+        max-height: 122px;
+    }
+    .sponsor-logo-card img.logo-wide {
+        max-width: 260px;
+        max-height: 108px;
+    }
+    .sponsor-logo-card img.logo-standard {
+        max-width: 180px;
+        max-height: 132px;
+    }
     th, td { padding: 12px; }
 }
 
