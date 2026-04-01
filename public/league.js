@@ -17,6 +17,17 @@ const teamNames = {
     'PLAYBOX': 'Playbox Arena'
 };
 
+const teamPhotoFolders = {
+    'KIRTIPUR': 'Kirtipur',
+    'TIMES': 'times',
+    'SOLO': 'solo',
+    'ARMY': 'army',
+    'ROYAL': 'royal',
+    'KVC HOUNDS': 'KVC Hounds',
+    'GGIC': 'GoldenGate',
+    'PLAYBOX': 'playbox'
+};
+
 const statOptions = {
     pts: 'Points',
     reb: 'Rebounds',
@@ -41,6 +52,20 @@ function logoMarkup(team, size = 48) {
 
 function photoUrl(url) {
     return url && url !== 'undefined' ? url : '/assets/tour_logo.png';
+}
+
+function playerPhotoUrl(player, teamOverride = '') {
+    if (player?.photo && player.photo !== 'undefined') {
+        return player.photo;
+    }
+
+    const teamKey = player?.team || teamOverride;
+    const folder = teamPhotoFolders[teamKey];
+    if (folder && player?.jersey !== undefined && player?.jersey !== null && player?.jersey !== '') {
+        return `/photos/${folder}/${player.jersey}.png`;
+    }
+
+    return '/assets/tour_logo.png';
 }
 
 function getTeamTotals(teamStats) {
@@ -148,7 +173,7 @@ function renderFeaturedCards() {
         playerCard.innerHTML = `
             <div class="feature-label">Tournament Points Leader</div>
             <div class="leader-top" style="margin-top:12px;">
-                <img class="leader-photo" src="${photoUrl(topPlayer.photo)}" alt="${topPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
+                <img class="leader-photo" src="${playerPhotoUrl(topPlayer)}" alt="${topPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
                 <div>
                     <div class="feature-title" style="font-size:32px;">${topPlayer.name}</div>
                     <p class="feature-copy">${fullTeamName(topPlayer.team)}</p>
@@ -242,7 +267,7 @@ function renderHeadlineLeaders() {
             <div class="leader-card ${index === 0 ? 'is-primary' : ''}" onclick="openPlayerSheet('${leader.team}', ${leader.jersey})">
                 <div class="card-label">${group.label} Leader</div>
                 <div class="leader-top">
-                    <img class="leader-photo" src="${photoUrl(leader.photo)}" alt="${leader.name}" onerror="this.src='/assets/tour_logo.png'">
+                    <img class="leader-photo" src="${playerPhotoUrl(leader)}" alt="${leader.name}" onerror="this.src='/assets/tour_logo.png'">
                     <div class="leader-meta"><div class="player-name">${leader.name}</div><div class="muted">${fullTeamName(leader.team)}</div></div>
                 </div>
                 <div class="leader-value">${leader[group.key]}</div>
@@ -318,7 +343,7 @@ function renderRecords() {
             title: topScorer.name,
             value: `${topScorer.pts} PTS`,
             footnote: `${fullTeamName(topScorer.team)} vs ${fullTeamName(topScorer.opponent)} • ${topScorer.date}`,
-            photo: photoUrl(topScorer.photo),
+            photo: playerPhotoUrl(topScorer),
             teamLogo: teamLogoUrl(topScorer.team)
         },
         topTeamScore && {
@@ -350,7 +375,7 @@ function renderRecords() {
             title: topThrees.name,
             value: `${topThrees.threes} 3PM`,
             footnote: `${fullTeamName(topThrees.team)} vs ${fullTeamName(topThrees.opponent)}`,
-            photo: photoUrl(topThrees.photo),
+            photo: playerPhotoUrl(topThrees),
             teamLogo: teamLogoUrl(topThrees.team)
         },
         topRebounds && {
@@ -358,7 +383,7 @@ function renderRecords() {
             title: topRebounds.name,
             value: `${topRebounds.reb} REB`,
             footnote: `${fullTeamName(topRebounds.team)} vs ${fullTeamName(topRebounds.opponent)}`,
-            photo: photoUrl(topRebounds.photo),
+            photo: playerPhotoUrl(topRebounds),
             teamLogo: teamLogoUrl(topRebounds.team)
         }
     ].filter(Boolean);
@@ -471,7 +496,7 @@ function renderPlayers() {
         <div class="player-spotlight" onclick="openPlayerSheet('${player.team}', ${player.jersey})">
             <div class="card-label">${index === 0 ? 'Featured' : 'Trending'} ${statOptions[sortKey]}</div>
             <div class="player-topline">
-                <img src="${photoUrl(player.photo)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
+                <img src="${playerPhotoUrl(player)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
                 <div><div class="player-name">${player.name}</div><div class="muted">${fullTeamName(player.team)} • #${player.jersey}</div></div>
             </div>
             <div class="player-value">${player[sortKey] || 0}</div>
@@ -481,7 +506,7 @@ function renderPlayers() {
     const visiblePlayers = players.slice(0, state.playerVisibleCount);
     tableBody.innerHTML = visiblePlayers.map((player) => `
         <tr class="player-row" onclick="openPlayerSheet('${player.team}', ${player.jersey})">
-            <td><div style="display:flex;align-items:center;gap:12px;"><img src="${photoUrl(player.photo)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'" style="width:42px;height:42px;border-radius:12px;object-fit:cover;object-position:top;border:1px solid rgba(255,255,255,.1);"><div><strong>${player.name}</strong><div class="muted">#${player.jersey}</div></div></div></td>
+            <td><div style="display:flex;align-items:center;gap:12px;"><img src="${playerPhotoUrl(player)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'" style="width:42px;height:42px;border-radius:12px;object-fit:cover;object-position:top;border:1px solid rgba(255,255,255,.1);"><div><strong>${player.name}</strong><div class="muted">#${player.jersey}</div></div></div></td>
             <td>${fullTeamName(player.team)}</td><td>${player.gp}</td><td><strong>${player.pts}</strong></td><td>${player.reb}</td><td>${player.ast}</td><td>${player.threes}</td><td>${player.stl}</td><td>${player.blk}</td>
         </tr>
     `).join('');
@@ -532,7 +557,7 @@ function openTeamDrawer(team) {
         const stats = statsMap[player.jersey] || {};
         return `
             <div class="roster-card" onclick="openPlayerSheet('${team}', ${player.jersey}, true)">
-                <img class="roster-photo" src="${photoUrl(player.photo)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
+                <img class="roster-photo" src="${playerPhotoUrl(player, team)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
                 <div>
                     <strong>${player.name}</strong>
                     <div class="muted">${player.position || 'Position TBA'} • ${player.height || '-'} • Age ${player.age || '-'}</div>
@@ -574,7 +599,7 @@ function openPlayerSheet(team, jersey, keepTeamDrawerOpen = false) {
         </div>
         <div class="detail-panel active" data-panel="playerProfileTab">
             <div class="sheet-profile">
-                <img class="sheet-photo" src="${photoUrl(rosterPlayer.photo)}" alt="${rosterPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
+                <img class="sheet-photo" src="${playerPhotoUrl(rosterPlayer, team)}" alt="${rosterPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
                 <div class="player-name">${rosterPlayer.name}</div>
                 <div class="muted">${fullTeamName(team)}</div>
                 <div class="muted" style="margin-top:6px;">#${rosterPlayer.jersey} • ${rosterPlayer.position || 'Position TBA'}</div>
