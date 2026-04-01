@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/hjnblcom/public_html/myapp
-    - /usr/local/bin/npm install
+    - source /home2/hjnblcom/nodevenv/public_html/myapp/22/bin/activate && cd /home2/hjnblcom/public_html/myapp && npm install
