@@ -3,7 +3,8 @@
     tournamentData: null,
     standings: [],
     fixtureFilter: 'all',
-    playerVisibleCount: 10
+    playerVisibleCount: 10,
+    gamesVisibleCount: 9
 };
 
 const teamNames = {
@@ -208,12 +209,15 @@ function renderGames() {
     });
 
     const grid = document.getElementById('gamesGrid');
+    const loadMoreBtn = document.getElementById('gamesLoadMoreBtn');
     if (!matches.length) {
         grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">No games found in this view yet.</div>';
+        loadMoreBtn.style.display = 'none';
         return;
     }
 
-    grid.innerHTML = matches.map((match) => {
+    const visibleMatches = matches.slice(0, state.gamesVisibleCount);
+    grid.innerHTML = visibleMatches.map((match) => {
         const statusClass = match.isCompleted ? 'final' : 'upcoming';
         const statusLabel = match.isCompleted ? 'Result' : 'Upcoming';
         const action = match.isCompleted
@@ -232,10 +236,20 @@ function renderGames() {
             </article>
         `;
     }).join('');
+
+    if (matches.length <= 9) {
+        loadMoreBtn.style.display = 'none';
+    } else {
+        loadMoreBtn.style.display = 'inline-flex';
+        loadMoreBtn.textContent = state.gamesVisibleCount >= matches.length
+            ? 'Show First 9 Matches'
+            : `Load More Matches (${matches.length - state.gamesVisibleCount} more)`;
+    }
 }
 
 function setFixtureFilter(filterKey) {
     state.fixtureFilter = filterKey;
+    state.gamesVisibleCount = 9;
     renderGames();
 }
 
@@ -719,11 +733,23 @@ function togglePlayersLoadMore() {
     renderPlayers();
 }
 
+function toggleGamesLoadMore() {
+    const matches = matchesWithSummary().filter((match) => {
+        if (state.fixtureFilter === 'completed') return match.isCompleted;
+        if (state.fixtureFilter === 'upcoming') return !match.isCompleted;
+        return true;
+    });
+
+    state.gamesVisibleCount = state.gamesVisibleCount >= matches.length ? 9 : state.gamesVisibleCount + 9;
+    renderGames();
+}
+
 function attachEvents() {
     document.getElementById('playerSearch').addEventListener('input', () => { state.playerVisibleCount = 10; renderPlayers(); });
     document.getElementById('playerSort').addEventListener('change', () => { state.playerVisibleCount = 10; renderPlayers(); });
     document.getElementById('playerTeamFilter').addEventListener('change', () => { state.playerVisibleCount = 10; renderPlayers(); });
     document.getElementById('playersLoadMoreBtn').addEventListener('click', togglePlayersLoadMore);
+    document.getElementById('gamesLoadMoreBtn').addEventListener('click', toggleGamesLoadMore);
 
     ['matchModal', 'teamDrawerOverlay', 'playerSheetOverlay'].forEach((id) => {
         document.getElementById(id).addEventListener('click', (event) => {
