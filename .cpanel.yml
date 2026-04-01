@@ -1,8 +1,3 @@
-git checkout -- .cpanel.yml
-```
-
-Then open `.cpanel.yml` in Notepad, make sure content is:
-```
 ---
 deployment:
   tasks:
