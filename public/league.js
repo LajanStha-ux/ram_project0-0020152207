@@ -243,7 +243,7 @@ function renderHeadlineLeaders() {
                 <div class="card-label">${group.label} Leader</div>
                 <div class="leader-top">
                     <img class="leader-photo" src="${photoUrl(leader.photo)}" alt="${leader.name}" onerror="this.src='/assets/tour_logo.png'">
-                    <div><div class="player-name">${leader.name}</div><div class="muted">${fullTeamName(leader.team)}</div></div>
+                    <div class="leader-meta"><div class="player-name">${leader.name}</div><div class="muted">${fullTeamName(leader.team)}</div></div>
                 </div>
                 <div class="leader-value">${leader[group.key]}</div>
             </div>
@@ -543,6 +543,7 @@ function openTeamDrawer(team) {
         `;
     }).join('');
     document.getElementById('teamDrawerOverlay').classList.add('open');
+    document.querySelector('#teamDrawerOverlay .team-drawer')?.scrollTo({ top: 0, behavior: 'auto' });
 }
 
 function closeTeamDrawer() {
@@ -590,6 +591,7 @@ function openPlayerSheet(team, jersey, keepTeamDrawerOpen = false) {
     `;
 
     document.getElementById('playerSheetOverlay').classList.add('open');
+    document.querySelector('#playerSheetOverlay .player-sheet')?.scrollTo({ top: 0, behavior: 'auto' });
     if (!keepTeamDrawerOpen) closeTeamDrawer();
 }
 
@@ -653,6 +655,7 @@ async function openMatchModal(id, teamA, teamB) {
     `;
 
     document.getElementById('matchModal').classList.add('open');
+    document.querySelector('#matchModal .modal-content')?.scrollTo({ top: 0, behavior: 'auto' });
 }
 
 function closeMatchModal() {

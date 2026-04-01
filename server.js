@@ -1,7 +1,17 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs'); 
+const fs = require('fs');
 const app = express();
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
+
+// Keep the existing startup call working while honoring cPanel/Passenger ports.
+const originalListen = app.listen.bind(app);
+app.listen = (...args) => {
+    return originalListen(PORT, HOST, () => {
+        console.log(`HJNBL app running on ${HOST}:${PORT}`);
+    });
+};
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));

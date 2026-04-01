@@ -1,4 +1,14 @@
 {
+  "name": "hjnbl-season-2",
+  "version": "1.0.0",
+  "description": "Himalayan Java National Basketball League Season 2 web app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "express": "^5.2.1"
   }
