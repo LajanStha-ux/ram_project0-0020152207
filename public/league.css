@@ -325,7 +325,7 @@ body::before {
 
 .metric-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 22px; }
 .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.leaders-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.leaders-grid { grid-template-columns: 1fr; max-width: 420px; }
 .players-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 18px; }
 .teams-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -455,6 +455,41 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 .leader-card .leader-value {
     margin-top: auto;
+}
+.detail-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 16px;
+}
+.detail-tab {
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 999px;
+    padding: 11px 16px;
+    background: rgba(255,255,255,.05);
+    color: var(--text);
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+.detail-tab.active {
+    color: #07111f;
+    border-color: transparent;
+    background: linear-gradient(135deg, #00c2ff, #8bf0ff);
+}
+.detail-panel {
+    display: none;
+}
+.detail-panel.active {
+    display: block;
+}
+.box-score-layout {
+    display: grid;
+    gap: 16px;
+}
+.team-box {
+    display: grid;
+    gap: 14px;
 }
 .players-toolbar { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; margin-bottom: 16px; }
 
@@ -786,6 +821,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .roster-photo { width: 58px; height: 58px; border-radius: 16px; border: 1px solid rgba(255,255,255,.12); object-fit: cover; object-position: top; background: rgba(255,255,255,.04); }
 .jersey-chip { min-width: 44px; padding: 8px 10px; border-radius: 12px; text-align: center; background: rgba(255,107,53,.16); color: #ffbfaa; font-size: 28px; }
 .sheet-layout { display: grid; grid-template-columns: 280px 1fr; gap: 14px; }
+.detail-layout { display: grid; grid-template-columns: 1fr; gap: 14px; }
 .sheet-photo { width: 170px; height: 170px; margin: 0 auto 16px; border-radius: 28px; border: 1px solid rgba(255,255,255,.12); object-fit: cover; object-position: top; background: rgba(255,255,255,.04); }
 .mobile-shortcuts {
     display: none;
@@ -819,7 +855,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 @media (max-width: 1100px) {
     .hero, .two-col, .sheet-layout, .box-columns { grid-template-columns: 1fr; }
-    .games-grid, .players-grid, .teams-grid, .leaders-grid, .metric-grid, .identity-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .games-grid, .players-grid, .teams-grid, .metric-grid, .identity-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .sponsor-logo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .roster-grid { grid-template-columns: 1fr; }
     .playoff-bracket { grid-template-columns: 1fr; }
@@ -841,7 +877,7 @@ tbody tr:last-child td { border-bottom: 0; }
     .brand-subtitle { font-size: 12px; }
     .hero-title { font-size: clamp(40px, 13vw, 54px); }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
-    .games-grid, .players-grid, .teams-grid, .leaders-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
+    .games-grid, .players-grid, .teams-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }
     .modal-overlay,
@@ -885,6 +921,9 @@ tbody tr:last-child td { border-bottom: 0; }
     }
     .leader-card .player-name {
         font-size: 32px;
+    }
+    .leaders-grid {
+        max-width: 100%;
     }
     th, td { padding: 12px; }
 }

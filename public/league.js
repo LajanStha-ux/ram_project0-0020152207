@@ -566,16 +566,23 @@ function openPlayerSheet(team, jersey, keepTeamDrawerOpen = false) {
     const ppg = stats.gp ? (stats.pts / stats.gp).toFixed(1) : '0.0';
 
     document.getElementById('playerSheetTitle').textContent = rosterPlayer.name;
+    document.getElementById('playerSheetBody').className = 'detail-layout';
     document.getElementById('playerSheetBody').innerHTML = `
-        <div class="sheet-profile">
-            <img class="sheet-photo" src="${photoUrl(rosterPlayer.photo)}" alt="${rosterPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
-            <div class="player-name">${rosterPlayer.name}</div>
-            <div class="muted">${fullTeamName(team)}</div>
-            <div class="muted" style="margin-top:6px;">#${rosterPlayer.jersey} • ${rosterPlayer.position || 'Position TBA'}</div>
-            <div class="muted">${rosterPlayer.height || '-'} • Age ${rosterPlayer.age || '-'}</div>
-            <div style="margin-top:14px;display:flex;justify-content:center;">${logoMarkup(team, 76)}</div>
+        <div class="detail-tabs">
+            <button class="detail-tab active" type="button" onclick="switchDetailTab('playerSheetBody', 'playerProfileTab', this)">Profile</button>
+            <button class="detail-tab" type="button" onclick="switchDetailTab('playerSheetBody', 'playerStatsTab', this)">Season Stats</button>
         </div>
-        <div>
+        <div class="detail-panel active" data-panel="playerProfileTab">
+            <div class="sheet-profile">
+                <img class="sheet-photo" src="${photoUrl(rosterPlayer.photo)}" alt="${rosterPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
+                <div class="player-name">${rosterPlayer.name}</div>
+                <div class="muted">${fullTeamName(team)}</div>
+                <div class="muted" style="margin-top:6px;">#${rosterPlayer.jersey} • ${rosterPlayer.position || 'Position TBA'}</div>
+                <div class="muted">${rosterPlayer.height || '-'} • Age ${rosterPlayer.age || '-'}</div>
+                <div style="margin-top:14px;display:flex;justify-content:center;">${logoMarkup(team, 76)}</div>
+            </div>
+        </div>
+        <div class="detail-panel" data-panel="playerStatsTab">
             <div class="sheet-stats">
                 <div class="sheet-stat"><div class="card-label">Games Played</div><strong>${stats.gp || 0}</strong></div>
                 <div class="sheet-stat"><div class="card-label">Points</div><strong>${stats.pts || 0}</strong></div>
@@ -632,6 +639,19 @@ function buildBoxScoreTable(team, roster, stats) {
     `;
 }
 
+function switchDetailTab(containerId, panelName, button) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.querySelectorAll('.detail-panel').forEach((panel) => {
+        panel.classList.toggle('active', panel.dataset.panel === panelName);
+    });
+
+    container.querySelectorAll('.detail-tab').forEach((tabButton) => {
+        tabButton.classList.toggle('active', tabButton === button);
+    });
+}
+
 async function openMatchModal(id, teamA, teamB) {
     const res = await fetch(`/api/match/${id}`);
     const data = await res.json();
@@ -648,8 +668,14 @@ async function openMatchModal(id, teamA, teamB) {
             </div>
             <div class="muted" style="margin-top:12px;text-align:center;">Quarter totals: ${totalsA.q1}-${totalsA.q2}-${totalsA.q3}-${totalsA.q4}${totalsA.ot ? ` OT ${totalsA.ot}` : ''} and ${totalsB.q1}-${totalsB.q2}-${totalsB.q3}-${totalsB.q4}${totalsB.ot ? ` OT ${totalsB.ot}` : ''}</div>
         </div>
-        <div class="box-columns">
+        <div class="detail-tabs">
+            <button class="detail-tab active" type="button" onclick="switchDetailTab('matchModalBody', 'boxscoreTeamA', this)">${fullTeamName(teamA)}</button>
+            <button class="detail-tab" type="button" onclick="switchDetailTab('matchModalBody', 'boxscoreTeamB', this)">${fullTeamName(teamB)}</button>
+        </div>
+        <div class="detail-panel active" data-panel="boxscoreTeamA">
             ${buildBoxScoreTable(teamA, data.rosters?.[teamA], data.stats?.[teamA])}
+        </div>
+        <div class="detail-panel" data-panel="boxscoreTeamB">
             ${buildBoxScoreTable(teamB, data.rosters?.[teamB], data.stats?.[teamB])}
         </div>
     `;
