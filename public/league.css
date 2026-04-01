@@ -349,8 +349,20 @@ th {
 }
 
 tbody tr:last-child td { border-bottom: 0; }
-.standings-row.playoff-zone td { background: rgba(144, 238, 144, 0.3); }
-.standings-row.playoff-zone td:first-child { box-shadow: inset 4px 0 0 rgba(120, 210, 120, 0.85); }
+.standings-row.playoff-zone td {
+    background: rgba(144, 238, 144, 0.3) !important;
+    border-bottom-color: rgba(120, 210, 120, 0.35);
+}
+.standings-row.playoff-zone td:first-child {
+    box-shadow: inset 5px 0 0 rgba(120, 210, 120, 0.95);
+    border-radius: 12px 0 0 12px;
+}
+.standings-row.playoff-zone td:last-child {
+    border-radius: 0 12px 12px 0;
+}
+.standings-row.playoff-zone:hover td {
+    background: rgba(144, 238, 144, 0.36) !important;
+}
 .rank-cell { width: 52px; font-size: 28px; color: var(--gold); }
 .diff-pos { color: #8ae7a0; font-weight: 800; }
 .diff-neg { color: #ff9b9b; font-weight: 800; }
@@ -529,17 +541,18 @@ tbody tr:last-child td { border-bottom: 0; }
     grid-template-columns: auto 1fr;
 }
 .bracket-placeholder-badge {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
+    min-width: 42px;
+    height: 42px;
+    border-radius: 12px;
     display: grid;
     place-items: center;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.1);
+    background: linear-gradient(135deg, rgba(244,197,66,.18), rgba(255,107,53,.12));
+    border: 1px solid rgba(244,197,66,.35);
     color: var(--gold);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
-    letter-spacing: .04em;
+    letter-spacing: .05em;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
 }
 .bracket-team strong {
     display: block;
@@ -579,18 +592,31 @@ tbody tr:last-child td { border-bottom: 0; }
 .power-card { background: linear-gradient(135deg, rgba(34,197,94,.12), rgba(0,194,255,.08)); }
 .partners-block { margin-top: 8px; }
 .sponsor-logo-card {
-    min-height: 110px;
+    min-height: 156px;
     display: grid;
     place-items: center;
-    padding: 16px;
+    padding: 22px 18px;
     gap: 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
 }
 .sponsor-logo-card img {
     width: 100%;
-    max-width: 170px;
-    max-height: 76px;
+    max-width: 210px;
+    max-height: 108px;
     object-fit: contain;
     filter: saturate(1.02);
+}
+.sponsor-logo-card.priority {
+    background: linear-gradient(135deg, rgba(0,194,255,.12), rgba(255,255,255,.04));
+    border-color: rgba(100,220,255,.24);
+}
+.sponsor-logo-card img.logo-wide {
+    max-width: 230px;
+    max-height: 96px;
+}
+.sponsor-logo-card img.logo-standard {
+    max-width: 170px;
+    max-height: 118px;
 }
 
 .modal-overlay,
