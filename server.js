@@ -53,19 +53,86 @@ const getPts = (s) => {
 
 const saveDB = () => { fs.writeFileSync(DB_FILE, JSON.stringify({ schedule, rosters, matchStats }, null, 2)); };
 
-const teamFolderMap = { "KIRTIPUR": "Kirtipur", "KVC HOUNDS": "KVC Hounds", "PLAYBOX": "Playbox", "SOLO": "Solo", "ROYAL": "Royal", "ARMY": "Army", "TIMES": "Times", "GGIC": "GoldenGate" };
-const teamLogoFiles = { "KIRTIPUR": "Kirtipur", "KVC HOUNDS": "Hounds", "PLAYBOX": "Playbox", "SOLO": "Solo", "ROYAL": "Royal", "ARMY": "Army", "TIMES": "Times", "GGIC": "GoldenGate" };
+const teamFolderMap = {
+    "KIRTIPUR": ["Kirtipur", "iimsktr"],
+    "KVC HOUNDS": ["KVC Hounds", "kvchou"],
+    "PLAYBOX": ["playbox", "Playbox"],
+    "SOLO": ["solo", "Solo"],
+    "ROYAL": ["royal", "Royal"],
+    "ARMY": ["army", "Army"],
+    "TIMES": ["times", "Times"],
+    "GGIC": ["GoldenGate", "ggic"]
+};
+const teamLogoFiles = {
+    "KIRTIPUR": ["Kirtipur"],
+    "KVC HOUNDS": ["Hounds"],
+    "PLAYBOX": ["Playbox"],
+    "SOLO": ["Solo"],
+    "ROYAL": ["Royal"],
+    "ARMY": ["Army"],
+    "TIMES": ["Times"],
+    "GGIC": ["GoldenGate"]
+};
+const validExtensions = ['.jpeg', '.jpg', '.png', '.JPEG', '.JPG', '.PNG'];
+
+const normalizeKey = (value = '') => String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const findExistingDirectory = (rootDir, candidates = []) => {
+    if (!fs.existsSync(rootDir)) return null;
+    const directories = fs.readdirSync(rootDir, { withFileTypes: true }).filter((entry) => entry.isDirectory());
+    const byNormalizedName = new Map(directories.map((entry) => [normalizeKey(entry.name), entry.name]));
+
+    for (const candidate of candidates) {
+        const match = byNormalizedName.get(normalizeKey(candidate));
+        if (match) return match;
+    }
+
+    return null;
+};
+
+const findExistingFile = (rootDir, candidates = []) => {
+    if (!fs.existsSync(rootDir)) return null;
+    const files = fs.readdirSync(rootDir, { withFileTypes: true }).filter((entry) => entry.isFile()).map((entry) => entry.name);
+    const byNormalizedBaseName = new Map(files.map((fileName) => [normalizeKey(path.parse(fileName).name), fileName]));
+
+    for (const candidate of candidates) {
+        const match = byNormalizedBaseName.get(normalizeKey(candidate));
+        if (match) return match;
+    }
+
+    return null;
+};
+
+const findPlayerPhotoFile = (teamPath, player) => {
+    if (!fs.existsSync(teamPath)) return null;
+    const files = fs.readdirSync(teamPath, { withFileTypes: true }).filter((entry) => entry.isFile()).map((entry) => entry.name);
+    const exactFiles = new Set(files);
+
+    for (const ext of validExtensions) {
+        const byJersey = `${player.jersey}${ext}`;
+        const byName = `${player.name}${ext}`;
+        if (exactFiles.has(byJersey)) return byJersey;
+        if (exactFiles.has(byName)) return byName;
+    }
+
+    const normalizedJersey = normalizeKey(player.jersey);
+    const normalizedName = normalizeKey(player.name);
+
+    return files.find((fileName) => normalizeKey(path.parse(fileName).name) === normalizedJersey)
+        || files.find((fileName) => normalizeKey(path.parse(fileName).name) === normalizedName)
+        || files.find((fileName) => normalizeKey(path.parse(fileName).name).startsWith(normalizedJersey))
+        || null;
+};
 
 const getDynamicLogos = () => {
-    let logos = {}; const validExtensions = ['.jpeg', '.jpg', '.png', '.JPEG', '.JPG', '.PNG']; const logoDir = path.join(PHOTOS_DIR, 'teamlogoall');
+    let logos = {};
+    const logoDir = path.join(PHOTOS_DIR, 'teamlogoall');
     if(fs.existsSync(logoDir)) {
         Object.keys(teamLogoFiles).forEach(team => {
-            const baseName = teamLogoFiles[team]; 
-            for (let ext of validExtensions) {
-                const expectedFile = `${baseName}${ext}`;
-                if (fs.existsSync(path.join(logoDir, expectedFile))) {
-                    const stat = fs.statSync(path.join(logoDir, expectedFile)); logos[team] = `/photos/teamlogoall/${expectedFile}?v=${stat.mtimeMs}`; break;
-                }
+            const logoFile = findExistingFile(logoDir, teamLogoFiles[team]);
+            if (logoFile) {
+                const stat = fs.statSync(path.join(logoDir, logoFile));
+                logos[team] = `/photos/teamlogoall/${logoFile}?v=${stat.mtimeMs}`;
             }
         });
     }
@@ -73,15 +140,19 @@ const getDynamicLogos = () => {
 };
 
 const refreshPlayerPhoto = (team, player) => {
-    const folderName = teamFolderMap[team]; if (!folderName || !fs.existsSync(PHOTOS_DIR)) return;
-    const teamPath = path.join(PHOTOS_DIR, folderName); const validExtensions = ['.jpeg', '.jpg', '.png', '.JPEG', '.JPG', '.PNG']; let foundFile = false;
-    if (fs.existsSync(teamPath)) {
-        for (let ext of validExtensions) {
-            const fileByJersey = `${player.jersey}${ext}`; const fileByName = `${player.name}${ext}`;
-            if (fs.existsSync(path.join(teamPath, fileByJersey))) { const stat = fs.statSync(path.join(teamPath, fileByJersey)); player.photo = `/photos/${folderName}/${fileByJersey}?v=${stat.mtimeMs}`; foundFile = true; break; } 
-            else if (fs.existsSync(path.join(teamPath, fileByName))) { const stat = fs.statSync(path.join(teamPath, fileByName)); player.photo = `/photos/${folderName}/${fileByName}?v=${stat.mtimeMs}`; foundFile = true; break; }
-        }
+    const folderCandidates = teamFolderMap[team] || [team];
+    const folderName = findExistingDirectory(PHOTOS_DIR, folderCandidates);
+    if (!folderName) return;
+
+    const teamPath = path.join(PHOTOS_DIR, folderName);
+    let foundFile = false;
+    const photoFile = findPlayerPhotoFile(teamPath, player);
+    if (photoFile) {
+        const stat = fs.statSync(path.join(teamPath, photoFile));
+        player.photo = `/photos/${folderName}/${photoFile}?v=${stat.mtimeMs}`;
+        foundFile = true;
     }
+
     if (!foundFile && (!player.photo || player.photo.startsWith('/photos/'))) { player.photo = ""; }
 };
 
