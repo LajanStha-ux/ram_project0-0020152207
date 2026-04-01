@@ -116,10 +116,12 @@ const findPlayerPhotoFile = (teamPath, player) => {
 
     const normalizedJersey = normalizeKey(player.jersey);
     const normalizedName = normalizeKey(player.name);
+    const rawJersey = String(player.jersey).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const jerseyWithSuffixPattern = new RegExp(`^${rawJersey}(?:[-_\\s(]|$)`, 'i');
 
     return files.find((fileName) => normalizeKey(path.parse(fileName).name) === normalizedJersey)
         || files.find((fileName) => normalizeKey(path.parse(fileName).name) === normalizedName)
-        || files.find((fileName) => normalizeKey(path.parse(fileName).name).startsWith(normalizedJersey))
+        || files.find((fileName) => jerseyWithSuffixPattern.test(path.parse(fileName).name))
         || null;
 };
 
