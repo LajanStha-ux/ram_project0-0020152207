@@ -92,13 +92,13 @@ body::before {
 .brand > div { min-width: 0; }
 .brand-copy {
     display: grid;
-    gap: 2px;
+    gap: 4px;
 }
 .brand-logo {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    padding: 5px;
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    padding: 7px;
     background: rgba(255,255,255,.04);
     border: 1px solid rgba(255,255,255,.08);
 }
@@ -141,7 +141,7 @@ body::before {
     letter-spacing: .02em;
 }
 
-.brand-title { margin: 0; font-size: 24px; text-transform: uppercase; }
+.brand-title { margin: 0; font-size: 32px; text-transform: uppercase; }
 .brand-subtitle, .feature-copy, .section-copy, .muted, .team-meta, .card-label, .feature-label, .footer-note { color: var(--muted); }
 .brand-subtitle { margin: 0; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
 .brand-title,
@@ -883,10 +883,10 @@ tbody tr:last-child td { border-bottom: 0; }
     .nav-links { justify-content: flex-start; overflow: auto; padding-bottom: 2px; flex-wrap: nowrap; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }
     .brand-logo {
-        width: 48px;
-        height: 48px;
+        width: 54px;
+        height: 54px;
     }
-    .brand-title { font-size: 22px; }
+    .brand-title { font-size: 28px; }
     .brand-subtitle { font-size: 10px; }
     .hero-title { font-size: clamp(40px, 13vw, 54px); }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
