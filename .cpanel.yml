@@ -1,5 +1,10 @@
+git checkout -- .cpanel.yml
+```
+
+Then open `.cpanel.yml` in Notepad, make sure content is:
+```
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/hjnblcom/myapp
+    - export DEPLOYPATH=/home2/hjnblcom/public_html/myapp
     - /usr/local/bin/npm install
