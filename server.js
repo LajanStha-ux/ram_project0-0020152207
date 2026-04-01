@@ -15,15 +15,17 @@ let schedule = [];
 let rosters = {};
 let matchStats = {}; 
 
-if (fs.existsSync(DB_FILE)) {
+const loadDB = () => {
+    if (!fs.existsSync(DB_FILE)) return;
     try {
         const raw = fs.readFileSync(DB_FILE);
         const dbData = JSON.parse(raw);
-        if (dbData.schedule) schedule = dbData.schedule;
-        if (dbData.rosters) rosters = dbData.rosters;
-        if (dbData.matchStats) matchStats = dbData.matchStats;
+        schedule = dbData.schedule || [];
+        rosters = dbData.rosters || {};
+        matchStats = dbData.matchStats || {};
     } catch(err) {}
-}
+};
+loadDB();
 
 const defaultStats = () => ({ 
     q1_1:0, q1_2:0, q1_3:0, q2_1:0, q2_2:0, q2_3:0, q3_1:0, q3_2:0, q3_3:0, q4_1:0, q4_2:0, q4_3:0, ot_1:0, ot_2:0, ot_3:0, 
@@ -85,7 +87,10 @@ const linkPlayerPhotos = () => {
 };
 linkPlayerPhotos();
 
-app.get('/api/schedule', (req, res) => res.json({ schedule, rosters: injectDynamicPhotos(rosters), matchStats, teamLogos: getDynamicLogos() }));
+app.get('/api/schedule', (req, res) => {
+    loadDB();
+    res.json({ schedule, rosters: injectDynamicPhotos(rosters), matchStats, teamLogos: getDynamicLogos() });
+});
 
 app.post('/api/match', (req, res) => {
     const { date, teamA, teamB } = req.body; const newId = schedule.length > 0 ? Math.max(...schedule.map(m => m.id)) + 1 : 1;
@@ -146,6 +151,7 @@ app.post('/api/edit-player', (req, res) => {
 });
 
 app.get('/api/match/:id', (req, res) => {
+    loadDB();
     const id = parseInt(req.params.id); const match = schedule.find(m => m.id === id);
     if (!match) return res.json({ error: "Not found" });
     if (!matchStats[id]) matchStats[id] = { isCompleted: false, [match.teamA]: {}, [match.teamB]: {} };
@@ -197,6 +203,7 @@ app.post('/api/stat', (req, res) => {
 // 🌟 RE-ADDED: RECENT MATCHES LOGIC (FIXES THE ERROR!)
 // -------------------------------------------------------------
 app.get('/api/recent-matches', (req, res) => {
+    loadDB();
     const team = req.query.team;
     if (!team) return res.json({ recent: [], logos: getDynamicLogos() });
 
@@ -218,6 +225,7 @@ app.get('/api/recent-matches', (req, res) => {
 });
 
 app.get('/api/tournament-stats', (req, res) => {
+    loadDB();
     let allPlayers = []; let totalTournament3s = 0; let teamTotals = {};
     const freshRosters = injectDynamicPhotos(rosters); const logos = getDynamicLogos();
     
@@ -281,6 +289,7 @@ app.get('/api/tournament-stats', (req, res) => {
 });
 
 app.get('/api/standings', (req, res) => {
+    loadDB();
     let standings = {};
     Object.keys(rosters).forEach(t => standings[t] = { team: t, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, pd: 0, pts: 0 });
     schedule.forEach(match => {
