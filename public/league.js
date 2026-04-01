@@ -386,14 +386,14 @@ function renderPlayoffPicture() {
     }
 
     container.innerHTML = `
-        <div class="card-label">Current Top Four Picture</div>
-        <div class="muted">Based on the latest completed games, these teams currently occupy the playoff positions for the Season 2 finals bracket.</div>
+        <div class="card-label">Live Playoff Race</div>
+        <div class="muted">These are the current teams in playoff position based on the latest completed games. Final postseason matchups will be confirmed only after the league stage is complete.</div>
         <div class="playoff-seeds">
             ${seeds.map((team, index) => `
                 <div class="seed-card">
-                    <div class="card-label">Seed ${index + 1}</div>
+                    <div class="card-label">Current Seed ${index + 1}</div>
                     <div style="display:flex;align-items:center;gap:10px;">${logoMarkup(team.team, 34)}<strong>${fullTeamName(team.team)}</strong></div>
-                    <div class="muted">${team.wins}-${team.losses} • ${team.pts} pts</div>
+                    <div class="muted">In position right now: ${team.wins}-${team.losses} • ${team.pts} pts</div>
                 </div>
             `).join('')}
         </div>
@@ -401,15 +401,15 @@ function renderPlayoffPicture() {
             <div class="bracket-column">
                 <div class="bracket-match">
                     <div class="bracket-label">Qualifier 1</div>
-                    <div class="bracket-team"><img src="${teamLogoUrl(seeds[0].team)}" alt="${seeds[0].team}"><div><strong>${fullTeamName(seeds[0].team)}</strong><span>Seed 1</span></div></div>
-                    <div class="bracket-team"><img src="${teamLogoUrl(seeds[1].team)}" alt="${seeds[1].team}"><div><strong>${fullTeamName(seeds[1].team)}</strong><span>Seed 2</span></div></div>
-                    <div class="bracket-note">Winner goes directly to the final.</div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S1</div><div><strong>Seed 1 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S2</div><div><strong>Seed 2 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
+                    <div class="bracket-note">Winner goes directly to the final once the qualified teams are officially confirmed.</div>
                 </div>
                 <div class="bracket-match">
                     <div class="bracket-label">Eliminator</div>
-                    <div class="bracket-team"><img src="${teamLogoUrl(seeds[2].team)}" alt="${seeds[2].team}"><div><strong>${fullTeamName(seeds[2].team)}</strong><span>Seed 3</span></div></div>
-                    <div class="bracket-team"><img src="${teamLogoUrl(seeds[3].team)}" alt="${seeds[3].team}"><div><strong>${fullTeamName(seeds[3].team)}</strong><span>Seed 4</span></div></div>
-                    <div class="bracket-note">Loser is eliminated.</div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S3</div><div><strong>Seed 3 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S4</div><div><strong>Seed 4 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
+                    <div class="bracket-note">Loser is eliminated once the official playoff field is set.</div>
                 </div>
             </div>
             <div class="bracket-column center">
