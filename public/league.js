@@ -342,9 +342,6 @@ function renderMediaHub() {
                     </div>
                 </div>
                 <div class="media-rail">
-                    <a class="ticket-thumb" href="${ticketLink}" target="_blank" rel="noopener noreferrer">
-                        <img src="${ticketThumbnail}" alt="HJNBL ticketing poster" onerror="this.src='/sponsors/Ticket Sanjal.png'">
-                    </a>
                     <div class="media-rail-item">
                         <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="card-label">Official Link</div>
