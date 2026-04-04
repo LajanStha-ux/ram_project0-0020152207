@@ -99,46 +99,14 @@ body::before {
     flex: 1 1 auto;
     min-width: 0;
     position: relative;
+    overflow: visible;
 }
 
 .nav-track {
-    width: 100%;
+    width: auto;
     min-width: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: visible;
     scroll-behavior: smooth;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-}
-
-.nav-track::-webkit-scrollbar {
-    display: none;
-}
-
-.nav-rail-btn {
-    display: none;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 34px;
-    height: 34px;
-    border: 0;
-    border-radius: 999px;
-    background: rgba(6, 16, 28, 0.94);
-    color: var(--text);
-    font-size: 24px;
-    line-height: 1;
-    z-index: 2;
-    cursor: pointer;
-    box-shadow: 0 10px 24px rgba(0,0,0,.28);
-}
-
-.nav-rail-btn-left {
-    left: 0;
-}
-
-.nav-rail-btn-right {
-    right: 0;
 }
 
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
@@ -248,6 +216,7 @@ body::before {
     cursor: grabbing;
 }
 .nav-scroll::-webkit-scrollbar,
+.nav-track::-webkit-scrollbar,
 .media-hub-tabs::-webkit-scrollbar {
     display: none;
 }
@@ -1368,21 +1337,26 @@ tbody tr:last-child td { border-bottom: 0; }
     .nav-scroll {
         width: 100%;
         max-width: 100%;
-        padding: 0 40px 6px;
-    }
-    .nav-track {
-        width: 100%;
-        max-width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
+        padding: 0 0 8px;
+        scroll-behavior: smooth;
         scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .nav-track {
+        width: max-content;
+        min-width: max-content;
+        max-width: none;
+        overflow: visible;
     }
     .nav-links {
+        display: inline-flex;
+        width: max-content;
+        min-width: max-content;
+        max-width: none;
         margin-left: 0;
-    }
-    .nav-rail-btn {
-        display: grid;
-        place-items: center;
+        padding-right: 18px;
     }
     .ticker-card { min-width: 240px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }

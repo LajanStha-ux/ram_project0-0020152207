@@ -1007,7 +1007,7 @@ function toggleGamesLoadMore() {
 }
 
 function scrollHeaderTabs(amount) {
-    const rail = document.querySelector('.nav-track');
+    const rail = document.querySelector('.nav-scroll');
     if (!rail) return;
     rail.scrollBy({ left: amount, behavior: 'smooth' });
 }
@@ -1106,7 +1106,7 @@ function enableHorizontalDrag(element) {
 }
 
 function bindHorizontalRails() {
-    enableHorizontalDrag(document.querySelector('.nav-track'));
+    enableHorizontalDrag(document.querySelector('.nav-scroll'));
     enableHorizontalDrag(document.getElementById('mediaHubTabs'));
     enableHorizontalDrag(document.querySelector('.ticker-track'));
 }
