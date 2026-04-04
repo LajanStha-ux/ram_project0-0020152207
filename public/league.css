@@ -61,11 +61,11 @@ body::before {
 .sticky-shell {
     position: sticky;
     top: 0;
-    z-index: 40;
+    z-index: 80;
     display: grid;
     gap: 10px;
     margin-bottom: 22px;
-    padding-top: 8px;
+    padding-top: 0;
     background: linear-gradient(180deg, rgba(6,16,28,.96), rgba(6,16,28,.88), transparent);
 }
 
@@ -202,7 +202,7 @@ body::before {
     outline: none;
 }
 
-.hero { display: grid; grid-template-columns: 1.35fr .9fr; gap: 22px; margin-bottom: 22px; }
+.hero { display: grid; grid-template-columns: 1.35fr .9fr; gap: 22px; margin-bottom: 22px; align-items: start; }
 .ticker-strip {
     padding: 10px;
     overflow: hidden;
@@ -282,12 +282,12 @@ body::before {
     overflow: hidden;
     position: relative;
     background:
-        linear-gradient(90deg, rgba(5, 10, 18, 0.94) 0%, rgba(5, 10, 18, 0.86) 38%, rgba(5, 10, 18, 0.6) 62%, rgba(5, 10, 18, 0.4) 100%),
-        linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.36)),
+        linear-gradient(90deg, rgba(5, 10, 18, 0.95) 0%, rgba(5, 10, 18, 0.88) 38%, rgba(5, 10, 18, 0.66) 62%, rgba(5, 10, 18, 0.46) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.4)),
         url('/assets/Cover%20Photo.jpg');
-    background-size: 118% auto;
+    background-size: auto, auto, 126% 178%;
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: center, center, center 34%;
 }
 
 .hero-main::after {
@@ -326,6 +326,7 @@ body::before {
 
 .filter-chip.active { color: #07111f; border-color: transparent; background: linear-gradient(135deg, #00c2ff, #8bf0ff); }
 .hero-side { padding: 22px; display: grid; gap: 16px; align-content: start; background: linear-gradient(180deg, rgba(13,25,45,.96), rgba(8,18,34,.96)); }
+.hero-side { align-self: start; }
 
 .feature-card,
 .mini-stat,
@@ -450,6 +451,7 @@ body::before {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
     gap: 18px;
+    align-items: start;
 }
 
 .media-spotlight,
@@ -464,6 +466,7 @@ body::before {
     padding: 22px;
     position: relative;
     overflow: hidden;
+    align-self: start;
 }
 
 .media-spotlight.ticket {
@@ -509,6 +512,7 @@ body::before {
     display: grid;
     gap: 12px;
     align-content: start;
+    align-self: start;
 }
 
 .media-rail-item {
@@ -1202,8 +1206,8 @@ tbody tr:last-child td { border-bottom: 0; }
     .brand-subtitle { font-size: 10px; }
     .hero-title { font-size: clamp(40px, 13vw, 54px); }
     .hero-main {
-        background-size: 155% auto;
-        background-position: center top;
+        background-size: auto, auto, 176% 182%;
+        background-position: center, center, center 18%;
     }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
     .games-grid, .players-grid, .teams-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }

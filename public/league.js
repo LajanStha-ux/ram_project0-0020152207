@@ -235,21 +235,21 @@ function renderFeaturedCards() {
         const status = isFinal ? 'Latest Result' : 'Next Fixture';
         matchCard.innerHTML = isFinal ? `
             <div class="feature-label">${status}</div>
-            <div class="feature-title">${featuredMatch.teamA} vs ${featuredMatch.teamB}</div>
+            <div class="feature-title">${shortTeamName(featuredMatch.teamA)} vs ${shortTeamName(featuredMatch.teamB)}</div>
             <p class="feature-copy">${featuredMatch.date || 'Date TBA'}</p>
             <div class="feature-score">
-                <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${fullTeamName(featuredMatch.teamA)}</div><div class="score-badge">${featuredMatch.scoreA}</div></div>
+                <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamA)}</div><div class="score-badge">${featuredMatch.scoreA}</div></div>
                 <div class="score-side"><div class="status-pill final">Result</div></div>
-                <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${fullTeamName(featuredMatch.teamB)}</div><div class="score-badge">${featuredMatch.scoreB}</div></div>
+                <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamB)}</div><div class="score-badge">${featuredMatch.scoreB}</div></div>
             </div>
         ` : `
             <div class="feature-label">${status}</div>
-            <div class="feature-title">${featuredMatch.teamA} vs ${featuredMatch.teamB}</div>
+            <div class="feature-title">${shortTeamName(featuredMatch.teamA)} vs ${shortTeamName(featuredMatch.teamB)}</div>
             <p class="feature-copy">${featuredMatch.date || 'Date TBA'}</p>
             <div class="feature-score">
-                <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${fullTeamName(featuredMatch.teamA)}</div></div>
+                <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamA)}</div></div>
                 <div class="score-side"><div class="status-pill upcoming">Upcoming</div></div>
-                <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${fullTeamName(featuredMatch.teamB)}</div></div>
+                <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamB)}</div></div>
             </div>
         `;
     }
@@ -297,16 +297,16 @@ function renderMediaHub() {
                 <div class="card-label">${match.date || 'Game Recap'}</div>
                 <div class="status-pill final">Recap</div>
             </div>
-            <div class="recap-title">${fullTeamName(match.teamA)} vs ${fullTeamName(match.teamB)}</div>
+            <div class="recap-title">${shortTeamName(match.teamA)} vs ${shortTeamName(match.teamB)}</div>
             <div class="recap-matchup">
                 <div class="recap-team">
                     ${logoMarkup(match.teamA, 38)}
-                    <div><strong>${fullTeamName(match.teamA)}</strong></div>
+                    <div><strong>${shortTeamName(match.teamA)}</strong></div>
                     <div class="recap-score">${match.scoreA ?? '-'}</div>
                 </div>
                 <div class="recap-team">
                     ${logoMarkup(match.teamB, 38)}
-                    <div><strong>${fullTeamName(match.teamB)}</strong></div>
+                    <div><strong>${shortTeamName(match.teamB)}</strong></div>
                     <div class="recap-score">${match.scoreB ?? '-'}</div>
                 </div>
             </div>
@@ -489,8 +489,8 @@ function renderGames() {
                 <div class="game-meta"><span>Game ${match.id}</span><span class="status-pill ${statusClass}">${statusLabel}</span></div>
                 <div class="muted">${match.date || 'Date TBA'}</div>
                 <div class="matchup">
-                    <div class="team-line">${logoMarkup(match.teamA, 42)}<div class="team-line-name">${fullTeamName(match.teamA)}</div><div class="team-line-score">${match.isCompleted ? match.scoreA : ''}</div></div>
-                    <div class="team-line">${logoMarkup(match.teamB, 42)}<div class="team-line-name">${fullTeamName(match.teamB)}</div><div class="team-line-score">${match.isCompleted ? match.scoreB : ''}</div></div>
+                    <div class="team-line">${logoMarkup(match.teamA, 42)}<div class="team-line-name">${shortTeamName(match.teamA)}</div><div class="team-line-score">${match.isCompleted ? match.scoreA : ''}</div></div>
+                    <div class="team-line">${logoMarkup(match.teamB, 42)}<div class="team-line-name">${shortTeamName(match.teamB)}</div><div class="team-line-score">${match.isCompleted ? match.scoreB : ''}</div></div>
                 </div>
                 <div class="card-actions">${action}</div>
             </article>
