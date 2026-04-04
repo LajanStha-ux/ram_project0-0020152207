@@ -1009,12 +1009,14 @@ function toggleGamesLoadMore() {
 function enableHorizontalDrag(element) {
     if (!element || element.dataset.dragBound === 'true') return;
     element.dataset.dragBound = 'true';
+    element.classList.add('is-draggable');
 
     let startX = 0;
     let startY = 0;
     let startScrollLeft = 0;
     let dragging = false;
     let moved = false;
+    let pointerActive = false;
 
     const onTouchStart = (event) => {
         if (!element.scrollWidth || element.scrollWidth <= element.clientWidth) return;
@@ -1046,10 +1048,49 @@ function enableHorizontalDrag(element) {
         }, 0);
     };
 
+    const onMouseDown = (event) => {
+        if (event.button !== 0) return;
+        if (!element.scrollWidth || element.scrollWidth <= element.clientWidth) return;
+        pointerActive = true;
+        moved = false;
+        startX = event.clientX;
+        startScrollLeft = element.scrollLeft;
+        element.classList.add('is-dragging');
+        event.preventDefault();
+    };
+
+    const onMouseMove = (event) => {
+        if (!pointerActive) return;
+        const deltaX = event.clientX - startX;
+        if (Math.abs(deltaX) > 3) moved = true;
+        element.scrollLeft = startScrollLeft - deltaX;
+    };
+
+    const onMouseUp = () => {
+        pointerActive = false;
+        element.classList.remove('is-dragging');
+        window.setTimeout(() => {
+            moved = false;
+        }, 0);
+    };
+
+    const onWheel = (event) => {
+        if (!element.scrollWidth || element.scrollWidth <= element.clientWidth) return;
+        const horizontalIntent = Math.abs(event.deltaX) > 0 || Math.abs(event.deltaY) > 0;
+        if (!horizontalIntent) return;
+        element.scrollLeft += event.deltaX || event.deltaY;
+        event.preventDefault();
+    };
+
     element.addEventListener('touchstart', onTouchStart, { passive: true });
     element.addEventListener('touchmove', onTouchMove, { passive: false });
     element.addEventListener('touchend', onTouchEnd, { passive: true });
     element.addEventListener('touchcancel', onTouchEnd, { passive: true });
+    element.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    element.addEventListener('mouseleave', onMouseUp);
+    element.addEventListener('wheel', onWheel, { passive: false });
 
     element.addEventListener('click', (event) => {
         if (!moved) return;

@@ -98,6 +98,7 @@ body::before {
 .nav-scroll {
     flex: 0 1 auto;
     min-width: 0;
+    scroll-behavior: smooth;
 }
 
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
@@ -189,6 +190,19 @@ body::before {
     overscroll-behavior-x: contain;
     touch-action: pan-x;
 }
+.nav-scroll.is-draggable,
+.media-hub-tabs.is-draggable,
+.ticker-track.is-draggable,
+.media-carousel.is-draggable {
+    cursor: grab;
+    user-select: none;
+}
+.nav-scroll.is-dragging,
+.media-hub-tabs.is-dragging,
+.ticker-track.is-dragging,
+.media-carousel.is-dragging {
+    cursor: grabbing;
+}
 .nav-scroll::-webkit-scrollbar,
 .media-hub-tabs::-webkit-scrollbar {
     display: none;
@@ -237,6 +251,7 @@ body::before {
     overflow-y: hidden;
     padding-bottom: 2px;
     scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
 }
 
 .ticker-track::-webkit-scrollbar,
@@ -520,6 +535,7 @@ body::before {
     overflow-y: hidden;
     padding-bottom: 4px;
     scrollbar-width: none;
+    scroll-behavior: smooth;
 }
 
 .media-hub-tabs-track {
