@@ -166,6 +166,14 @@ body::before {
 }
 
 .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; align-items: center; }
+.nav-links,
+.ticker-track,
+.media-carousel,
+.media-hub-tabs {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+}
 .nav-links a {
     padding: 10px 10px;
     border-radius: 10px;
@@ -205,6 +213,7 @@ body::before {
     display: flex;
     gap: 8px;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 2px;
     scroll-snap-type: x proximity;
 }
@@ -277,7 +286,8 @@ body::before {
         linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.36)),
         url('/assets/Cover%20Photo.jpg');
     background-size: cover;
-    background-position: center right;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .hero-main::after {
@@ -407,8 +417,11 @@ body::before {
 
 .media-hub-tabs {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
 }
 
 .media-tab {
@@ -518,6 +531,7 @@ body::before {
     display: flex;
     gap: 14px;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 4px;
     scroll-snap-type: x proximity;
 }
@@ -1177,7 +1191,7 @@ tbody tr:last-child td { border-bottom: 0; }
         gap: 8px;
     }
     .topbar { flex-direction: column; align-items: stretch; border-radius: 24px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
-    .nav-links { justify-content: flex-start; overflow: auto; padding-bottom: 2px; flex-wrap: nowrap; }
+    .nav-links { justify-content: flex-start; overflow-x: auto; overflow-y: hidden; padding-bottom: 2px; flex-wrap: nowrap; }
     .ticker-card { min-width: 240px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }
     .brand-logo {
@@ -1187,9 +1201,7 @@ tbody tr:last-child td { border-bottom: 0; }
     .brand-title { font-size: 28px; }
     .brand-subtitle { font-size: 10px; }
     .hero-title { font-size: clamp(40px, 13vw, 54px); }
-    .hero-main {
-        background-position: 72% center;
-    }
+    .hero-main { background-position: center top; }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
     .games-grid, .players-grid, .teams-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
     .media-feature,

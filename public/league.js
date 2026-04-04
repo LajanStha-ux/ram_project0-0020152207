@@ -21,7 +21,9 @@ const teamNames = {
 
 const ticketLink = 'https://www.ticketsanjal.com/events/282';
 const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
+const liveChannelLink = 'https://www.youtube.com/@ActionSportsNepal';
 const ticketThumbnail = 'https://cdn.ticketsanjal.com/images/2026/03/01/073141-Main%201x1-500*500.jpeg';
+const actionSportsLogo = '/sponsors/Layer%206.png';
 const playlistVideos = [
     { videoId: '-TqcZ6QDqLo', title: 'ARMY VS GOLDEN GATE || MATCH - 52 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/-TqcZ6QDqLo/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=-TqcZ6QDqLo&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'IuA9TTpTF6Q', title: 'KVC HOUNDS VS TIMES || MATCH - 51 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/IuA9TTpTF6Q/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=IuA9TTpTF6Q&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
@@ -126,7 +128,15 @@ function normalizeMatchText(text = '') {
     return String(text).replace(/\|\|/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
+function getVideoMatchId(video) {
+    const match = String(video?.title || '').match(/MATCH\s*-\s*(\d+)/i);
+    return match ? Number(match[1]) : null;
+}
+
 function findPlaylistVideoForMatch(match) {
+    const byMatchId = playlistVideos.find((video) => getVideoMatchId(video) === Number(match.id));
+    if (byMatchId) return byMatchId;
+
     const teamA = normalizeMatchText(fullTeamName(match.teamA));
     const teamB = normalizeMatchText(fullTeamName(match.teamB));
     return playlistVideos.find((video) => {
@@ -348,14 +358,21 @@ function renderMediaHub() {
             <div class="media-feature">
                 <div class="media-spotlight watch">
                     <div class="eyebrow">Watch Live</div>
-                    <h3>Stream HJNBL games and replays from the official playlist.</h3>
-                    <p>Jump straight into the YouTube playlist for live coverage, replay access, and the easiest way to keep up with the season from phone or desktop.</p>
+                    <h3>Watch HJNBL live on the Action Sports Nepal YouTube channel.</h3>
+                    <p>Go straight to the official Action Sports Nepal channel for live coverage, recent uploads, and direct access to the HJNBL video stream destination.</p>
                     <div class="media-actions">
-                        <a class="btn btn-primary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Open Playlist</a>
-                        <a class="btn btn-secondary" href="#records">View Records</a>
+                        <a class="btn btn-primary" href="${liveChannelLink}" target="_blank" rel="noopener noreferrer">Open Channel</a>
+                        <a class="btn btn-secondary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Open Playlist</a>
                     </div>
                 </div>
                 <div class="media-rail">
+                    <div class="media-rail-item">
+                        <img src="${actionSportsLogo}" alt="Action Sports HD logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
+                        <div class="media-rail-copy">
+                            <strong>Action Sports Nepal</strong>
+                            <div class="muted">Official YouTube channel for HJNBL live coverage and uploads.</div>
+                        </div>
+                    </div>
                     <div class="card-label">Playlist Matches</div>
                     <div class="media-carousel">${watchRail}</div>
                 </div>
