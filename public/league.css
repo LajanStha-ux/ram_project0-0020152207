@@ -175,6 +175,7 @@ body::before {
     touch-action: pan-x;
 }
 .nav-links a {
+    flex: 0 0 auto;
     padding: 10px 10px;
     border-radius: 10px;
     color: #f5f8ff;
@@ -182,6 +183,7 @@ body::before {
     font-weight: 700;
     background: transparent;
     transition: .2s ease;
+    white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -444,6 +446,7 @@ body::before {
 }
 
 .media-tab {
+    flex: 0 0 auto;
     border: 1px solid rgba(255,255,255,.08);
     border-radius: 999px;
     padding: 12px 18px;
@@ -452,6 +455,7 @@ body::before {
     font-weight: 800;
     cursor: pointer;
     transition: .2s ease;
+    white-space: nowrap;
 }
 
 .media-tab.active {
@@ -1213,7 +1217,15 @@ tbody tr:last-child td { border-bottom: 0; }
         gap: 8px;
     }
     .topbar { flex-direction: column; align-items: stretch; border-radius: 24px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
-    .nav-links { justify-content: flex-start; overflow-x: auto; overflow-y: hidden; padding-bottom: 2px; flex-wrap: nowrap; }
+    .nav-links {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        max-width: 100%;
+        padding-bottom: 6px;
+    }
     .ticker-card { min-width: 240px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }
     .brand-logo {
@@ -1228,6 +1240,10 @@ tbody tr:last-child td { border-bottom: 0; }
     .games-grid, .players-grid, .teams-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
     .media-feature,
     .recaps-grid { grid-template-columns: 1fr; }
+    .media-hub-tabs {
+        width: 100%;
+        max-width: 100%;
+    }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }
     .media-spotlight h3 { font-size: 34px; }
