@@ -315,6 +315,177 @@ body::before {
     gap: 14px;
 }
 
+.media-surface {
+    display: grid;
+    gap: 18px;
+}
+
+.media-hub-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.media-tab {
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: rgba(255,255,255,.05);
+    color: var(--text);
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.media-tab.active {
+    color: #07111f;
+    border-color: transparent;
+    background: linear-gradient(135deg, #f4c542, #ff7d4d);
+}
+
+.media-hub-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.media-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+    gap: 18px;
+}
+
+.media-spotlight,
+.media-rail,
+.recap-card {
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+}
+
+.media-spotlight {
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+}
+
+.media-spotlight.ticket {
+    background: radial-gradient(circle at top right, rgba(255,107,53,.22), transparent 34%), linear-gradient(135deg, rgba(34,22,18,.96), rgba(64,22,15,.9));
+}
+
+.media-spotlight.watch {
+    background: radial-gradient(circle at top right, rgba(0,194,255,.22), transparent 34%), linear-gradient(135deg, rgba(9,24,42,.96), rgba(9,38,62,.9));
+}
+
+.media-spotlight.recaps {
+    background: radial-gradient(circle at top right, rgba(244,197,66,.2), transparent 34%), linear-gradient(135deg, rgba(23,23,40,.96), rgba(54,18,22,.9));
+}
+
+.media-spotlight h3,
+.recap-title {
+    margin: 10px 0 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+}
+
+.media-spotlight h3 {
+    font-size: 42px;
+    line-height: .95;
+}
+
+.media-spotlight p {
+    margin: 0 0 18px;
+    max-width: 54ch;
+    color: #d7e5fb;
+    line-height: 1.7;
+}
+
+.media-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.media-rail {
+    padding: 18px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+}
+
+.media-rail-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.04);
+}
+
+.media-rail-copy strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 18px;
+}
+
+.recaps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.recap-card {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+}
+
+.recap-topline,
+.recap-teams {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.recap-topline {
+    justify-content: space-between;
+}
+
+.recap-topline .status-pill {
+    flex-shrink: 0;
+}
+
+.recap-matchup {
+    display: grid;
+    gap: 10px;
+}
+
+.recap-team {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.recap-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 36px;
+    line-height: .9;
+}
+
+.recap-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.media-link {
+    font-weight: 800;
+    color: #8bd9ff;
+}
+
 .hero > *,
 .metric-grid > *,
 .games-grid > *,
@@ -869,6 +1040,8 @@ tbody tr:last-child td { border-bottom: 0; }
 @media (max-width: 1100px) {
     .hero, .two-col, .sheet-layout, .box-columns { grid-template-columns: 1fr; }
     .games-grid, .players-grid, .teams-grid, .metric-grid, .identity-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .media-feature,
+    .recaps-grid { grid-template-columns: 1fr 1fr; }
     .sponsor-logo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .roster-grid { grid-template-columns: 1fr; }
     .playoff-bracket { grid-template-columns: 1fr; }
@@ -891,8 +1064,13 @@ tbody tr:last-child td { border-bottom: 0; }
     .hero-title { font-size: clamp(40px, 13vw, 54px); }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
     .games-grid, .players-grid, .teams-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
+    .media-feature,
+    .recaps-grid { grid-template-columns: 1fr; }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }
+    .media-spotlight h3 { font-size: 34px; }
+    .media-actions,
+    .recap-footer { flex-direction: column; align-items: stretch; }
     .modal-overlay,
     .sheet-overlay {
         align-items: flex-start;

@@ -3,6 +3,7 @@
     tournamentData: null,
     standings: [],
     fixtureFilter: 'all',
+    mediaTab: 'recaps',
     playerVisibleCount: 10,
     gamesVisibleCount: 9
 };
@@ -17,6 +18,9 @@ const teamNames = {
     'GGIC': 'Golden Gate International',
     'PLAYBOX': 'Playbox Arena'
 };
+
+const ticketLink = 'https://www.ticketsanjal.com/events/282';
+const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
 
 const teamPhotoFolders = {
     'KIRTIPUR': 'Kirtipur',
@@ -186,6 +190,153 @@ function renderFeaturedCards() {
             </div>
         `;
     }
+}
+
+function renderMediaHub() {
+    const tabs = [
+        { key: 'recaps', label: 'Game Recaps' },
+        { key: 'watch', label: 'Watch Live' },
+        { key: 'tickets', label: 'Tickets' }
+    ];
+
+    document.getElementById('mediaHubTabs').innerHTML = tabs.map((tab) => `
+        <button class="media-tab ${state.mediaTab === tab.key ? 'active' : ''}" type="button" onclick="setMediaTab('${tab.key}')">${tab.label}</button>
+    `).join('');
+
+    const latestCompleted = [...completedMatches()].sort((a, b) => b.id - a.id);
+    const recapCards = latestCompleted.slice(0, 4).map((match) => `
+        <article class="recap-card">
+            <div class="recap-topline">
+                <div class="card-label">${match.date || 'Game Recap'}</div>
+                <div class="status-pill final">Recap</div>
+            </div>
+            <div class="recap-matchup">
+                <div class="recap-team">
+                    ${logoMarkup(match.teamA, 38)}
+                    <div><strong>${fullTeamName(match.teamA)}</strong></div>
+                    <div class="recap-score">${match.scoreA ?? '-'}</div>
+                </div>
+                <div class="recap-team">
+                    ${logoMarkup(match.teamB, 38)}
+                    <div><strong>${fullTeamName(match.teamB)}</strong></div>
+                    <div class="recap-score">${match.scoreB ?? '-'}</div>
+                </div>
+            </div>
+            <div class="recap-footer">
+                <div class="muted">Full game replay and recap playlist on YouTube.</div>
+                <a class="media-link" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Open Playlist</a>
+            </div>
+        </article>
+    `).join('');
+
+    const contentByTab = {
+        tickets: `
+            <div class="media-feature">
+                <div class="media-spotlight ticket">
+                    <div class="eyebrow">Official Ticketing</div>
+                    <h3>Book HJNBL Season 2 seats through Ticket Sanjal.</h3>
+                    <p>Use the official booking page to reserve seats for the remaining league nights and playoff atmosphere. This is the direct ticketing route for fans following the tournament in person.</p>
+                    <div class="media-actions">
+                        <a class="btn btn-primary" href="${ticketLink}" target="_blank" rel="noopener noreferrer">Book Tickets</a>
+                        <a class="btn btn-secondary" href="#game-center">See Fixtures First</a>
+                    </div>
+                </div>
+                <div class="media-rail">
+                    <div class="media-rail-item">
+                        <div class="card-label">Official Link</div>
+                        <div class="media-rail-copy">
+                            <strong>Ticket Sanjal Event Page</strong>
+                            <div class="muted">Reserve seats for HJNBL Season 2 through the official booking page.</div>
+                        </div>
+                    </div>
+                    <div class="media-rail-item">
+                        <div class="status-pill upcoming">Matchday</div>
+                        <div class="media-rail-copy">
+                            <strong>Use before every game night</strong>
+                            <div class="muted">Perfect for fans planning arena visits and sharing the booking page.</div>
+                        </div>
+                    </div>
+                    <div class="media-rail-item">
+                        <div class="card-label">Direct URL</div>
+                        <div class="media-rail-copy">
+                            <strong>ticketsanjal.com/events/282</strong>
+                            <div class="muted">Fast access to the HJNBL ticket page.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        watch: `
+            <div class="media-feature">
+                <div class="media-spotlight watch">
+                    <div class="eyebrow">Watch Live</div>
+                    <h3>Stream HJNBL games and replays from the official playlist.</h3>
+                    <p>Jump straight into the YouTube playlist for live coverage, replay access, and the easiest way to keep up with the season from phone or desktop.</p>
+                    <div class="media-actions">
+                        <a class="btn btn-primary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Open Playlist</a>
+                        <a class="btn btn-secondary" href="#records">View Records</a>
+                    </div>
+                </div>
+                <div class="media-rail">
+                    ${latestCompleted.slice(0, 3).map((match) => `
+                        <div class="media-rail-item">
+                            ${logoMarkup(match.teamA, 40)}
+                            <div class="media-rail-copy">
+                                <strong>${fullTeamName(match.teamA)} ${match.scoreA} - ${match.scoreB} ${fullTeamName(match.teamB)}</strong>
+                                <div class="muted">${match.date} • Replay available from the official playlist.</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `,
+        recaps: `
+            <div class="media-feature">
+                <div class="media-spotlight recaps">
+                    <div class="eyebrow">Season Recaps</div>
+                    <h3>Catch the latest full game recaps from HJNBL Season 2.</h3>
+                    <p>This section works like a league content rail: recent final scores, quick recap cards, and one direct path to the full replay playlist for the latest completed games.</p>
+                    <div class="media-actions">
+                        <a class="btn btn-primary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Watch Recaps</a>
+                        <a class="btn btn-secondary" href="${ticketLink}" target="_blank" rel="noopener noreferrer">Buy Tickets</a>
+                    </div>
+                </div>
+                <div class="media-rail">
+                    <div class="media-rail-item">
+                        <div class="status-pill final">Latest Finals</div>
+                        <div class="media-rail-copy">
+                            <strong>${latestCompleted.length} completed games tracked so far</strong>
+                            <div class="muted">Latest recap cards are based on the official completed match data already in the system.</div>
+                        </div>
+                    </div>
+                    <div class="media-rail-item">
+                        <div class="card-label">Playlist</div>
+                        <div class="media-rail-copy">
+                            <strong>Official YouTube recap and live stream hub</strong>
+                            <div class="muted">One destination for live broadcasts, replays, and match recap viewing.</div>
+                        </div>
+                    </div>
+                    <div class="media-rail-item">
+                        <div class="card-label">Tickets</div>
+                        <div class="media-rail-copy">
+                            <strong>Go from recap to matchday</strong>
+                            <div class="muted">Book the next visit to the arena directly from the official ticket link.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="recaps-grid">
+                ${recapCards || '<div class="empty-state" style="grid-column:1/-1;">Recap cards will appear once completed games are available.</div>'}
+            </div>
+        `
+    };
+
+    document.getElementById('mediaHubPanel').innerHTML = contentByTab[state.mediaTab] || contentByTab.recaps;
+}
+
+function setMediaTab(tabKey) {
+    state.mediaTab = tabKey;
+    renderMediaHub();
 }
 
 function renderFixtureFilters() {
@@ -775,6 +926,7 @@ async function init() {
 
         setOverviewStats();
         renderFeaturedCards();
+        renderMediaHub();
         renderGames();
         renderStandings();
         renderHeadlineLeaders();
