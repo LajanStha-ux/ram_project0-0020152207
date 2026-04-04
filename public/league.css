@@ -96,10 +96,23 @@ body::before {
 }
 
 .nav-scroll {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     min-width: 0;
-    scroll-behavior: smooth;
     position: relative;
+}
+
+.nav-track {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nav-track::-webkit-scrollbar {
+    display: none;
 }
 
 .nav-rail-btn {
@@ -200,15 +213,17 @@ body::before {
 
 .nav-links {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     align-items: center;
     gap: 6px;
-    width: auto;
+    width: max-content;
+    min-width: max-content;
     max-width: none;
-    overflow: visible;
+    margin-left: auto;
     padding-bottom: 0;
 }
+.nav-track,
 .nav-scroll,
 .media-hub-tabs,
 .ticker-track,
@@ -217,6 +232,7 @@ body::before {
     overscroll-behavior-x: contain;
     touch-action: pan-x;
 }
+.nav-track.is-draggable,
 .nav-scroll.is-draggable,
 .media-hub-tabs.is-draggable,
 .ticker-track.is-draggable,
@@ -224,6 +240,7 @@ body::before {
     cursor: grab;
     user-select: none;
 }
+.nav-track.is-dragging,
 .nav-scroll.is-dragging,
 .media-hub-tabs.is-dragging,
 .ticker-track.is-dragging,
@@ -1351,20 +1368,17 @@ tbody tr:last-child td { border-bottom: 0; }
     .nav-scroll {
         width: 100%;
         max-width: 100%;
+        padding: 0 40px 6px;
+    }
+    .nav-track {
+        width: 100%;
+        max-width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
-        padding: 0 40px 6px;
         scrollbar-width: none;
     }
     .nav-links {
-        display: inline-flex;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        width: max-content;
-        min-width: max-content;
-        max-width: none;
-        overflow: visible;
-        padding-bottom: 0;
+        margin-left: 0;
     }
     .nav-rail-btn {
         display: grid;
