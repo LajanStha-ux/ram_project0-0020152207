@@ -95,6 +95,11 @@ body::before {
     border-radius: 18px;
 }
 
+.nav-scroll {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .brand > div { min-width: 0; }
 .brand-copy {
@@ -167,27 +172,24 @@ body::before {
 
 .nav-links {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     align-items: center;
     gap: 6px;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
+    width: auto;
+    max-width: none;
+    overflow: visible;
+    padding-bottom: 0;
 }
-.nav-links,
+.nav-scroll,
+.media-hub-tabs,
 .ticker-track,
-.media-carousel,
-.media-hub-tabs {
+.media-carousel {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
     touch-action: pan-x;
 }
-.nav-links::-webkit-scrollbar,
+.nav-scroll::-webkit-scrollbar,
 .media-hub-tabs::-webkit-scrollbar {
     display: none;
 }
@@ -201,7 +203,6 @@ body::before {
     background: transparent;
     transition: .2s ease;
     white-space: nowrap;
-    scroll-snap-align: start;
 }
 
 .nav-links a:hover,
@@ -304,10 +305,11 @@ body::before {
     border: 0;
     background-color: #08111e;
     background-image: url('/assets/Cover%20Photo.jpg');
-    background-size: cover;
+    background-size: 102%;
     background-repeat: no-repeat;
     background-position: center center;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    animation: heroPosterZoom 14s ease-out forwards;
 }
 
 .hero-main::before,
@@ -337,6 +339,15 @@ body::before {
 .hero-main > * {
     position: relative;
     z-index: 1;
+}
+
+@keyframes heroPosterZoom {
+    from {
+        background-size: 102%;
+    }
+    to {
+        background-size: 110%;
+    }
 }
 
 .hero-title { margin: 18px 0 14px; font-size: clamp(56px, 8vw, 88px); text-transform: uppercase; }
@@ -455,17 +466,22 @@ body::before {
 }
 
 .media-hub-tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
+    display: block;
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 4px;
     scrollbar-width: none;
+}
+
+.media-hub-tabs-track {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    min-width: max-content;
     scroll-snap-type: x proximity;
 }
 
@@ -1242,14 +1258,23 @@ tbody tr:last-child td { border-bottom: 0; }
         gap: 8px;
     }
     .topbar { flex-direction: column; align-items: stretch; border-radius: 24px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
-    .nav-links {
-        justify-content: flex-start;
-        overflow-x: auto;
-        overflow-y: hidden;
+    .nav-scroll {
         width: 100%;
         max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
         padding-bottom: 6px;
+        scrollbar-width: none;
+    }
+    .nav-links {
+        display: inline-flex;
         flex-wrap: nowrap;
+        justify-content: flex-start;
+        width: max-content;
+        min-width: max-content;
+        max-width: none;
+        overflow: visible;
+        padding-bottom: 0;
     }
     .ticker-card { min-width: 240px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }
@@ -1268,7 +1293,8 @@ tbody tr:last-child td { border-bottom: 0; }
     .media-hub-tabs {
         width: 100%;
         max-width: 100%;
-        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
     }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }

@@ -281,9 +281,13 @@ function renderMediaHub() {
         { key: 'tickets', label: 'Tickets' }
     ];
 
-    document.getElementById('mediaHubTabs').innerHTML = tabs.map((tab) => `
-        <button class="media-tab ${state.mediaTab === tab.key ? 'active' : ''}" type="button" onclick="setMediaTab('${tab.key}')">${tab.label}</button>
-    `).join('');
+    document.getElementById('mediaHubTabs').innerHTML = `
+        <div class="media-hub-tabs-track">
+            ${tabs.map((tab) => `
+                <button class="media-tab ${state.mediaTab === tab.key ? 'active' : ''}" type="button" onclick="setMediaTab('${tab.key}')">${tab.label}</button>
+            `).join('')}
+        </div>
+    `;
 
     const latestCompleted = [...completedMatches()].sort((a, b) => b.id - a.id);
     const recapCards = latestCompleted.slice(0, 8).map((match) => {
