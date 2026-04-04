@@ -9,7 +9,7 @@
 };
 
 const teamShortNames = {
-    'KIRTIPUR': 'IIMS',
+    'KIRTIPUR': 'Kirtipur',
     'TIMES': 'TIMES',
     'SOLO': 'SOLO',
     'ARMY': 'TAC',
