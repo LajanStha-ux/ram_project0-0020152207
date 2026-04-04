@@ -8,6 +8,17 @@
     gamesVisibleCount: 9
 };
 
+const teamShortNames = {
+    'KIRTIPUR': 'IIMS',
+    'TIMES': 'TIMES',
+    'SOLO': 'SOLO',
+    'ARMY': 'TAC',
+    'ROYAL': 'ROYAL',
+    'KVC HOUNDS': 'KVC',
+    'GGIC': 'GGIC',
+    'PLAYBOX': 'PLAYBOX'
+};
+
 const teamNames = {
     'KIRTIPUR': 'IIMS Kirtipur',
     'TIMES': 'Times Club',
@@ -22,8 +33,8 @@ const teamNames = {
 const ticketLink = 'https://www.ticketsanjal.com/events/282';
 const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
 const liveChannelLink = 'https://www.youtube.com/@ActionSportsNepal';
-const ticketThumbnail = 'https://cdn.ticketsanjal.com/images/2026/03/01/073141-Main%201x1-500*500.jpeg';
-const actionSportsLogo = '/sponsors/Layer%206.png';
+const ticketThumbnail = '/sponsors/Ticket%20Sanjal.png';
+const actionSportsLogo = 'https://yt3.googleusercontent.com/2ug7q7jcVFJ8Vtn9spjaFM3QdN0Yj-8CPNEAbDcoJdXQrm2_43m7RuVsv64fsdZzFw6657DD-Nk=s900-c-k-c0x00ffffff-no-rj';
 const playlistVideos = [
     { videoId: '-TqcZ6QDqLo', title: 'ARMY VS GOLDEN GATE || MATCH - 52 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/-TqcZ6QDqLo/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=-TqcZ6QDqLo&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'IuA9TTpTF6Q', title: 'KVC HOUNDS VS TIMES || MATCH - 51 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/IuA9TTpTF6Q/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=IuA9TTpTF6Q&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
@@ -58,6 +69,10 @@ const statOptions = {
 
 function fullTeamName(team) {
     return teamNames[team] || team;
+}
+
+function shortTeamName(team) {
+    return teamShortNames[team] || team;
 }
 
 function logoMarkup(team, size = 48) {
@@ -163,12 +178,12 @@ function renderTickerStrip() {
                     <div class="ticker-lines">
                         <div class="ticker-team">
                             ${logoMarkup(match.teamA, 24)}
-                            <strong>${fullTeamName(match.teamA)}</strong>
+                            <strong>${shortTeamName(match.teamA)}</strong>
                             <div class="ticker-score">${match.isCompleted ? match.scoreA : ''}</div>
                         </div>
                         <div class="ticker-team">
                             ${logoMarkup(match.teamB, 24)}
-                            <strong>${fullTeamName(match.teamB)}</strong>
+                            <strong>${shortTeamName(match.teamB)}</strong>
                             <div class="ticker-score">${match.isCompleted ? match.scoreB : ''}</div>
                         </div>
                     </div>
@@ -297,7 +312,7 @@ function renderMediaHub() {
             </div>
             <div class="recap-footer">
                 <div class="muted">${video ? video.title.replace(/\s*\|\|.*$/, '') : 'Full game replay and recap playlist on YouTube.'}</div>
-                <a class="media-link" href="${video?.url || livePlaylistLink}" target="_blank" rel="noopener noreferrer">${video ? 'Watch Match' : 'Open Playlist'}</a>
+                <a class="media-link" href="${video?.url || livePlaylistLink}" target="_blank" rel="noopener noreferrer">Watch Now</a>
             </div>
         </article>
     `;
@@ -331,6 +346,7 @@ function renderMediaHub() {
                         <img src="${ticketThumbnail}" alt="HJNBL ticketing poster" onerror="this.src='/sponsors/Ticket Sanjal.png'">
                     </a>
                     <div class="media-rail-item">
+                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="card-label">Official Link</div>
                         <div class="media-rail-copy">
                             <strong>Ticket Sanjal Event Page</strong>
@@ -338,6 +354,7 @@ function renderMediaHub() {
                         </div>
                     </div>
                     <div class="media-rail-item">
+                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="status-pill upcoming">Matchday</div>
                         <div class="media-rail-copy">
                             <strong>Use before every game night</strong>
@@ -345,6 +362,7 @@ function renderMediaHub() {
                         </div>
                     </div>
                     <div class="media-rail-item">
+                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="card-label">Direct URL</div>
                         <div class="media-rail-copy">
                             <strong>ticketsanjal.com/events/282</strong>
@@ -391,6 +409,7 @@ function renderMediaHub() {
                 </div>
                 <div class="media-rail">
                     <div class="media-rail-item">
+                        <img src="${playlistVideos[0]?.thumbnail || '/assets/tour_logo.png'}" alt="Latest recap thumbnail" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="status-pill final">Latest Finals</div>
                         <div class="media-rail-copy">
                             <strong>${latestCompleted.length} completed games tracked so far</strong>
@@ -398,6 +417,7 @@ function renderMediaHub() {
                         </div>
                     </div>
                     <div class="media-rail-item">
+                        <img src="${playlistVideos[1]?.thumbnail || '/assets/tour_logo.png'}" alt="Playlist thumbnail" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="card-label">Playlist</div>
                         <div class="media-rail-copy">
                             <strong>Official YouTube recap and live stream hub</strong>
@@ -405,6 +425,7 @@ function renderMediaHub() {
                         </div>
                     </div>
                     <div class="media-rail-item">
+                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket thumbnail" style="width:72px;height:72px;object-fit:contain;border-radius:14px;background:rgba(255,255,255,.04);padding:8px;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="card-label">Tickets</div>
                         <div class="media-rail-copy">
                             <strong>Go from recap to matchday</strong>

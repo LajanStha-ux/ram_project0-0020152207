@@ -285,7 +285,7 @@ body::before {
         linear-gradient(90deg, rgba(5, 10, 18, 0.94) 0%, rgba(5, 10, 18, 0.86) 38%, rgba(5, 10, 18, 0.6) 62%, rgba(5, 10, 18, 0.4) 100%),
         linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.36)),
         url('/assets/Cover%20Photo.jpg');
-    background-size: cover;
+    background-size: 118% auto;
     background-repeat: no-repeat;
     background-position: center center;
 }
@@ -643,7 +643,7 @@ body::before {
 
 .metric-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 22px; }
 .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.leaders-grid { grid-template-columns: 1fr; max-width: 420px; }
+.leaders-grid { grid-template-columns: 1fr; max-width: none; width: 100%; }
 .players-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 18px; }
 .teams-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -712,7 +712,7 @@ section { margin-bottom: 22px; }
 .team-line { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
 .team-line-name { font-weight: 800; font-size: 15px; }
 .team-line-score { font-size: 42px; min-width: 36px; text-align: right; }
-.two-col { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; }
+.two-col { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items: start; }
 .table-wrap { overflow: auto; border-radius: 18px; border: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02); }
 
 table { width: 100%; border-collapse: collapse; min-width: 660px; }
@@ -1201,7 +1201,10 @@ tbody tr:last-child td { border-bottom: 0; }
     .brand-title { font-size: 28px; }
     .brand-subtitle { font-size: 10px; }
     .hero-title { font-size: clamp(40px, 13vw, 54px); }
-    .hero-main { background-position: center top; }
+    .hero-main {
+        background-size: 155% auto;
+        background-position: center top;
+    }
     .section-title, .modal-title, .sheet-title { font-size: 34px; }
     .games-grid, .players-grid, .teams-grid, .metric-grid, .sheet-stats, .identity-grid, .sponsor-logo-grid, .records-grid, .playoff-grid, .playoff-seeds { grid-template-columns: 1fr; }
     .media-feature,
