@@ -21,6 +21,17 @@ const teamNames = {
 
 const ticketLink = 'https://www.ticketsanjal.com/events/282';
 const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
+const ticketThumbnail = 'https://cdn.ticketsanjal.com/images/2026/03/01/073141-Main%201x1-500*500.jpeg';
+const playlistVideos = [
+    { videoId: '-TqcZ6QDqLo', title: 'ARMY VS GOLDEN GATE || MATCH - 52 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/-TqcZ6QDqLo/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=-TqcZ6QDqLo&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'IuA9TTpTF6Q', title: 'KVC HOUNDS VS TIMES || MATCH - 51 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/IuA9TTpTF6Q/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=IuA9TTpTF6Q&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: '7Ldo_Be_m-s', title: 'ROYAL VS SOLO || MATCH - 49 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/7Ldo_Be_m-s/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=7Ldo_Be_m-s&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'M8mb8akLGEk', title: 'IIMS KIRTIPUR VS PLAYBOX || MATCH - 50 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/M8mb8akLGEk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=M8mb8akLGEk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'x7OkDPUWF9M', title: 'ARMY VS TIMES || MATCH - 48 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/x7OkDPUWF9M/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=x7OkDPUWF9M&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'rLX-Wzbllro', title: 'KVC HOUNDS VS GOLDEN GATE || MATCH - 47 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/rLX-Wzbllro/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=rLX-Wzbllro&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'xLgH97aTbpk', title: 'IIMS KIRTIPUR VS SOLO || MATCH - 46 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/xLgH97aTbpk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=xLgH97aTbpk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: '0JtdXrI-WZA', title: 'TIMES VS GOLDEN GATE || MATCH - 56 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/0JtdXrI-WZA/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=0JtdXrI-WZA&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' }
+];
 
 const teamPhotoFolders = {
     'KIRTIPUR': 'Kirtipur',
@@ -109,6 +120,52 @@ function completedMatches() {
 
 function upcomingMatches() {
     return matchesWithSummary().filter((match) => !match.isCompleted);
+}
+
+function normalizeMatchText(text = '') {
+    return String(text).replace(/\|\|/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+function findPlaylistVideoForMatch(match) {
+    const teamA = normalizeMatchText(fullTeamName(match.teamA));
+    const teamB = normalizeMatchText(fullTeamName(match.teamB));
+    return playlistVideos.find((video) => {
+        const title = normalizeMatchText(video.title);
+        return title.includes(teamA) && title.includes(teamB);
+    }) || null;
+}
+
+function renderTickerStrip() {
+    const strip = document.getElementById('tickerStrip');
+    const matches = [
+        ...upcomingMatches().sort((a, b) => a.id - b.id).slice(0, 4),
+        ...completedMatches().sort((a, b) => b.id - a.id).slice(0, 4)
+    ];
+
+    strip.innerHTML = `
+        <div class="ticker-track">
+            ${matches.map((match) => `
+                <article class="ticker-card">
+                    <div class="ticker-meta">
+                        <div class="ticker-date">${match.isCompleted ? 'Final' : 'Upcoming'} • ${match.date || 'TBA'}</div>
+                        <div class="status-pill ${match.isCompleted ? 'final' : 'upcoming'}">${match.isCompleted ? 'Result' : 'Next'}</div>
+                    </div>
+                    <div class="ticker-lines">
+                        <div class="ticker-team">
+                            ${logoMarkup(match.teamA, 24)}
+                            <strong>${fullTeamName(match.teamA)}</strong>
+                            <div class="ticker-score">${match.isCompleted ? match.scoreA : ''}</div>
+                        </div>
+                        <div class="ticker-team">
+                            ${logoMarkup(match.teamB, 24)}
+                            <strong>${fullTeamName(match.teamB)}</strong>
+                            <div class="ticker-score">${match.isCompleted ? match.scoreB : ''}</div>
+                        </div>
+                    </div>
+                </article>
+            `).join('')}
+        </div>
+    `;
 }
 
 function teamStanding(team) {
@@ -204,12 +261,18 @@ function renderMediaHub() {
     `).join('');
 
     const latestCompleted = [...completedMatches()].sort((a, b) => b.id - a.id);
-    const recapCards = latestCompleted.slice(0, 4).map((match) => `
+    const recapCards = latestCompleted.slice(0, 8).map((match) => {
+        const video = findPlaylistVideoForMatch(match);
+        return `
         <article class="recap-card">
+            <a class="recap-thumb" href="${video?.url || livePlaylistLink}" target="_blank" rel="noopener noreferrer">
+                <img src="${video?.thumbnail || teamLogoUrl(match.teamA)}" alt="${fullTeamName(match.teamA)} vs ${fullTeamName(match.teamB)} thumbnail" onerror="this.src='/assets/tour_logo.png'">
+            </a>
             <div class="recap-topline">
                 <div class="card-label">${match.date || 'Game Recap'}</div>
                 <div class="status-pill final">Recap</div>
             </div>
+            <div class="recap-title">${fullTeamName(match.teamA)} vs ${fullTeamName(match.teamB)}</div>
             <div class="recap-matchup">
                 <div class="recap-team">
                     ${logoMarkup(match.teamA, 38)}
@@ -223,10 +286,22 @@ function renderMediaHub() {
                 </div>
             </div>
             <div class="recap-footer">
-                <div class="muted">Full game replay and recap playlist on YouTube.</div>
-                <a class="media-link" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Open Playlist</a>
+                <div class="muted">${video ? video.title.replace(/\s*\|\|.*$/, '') : 'Full game replay and recap playlist on YouTube.'}</div>
+                <a class="media-link" href="${video?.url || livePlaylistLink}" target="_blank" rel="noopener noreferrer">${video ? 'Watch Match' : 'Open Playlist'}</a>
             </div>
         </article>
+    `;
+    }).join('');
+
+    const watchRail = playlistVideos.slice(0, 6).map((video) => `
+        <a class="recap-card" href="${video.url}" target="_blank" rel="noopener noreferrer">
+            <div class="recap-thumb">
+                <img src="${video.thumbnail}" alt="${video.title}" onerror="this.src='/assets/tour_logo.png'">
+            </div>
+            <div class="card-label">Official Playlist</div>
+            <div class="recap-title">${video.title.replace(/\s*\|\|.*$/, '')}</div>
+            <div class="muted">Open this match directly from the HJNBL YouTube playlist.</div>
+        </a>
     `).join('');
 
     const contentByTab = {
@@ -242,6 +317,9 @@ function renderMediaHub() {
                     </div>
                 </div>
                 <div class="media-rail">
+                    <a class="ticket-thumb" href="${ticketLink}" target="_blank" rel="noopener noreferrer">
+                        <img src="${ticketThumbnail}" alt="HJNBL ticketing poster" onerror="this.src='/sponsors/Ticket Sanjal.png'">
+                    </a>
                     <div class="media-rail-item">
                         <div class="card-label">Official Link</div>
                         <div class="media-rail-copy">
@@ -278,15 +356,8 @@ function renderMediaHub() {
                     </div>
                 </div>
                 <div class="media-rail">
-                    ${latestCompleted.slice(0, 3).map((match) => `
-                        <div class="media-rail-item">
-                            ${logoMarkup(match.teamA, 40)}
-                            <div class="media-rail-copy">
-                                <strong>${fullTeamName(match.teamA)} ${match.scoreA} - ${match.scoreB} ${fullTeamName(match.teamB)}</strong>
-                                <div class="muted">${match.date} • Replay available from the official playlist.</div>
-                            </div>
-                        </div>
-                    `).join('')}
+                    <div class="card-label">Playlist Matches</div>
+                    <div class="media-carousel">${watchRail}</div>
                 </div>
             </div>
         `,
@@ -325,7 +396,7 @@ function renderMediaHub() {
                     </div>
                 </div>
             </div>
-            <div class="recaps-grid">
+            <div class="media-carousel">
                 ${recapCards || '<div class="empty-state" style="grid-column:1/-1;">Recap cards will appear once completed games are available.</div>'}
             </div>
         `
@@ -925,6 +996,7 @@ async function init() {
         state.standings = await standingsRes.json();
 
         setOverviewStats();
+        renderTickerStrip();
         renderFeaturedCards();
         renderMediaHub();
         renderGames();
