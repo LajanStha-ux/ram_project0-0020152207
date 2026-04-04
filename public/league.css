@@ -281,11 +281,13 @@ body::before {
     padding: 34px;
     overflow: hidden;
     position: relative;
+    border: 0;
     background-color: #08111e;
     background-image: url('/assets/Cover%20Photo.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
 .hero-main::before,
