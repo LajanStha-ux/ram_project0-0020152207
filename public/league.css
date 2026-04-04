@@ -99,6 +99,33 @@ body::before {
     flex: 0 1 auto;
     min-width: 0;
     scroll-behavior: smooth;
+    position: relative;
+}
+
+.nav-rail-btn {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(6, 16, 28, 0.94);
+    color: var(--text);
+    font-size: 24px;
+    line-height: 1;
+    z-index: 2;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(0,0,0,.28);
+}
+
+.nav-rail-btn-left {
+    left: 0;
+}
+
+.nav-rail-btn-right {
+    right: 0;
 }
 
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
@@ -1326,7 +1353,7 @@ tbody tr:last-child td { border-bottom: 0; }
         max-width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
-        padding-bottom: 6px;
+        padding: 0 40px 6px;
         scrollbar-width: none;
     }
     .nav-links {
@@ -1338,6 +1365,10 @@ tbody tr:last-child td { border-bottom: 0; }
         max-width: none;
         overflow: visible;
         padding-bottom: 0;
+    }
+    .nav-rail-btn {
+        display: grid;
+        place-items: center;
     }
     .ticker-card { min-width: 240px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }

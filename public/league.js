@@ -1006,6 +1006,12 @@ function toggleGamesLoadMore() {
     renderGames();
 }
 
+function scrollHeaderTabs(amount) {
+    const rail = document.querySelector('.nav-scroll');
+    if (!rail) return;
+    rail.scrollBy({ left: amount, behavior: 'smooth' });
+}
+
 function enableHorizontalDrag(element) {
     if (!element || element.dataset.dragBound === 'true') return;
     element.dataset.dragBound = 'true';
