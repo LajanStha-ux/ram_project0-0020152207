@@ -309,7 +309,7 @@ body::before {
     background-repeat: no-repeat;
     background-position: center center;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-    animation: heroPosterZoom 14s ease-out forwards;
+    animation: heroPosterZoom 18s ease-in-out infinite alternate;
 }
 
 .hero-main::before,
@@ -334,6 +334,7 @@ body::before {
         radial-gradient(circle at 82% 20%, rgba(255,255,255,.18), transparent 18%),
         radial-gradient(circle at 76% 78%, rgba(0,194,255,.14), transparent 20%),
         linear-gradient(135deg, rgba(255,107,53,.1), transparent 40%);
+    animation: heroGlowDrift 16s ease-in-out infinite alternate;
 }
 
 .hero-main > * {
@@ -350,10 +351,36 @@ body::before {
     }
 }
 
+@keyframes heroGlowDrift {
+    from {
+        transform: translate3d(-1.5%, -1%, 0) scale(1);
+        opacity: .86;
+    }
+    to {
+        transform: translate3d(1.5%, 1.5%, 0) scale(1.05);
+        opacity: 1;
+    }
+}
+
 .hero-title { margin: 18px 0 14px; font-size: clamp(56px, 8vw, 88px); text-transform: uppercase; }
 .hero-text { max-width: 620px; margin: 0 0 28px; font-size: 17px; line-height: 1.7; color: #d7e5fb; }
 .hero-actions, .filters, .card-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .sponsor-surface { margin-bottom: 22px; }
+.hero-main .eyebrow {
+    animation: heroBadgePulse 6s ease-in-out infinite;
+}
+.hero-actions .btn {
+    animation: heroButtonFloat 5.5s ease-in-out infinite;
+}
+.hero-actions .btn:nth-child(2) {
+    animation-delay: .2s;
+}
+.hero-actions .btn:nth-child(3) {
+    animation-delay: .4s;
+}
+.hero-actions .btn:nth-child(4) {
+    animation-delay: .6s;
+}
 
 .btn,
 .filter-chip {
@@ -371,6 +398,26 @@ body::before {
     color: var(--text);
     background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.08);
+}
+
+@keyframes heroBadgePulse {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 0 0 rgba(255,255,255,0);
+    }
+    50% {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(255,255,255,.08);
+    }
+}
+
+@keyframes heroButtonFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
 }
 
 .filter-chip.active { color: #07111f; border-color: transparent; background: linear-gradient(135deg, #00c2ff, #8bf0ff); }

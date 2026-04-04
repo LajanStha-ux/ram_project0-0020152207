@@ -447,6 +447,7 @@ function renderMediaHub() {
 function setMediaTab(tabKey) {
     state.mediaTab = tabKey;
     renderMediaHub();
+    bindHorizontalRails();
 }
 
 function renderFixtureFilters() {
@@ -1005,6 +1006,64 @@ function toggleGamesLoadMore() {
     renderGames();
 }
 
+function enableHorizontalDrag(element) {
+    if (!element || element.dataset.dragBound === 'true') return;
+    element.dataset.dragBound = 'true';
+
+    let startX = 0;
+    let startY = 0;
+    let startScrollLeft = 0;
+    let dragging = false;
+    let moved = false;
+
+    const onTouchStart = (event) => {
+        if (!element.scrollWidth || element.scrollWidth <= element.clientWidth) return;
+        const touch = event.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        startScrollLeft = element.scrollLeft;
+        dragging = true;
+        moved = false;
+    };
+
+    const onTouchMove = (event) => {
+        if (!dragging) return;
+        const touch = event.touches[0];
+        const deltaX = touch.clientX - startX;
+        const deltaY = touch.clientY - startY;
+
+        if (Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+        moved = true;
+        element.scrollLeft = startScrollLeft - deltaX;
+        event.preventDefault();
+    };
+
+    const onTouchEnd = () => {
+        dragging = false;
+        window.setTimeout(() => {
+            moved = false;
+        }, 0);
+    };
+
+    element.addEventListener('touchstart', onTouchStart, { passive: true });
+    element.addEventListener('touchmove', onTouchMove, { passive: false });
+    element.addEventListener('touchend', onTouchEnd, { passive: true });
+    element.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+    element.addEventListener('click', (event) => {
+        if (!moved) return;
+        event.preventDefault();
+        event.stopPropagation();
+    }, true);
+}
+
+function bindHorizontalRails() {
+    enableHorizontalDrag(document.querySelector('.nav-scroll'));
+    enableHorizontalDrag(document.getElementById('mediaHubTabs'));
+    enableHorizontalDrag(document.querySelector('.ticker-track'));
+}
+
 function attachEvents() {
     document.getElementById('playerSearch').addEventListener('input', () => { state.playerVisibleCount = 10; renderPlayers(); });
     document.getElementById('playerSort').addEventListener('change', () => { state.playerVisibleCount = 10; renderPlayers(); });
@@ -1038,6 +1097,7 @@ async function init() {
         renderTickerStrip();
         renderFeaturedCards();
         renderMediaHub();
+        bindHorizontalRails();
         renderGames();
         renderStandings();
         renderHeadlineLeaders();
