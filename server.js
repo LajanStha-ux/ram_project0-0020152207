@@ -399,27 +399,95 @@ app.get('/api/tournament-stats', (req, res) => {
     });
 });
 
+const getCompletedResults = () => {
+    const results = [];
+
+    schedule.forEach((match) => {
+        const stats = matchStats[match.id];
+        if (!stats || !stats.isCompleted) return;
+
+        let scoreA = 0;
+        let scoreB = 0;
+        if (stats[match.teamA]) Object.values(stats[match.teamA]).forEach((s) => scoreA += getPts(s).total);
+        if (stats[match.teamB]) Object.values(stats[match.teamB]).forEach((s) => scoreB += getPts(s).total);
+
+        if (scoreA > 0 || scoreB > 0) {
+            results.push({ id: match.id, teamA: match.teamA, teamB: match.teamB, scoreA, scoreB });
+        }
+    });
+
+    return results;
+};
+
+const getHeadToHeadTable = (teams, completedResults) => {
+    const teamSet = new Set(teams);
+    const table = {};
+    teams.forEach((team) => {
+        table[team] = { wins: 0, losses: 0, pd: 0 };
+    });
+
+    completedResults.forEach((match) => {
+        if (!teamSet.has(match.teamA) || !teamSet.has(match.teamB)) return;
+
+        table[match.teamA].pd += match.scoreA - match.scoreB;
+        table[match.teamB].pd += match.scoreB - match.scoreA;
+
+        if (match.scoreA > match.scoreB) {
+            table[match.teamA].wins++;
+            table[match.teamB].losses++;
+        } else if (match.scoreB > match.scoreA) {
+            table[match.teamB].wins++;
+            table[match.teamA].losses++;
+        }
+    });
+
+    return table;
+};
+
+const sortStandingsByLeagueRules = (rows, completedResults) => {
+    const pointsGroups = new Map();
+    rows.forEach((row) => {
+        if (!pointsGroups.has(row.pts)) pointsGroups.set(row.pts, []);
+        pointsGroups.get(row.pts).push(row);
+    });
+
+    return [...pointsGroups.keys()]
+        .sort((a, b) => b - a)
+        .flatMap((pts) => {
+            const group = pointsGroups.get(pts);
+            if (group.length === 1) return group;
+
+            const headToHead = getHeadToHeadTable(group.map((row) => row.team), completedResults);
+
+            return [...group].sort((a, b) => {
+                const aH2H = headToHead[a.team] || { wins: 0, pd: 0 };
+                const bH2H = headToHead[b.team] || { wins: 0, pd: 0 };
+
+                return bH2H.wins - aH2H.wins
+                    || b.pd - a.pd
+                    || b.pf - a.pf
+                    || a.team.localeCompare(b.team);
+            });
+        });
+};
+
 app.get('/api/standings', (req, res) => {
     loadDB();
     let standings = {};
+    const completedResults = getCompletedResults();
     Object.keys(rosters).forEach(t => standings[t] = { team: t, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, pd: 0, pts: 0 });
-    schedule.forEach(match => {
-        let stats = matchStats[match.id];
-        if(stats && stats.isCompleted) {
-            let scoreA = 0; let scoreB = 0;
-            if(stats[match.teamA]) Object.values(stats[match.teamA]).forEach(s => scoreA += getPts(s).total);
-            if(stats[match.teamB]) Object.values(stats[match.teamB]).forEach(s => scoreB += getPts(s).total);
-            if(scoreA > 0 || scoreB > 0) {
-                standings[match.teamA].played++; standings[match.teamB].played++;
-                standings[match.teamA].pf += scoreA; standings[match.teamB].pf += scoreB;
-                standings[match.teamA].pa += scoreB; standings[match.teamB].pa += scoreA;
-                if(scoreA > scoreB) { standings[match.teamA].wins++; standings[match.teamB].losses++; } 
-                else if (scoreB > scoreA) { standings[match.teamB].wins++; standings[match.teamA].losses++; }
-            }
-        }
+    completedResults.forEach(match => {
+        standings[match.teamA].played++;
+        standings[match.teamB].played++;
+        standings[match.teamA].pf += match.scoreA;
+        standings[match.teamB].pf += match.scoreB;
+        standings[match.teamA].pa += match.scoreB;
+        standings[match.teamB].pa += match.scoreA;
+        if(match.scoreA > match.scoreB) { standings[match.teamA].wins++; standings[match.teamB].losses++; } 
+        else if (match.scoreB > match.scoreA) { standings[match.teamB].wins++; standings[match.teamA].losses++; }
     });
     Object.values(standings).forEach(s => { s.pd = s.pf - s.pa; s.pts = (s.wins * 2) + (s.losses * 1); });
-    res.json(Object.values(standings).sort((a,b) => b.pts - a.pts || b.pd - a.pd));
+    res.json(sortStandingsByLeagueRules(Object.values(standings), completedResults));
 });
 
 let cgState = { action: 'hide', type: '', payload: null, timestamp: 0 };
