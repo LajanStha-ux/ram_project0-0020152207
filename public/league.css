@@ -165,7 +165,20 @@ body::before {
     overflow-wrap: anywhere;
 }
 
-.nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; align-items: center; }
+.nav-links {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+}
 .nav-links,
 .ticker-track,
 .media-carousel,
@@ -173,6 +186,10 @@ body::before {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
     touch-action: pan-x;
+}
+.nav-links::-webkit-scrollbar,
+.media-hub-tabs::-webkit-scrollbar {
+    display: none;
 }
 .nav-links a {
     flex: 0 0 auto;
@@ -184,6 +201,7 @@ body::before {
     background: transparent;
     transition: .2s ease;
     white-space: nowrap;
+    scroll-snap-align: start;
 }
 
 .nav-links a:hover,
@@ -439,10 +457,16 @@ body::before {
 .media-hub-tabs {
     display: flex;
     flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
     gap: 10px;
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 4px;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
 }
 
 .media-tab {
@@ -456,6 +480,7 @@ body::before {
     cursor: pointer;
     transition: .2s ease;
     white-space: nowrap;
+    scroll-snap-align: start;
 }
 
 .media-tab.active {
@@ -1219,12 +1244,12 @@ tbody tr:last-child td { border-bottom: 0; }
     .topbar { flex-direction: column; align-items: stretch; border-radius: 24px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
     .nav-links {
         justify-content: flex-start;
-        flex-wrap: nowrap;
         overflow-x: auto;
         overflow-y: hidden;
         width: 100%;
         max-width: 100%;
         padding-bottom: 6px;
+        flex-wrap: nowrap;
     }
     .ticker-card { min-width: 240px; }
     .hero-main, .hero-side, .surface, .modal-content, .team-drawer, .player-sheet { padding: 18px; border-radius: 24px; }
@@ -1243,6 +1268,7 @@ tbody tr:last-child td { border-bottom: 0; }
     .media-hub-tabs {
         width: 100%;
         max-width: 100%;
+        flex-wrap: nowrap;
     }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }
