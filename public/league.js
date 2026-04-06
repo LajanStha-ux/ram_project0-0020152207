@@ -32,18 +32,18 @@ const teamNames = {
 
 const ticketLink = 'https://www.ticketsanjal.com/events/282';
 const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
-const liveChannelLink = 'https://www.youtube.com/@ActionSportsNepal';
+const liveChannelLink = 'https://www.youtube.com/@WatchDGO';
 const ticketThumbnail = '/sponsors/Ticket%20Sanjal.png';
-const actionSportsLogo = 'https://yt3.googleusercontent.com/2ug7q7jcVFJ8Vtn9spjaFM3QdN0Yj-8CPNEAbDcoJdXQrm2_43m7RuVsv64fsdZzFw6657DD-Nk=s900-c-k-c0x00ffffff-no-rj';
+const actionSportsLogo = 'https://yt3.ggpht.com/TD6TfMc9pm3Qucwo4MlH0nQhN3iBoATFP-5dmEUVYALRsY6dwUpp8DX0eMcuBykAGTsx0oxmPQ=s176-c-k-c0x00ffffff-no-rj';
 const playlistVideos = [
+    { videoId: '0JtdXrI-WZA', title: 'TIMES VS GOLDEN GATE || MATCH - 56 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/0JtdXrI-WZA/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=0JtdXrI-WZA&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: '_6OQKbMg80A', title: 'KVC HOUNDS VS ARMY || MATCH - 55 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/_6OQKbMg80A/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=_6OQKbMg80A&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'aym9dtXgPmA', title: 'SOLO VS PLAYBOX || MATCH - 54 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/aym9dtXgPmA/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=aym9dtXgPmA&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'VFN8oy4ZUak', title: 'ROYAL VS IIMS KIRTIPUR || MATCH - 53 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/VFN8oy4ZUak/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=VFN8oy4ZUak&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: '-TqcZ6QDqLo', title: 'ARMY VS GOLDEN GATE || MATCH - 52 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/-TqcZ6QDqLo/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=-TqcZ6QDqLo&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'IuA9TTpTF6Q', title: 'KVC HOUNDS VS TIMES || MATCH - 51 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/IuA9TTpTF6Q/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=IuA9TTpTF6Q&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
-    { videoId: '7Ldo_Be_m-s', title: 'ROYAL VS SOLO || MATCH - 49 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/7Ldo_Be_m-s/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=7Ldo_Be_m-s&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'M8mb8akLGEk', title: 'IIMS KIRTIPUR VS PLAYBOX || MATCH - 50 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/M8mb8akLGEk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=M8mb8akLGEk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
-    { videoId: 'x7OkDPUWF9M', title: 'ARMY VS TIMES || MATCH - 48 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/x7OkDPUWF9M/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=x7OkDPUWF9M&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
-    { videoId: 'rLX-Wzbllro', title: 'KVC HOUNDS VS GOLDEN GATE || MATCH - 47 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/rLX-Wzbllro/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=rLX-Wzbllro&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
-    { videoId: 'xLgH97aTbpk', title: 'IIMS KIRTIPUR VS SOLO || MATCH - 46 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/xLgH97aTbpk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=xLgH97aTbpk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
-    { videoId: '0JtdXrI-WZA', title: 'TIMES VS GOLDEN GATE || MATCH - 56 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/0JtdXrI-WZA/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=0JtdXrI-WZA&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' }
+    { videoId: '7Ldo_Be_m-s', title: 'ROYAL VS SOLO || MATCH - 49 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/7Ldo_Be_m-s/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=7Ldo_Be_m-s&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' }
 ];
 
 const teamPhotoFolders = {
@@ -377,8 +377,8 @@ function renderMediaHub() {
             <div class="media-feature">
                 <div class="media-spotlight watch">
                     <div class="eyebrow">Watch Live</div>
-                    <h3>Watch HJNBL live on the Action Sports Nepal YouTube channel.</h3>
-                    <p>Go straight to the official Action Sports Nepal channel for live coverage, recent uploads, and direct access to the HJNBL video stream destination.</p>
+                    <h3>Watch HJNBL live and replay games on the Watch DGO YouTube channel.</h3>
+                    <p>Go straight to the current official playlist source for live coverage, recent uploads, and direct access to the HJNBL video stream destination.</p>
                     <div class="media-actions">
                         <a class="btn btn-primary" href="${liveChannelLink}" target="_blank" rel="noopener noreferrer">Open Channel</a>
                         <a class="btn btn-secondary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Open Playlist</a>
@@ -386,10 +386,10 @@ function renderMediaHub() {
                 </div>
                 <div class="media-rail">
                     <div class="media-rail-item">
-                        <img src="${actionSportsLogo}" alt="Action Sports HD logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
+                        <img src="${actionSportsLogo}" alt="Watch DGO logo" style="width:56px;height:56px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="media-rail-copy">
-                            <strong>Action Sports Nepal</strong>
-                            <div class="muted">Official YouTube channel for HJNBL live coverage and uploads.</div>
+                            <strong>Watch DGO</strong>
+                            <div class="muted">Current YouTube source carrying the HJNBL playlist and replay updates.</div>
                         </div>
                     </div>
                     <div class="card-label">Playlist Matches</div>
@@ -686,15 +686,17 @@ function renderPlayoffPicture() {
         return;
     }
 
+    const [seed1, seed2, seed3, seed4] = seeds;
+
     container.innerHTML = `
-        <div class="card-label">Live Playoff Race</div>
-        <div class="muted">These are the current teams in playoff position based on the latest completed games. Final postseason matchups will be confirmed only after the league stage is complete.</div>
+        <div class="card-label">Confirmed Playoff Field</div>
+        <div class="muted">The league stage is complete. Seed 1 and Seed 2 are locked into Qualifier 1, while Seed 3 and Seed 4 meet in the Eliminator.</div>
         <div class="playoff-seeds">
             ${seeds.map((team, index) => `
                 <div class="seed-card">
-                    <div class="card-label">Current Seed ${index + 1}</div>
+                    <div class="card-label">Seed ${index + 1}</div>
                     <div style="display:flex;align-items:center;gap:10px;">${logoMarkup(team.team, 34)}<strong>${fullTeamName(team.team)}</strong></div>
-                    <div class="muted">In position right now: ${team.wins}-${team.losses} • ${team.pts} pts</div>
+                    <div class="muted">Locked in: ${team.wins}-${team.losses} • ${team.pts} pts</div>
                 </div>
             `).join('')}
         </div>
@@ -702,15 +704,15 @@ function renderPlayoffPicture() {
             <div class="bracket-column">
                 <div class="bracket-match">
                     <div class="bracket-label">Qualifier 1</div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S1</div><div><strong>Seed 1 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S2</div><div><strong>Seed 2 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
-                    <div class="bracket-note">Winner goes directly to the final once the qualified teams are officially confirmed.</div>
+                    <div class="bracket-team">${logoMarkup(seed1.team, 34)}<div><strong>${fullTeamName(seed1.team)}</strong><span>Seed 1 • ${seed1.wins}-${seed1.losses} • ${seed1.pts} pts</span></div></div>
+                    <div class="bracket-team">${logoMarkup(seed2.team, 34)}<div><strong>${fullTeamName(seed2.team)}</strong><span>Seed 2 • ${seed2.wins}-${seed2.losses} • ${seed2.pts} pts</span></div></div>
+                    <div class="bracket-note">Winner goes directly to the final. Loser gets one more chance in Qualifier 2.</div>
                 </div>
                 <div class="bracket-match">
                     <div class="bracket-label">Eliminator</div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S3</div><div><strong>Seed 3 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">S4</div><div><strong>Seed 4 To Be Confirmed</strong><span>Official team not locked yet</span></div></div>
-                    <div class="bracket-note">Loser is eliminated once the official playoff field is set.</div>
+                    <div class="bracket-team">${logoMarkup(seed3.team, 34)}<div><strong>${fullTeamName(seed3.team)}</strong><span>Seed 3 • ${seed3.wins}-${seed3.losses} • ${seed3.pts} pts</span></div></div>
+                    <div class="bracket-team">${logoMarkup(seed4.team, 34)}<div><strong>${fullTeamName(seed4.team)}</strong><span>Seed 4 • ${seed4.wins}-${seed4.losses} • ${seed4.pts} pts</span></div></div>
+                    <div class="bracket-note">Winner advances to Qualifier 2. Loser is eliminated.</div>
                 </div>
             </div>
             <div class="bracket-column center">

@@ -464,6 +464,7 @@ const sortStandingsByLeagueRules = (rows, completedResults) => {
                 const bH2H = headToHead[b.team] || { wins: 0, pd: 0 };
 
                 return bH2H.wins - aH2H.wins
+                    || bH2H.pd - aH2H.pd
                     || b.pd - a.pd
                     || b.pf - a.pf
                     || a.team.localeCompare(b.team);
