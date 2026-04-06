@@ -335,6 +335,38 @@
       "date": "April 6",
       "teamA": "GGIC",
       "teamB": "TIMES"
+    },
+    {
+      "id": 57,
+      "date": "April 8",
+      "stage": "Playoff Day 1",
+      "round": "Qualifier 1",
+      "teamA": "ARMY",
+      "teamB": "GGIC"
+    },
+    {
+      "id": 58,
+      "date": "April 8",
+      "stage": "Playoff Day 1",
+      "round": "Eliminator",
+      "teamA": "TIMES",
+      "teamB": "KVC HOUNDS"
+    },
+    {
+      "id": 59,
+      "date": "April 9",
+      "stage": "Playoff Day 2",
+      "round": "Eliminator 2",
+      "teamA": "QUALIFIER 1 LOSER",
+      "teamB": "ELIMINATOR WINNER"
+    },
+    {
+      "id": 60,
+      "date": "April 11",
+      "stage": "Finals",
+      "round": "Final",
+      "teamA": "QUALIFIER 1 WINNER",
+      "teamB": "ELIMINATOR 2 WINNER"
     }
   ],
   "rosters": {

@@ -16,7 +16,11 @@ const teamShortNames = {
     'ROYAL': 'ROYAL',
     'KVC HOUNDS': 'KVC',
     'GGIC': 'GGIC',
-    'PLAYBOX': 'PLAYBOX'
+    'PLAYBOX': 'PLAYBOX',
+    'QUALIFIER 1 LOSER': 'Q1-L',
+    'ELIMINATOR WINNER': 'E1-W',
+    'QUALIFIER 1 WINNER': 'Q1-W',
+    'ELIMINATOR 2 WINNER': 'E2-W'
 };
 
 const teamNames = {
@@ -27,7 +31,11 @@ const teamNames = {
     'ROYAL': 'Royal',
     'KVC HOUNDS': 'KVC Hounds',
     'GGIC': 'Golden Gate International',
-    'PLAYBOX': 'Playbox Arena'
+    'PLAYBOX': 'Playbox Arena',
+    'QUALIFIER 1 LOSER': 'Qualifier 1 Loser',
+    'ELIMINATOR WINNER': 'Winner Eliminator',
+    'QUALIFIER 1 WINNER': 'Qualifier 1 Winner',
+    'ELIMINATOR 2 WINNER': 'Winner Eliminator 2'
 };
 
 const ticketLink = 'https://www.ticketsanjal.com/events/282';
@@ -75,12 +83,63 @@ function shortTeamName(team) {
     return teamShortNames[team] || team;
 }
 
+function fallbackBadgeLabel(team) {
+    const shortLabel = shortTeamName(team);
+    if (shortLabel.length <= 8) return shortLabel;
+    return shortLabel.split(/\s+/).map((part) => part[0]).join('').slice(0, 4).toUpperCase();
+}
+
+function matchTickerLine(match) {
+    const date = match.date || 'Date TBA';
+    if (match.isCompleted) return `${match.round || 'Final'} • ${date}`;
+    return `${match.round || match.stage || 'Upcoming'} • ${date}`;
+}
+
+function matchFeatureLabel(match) {
+    if (match.isCompleted) return 'Latest Result';
+    return match.stage || match.round || 'Next Fixture';
+}
+
+function matchFeatureCopy(match) {
+    const date = match.date || 'Date TBA';
+    if (match.isCompleted) return `${match.round || 'Final'} • ${date}`;
+
+    const parts = [];
+    if (match.round) parts.push(match.round);
+    if (match.stage) parts.push(match.stage);
+    parts.push(date);
+    return parts.join(' • ');
+}
+
+function matchCollectionLabel(match) {
+    return match.stage || `Game ${match.id}`;
+}
+
+function matchStatusText(match) {
+    if (match.isCompleted) return 'Result';
+    return match.stage ? 'Playoffs' : 'Upcoming';
+}
+
+function matchFixtureLine(match) {
+    const date = match.date || 'Date TBA';
+    if (match.isCompleted) return date;
+
+    const parts = [];
+    if (match.round) {
+        parts.push(match.round);
+    } else if (match.stage) {
+        parts.push(match.stage);
+    }
+    parts.push(date);
+    return parts.join(' • ');
+}
+
 function logoMarkup(team, size = 48) {
     const url = state.scheduleData?.teamLogos?.[team];
     if (url) {
         return `<img src="${url}" alt="${team} logo" style="width:${size}px;height:${size}px;object-fit:contain;">`;
     }
-    return `<div style="width:${size}px;height:${size}px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.05);color:var(--muted);font-size:11px;font-weight:800;">${team.slice(0, 3)}</div>`;
+    return `<div style="width:${size}px;height:${size}px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.05);color:var(--muted);font-size:11px;font-weight:800;">${fallbackBadgeLabel(team)}</div>`;
 }
 
 function photoUrl(url) {
@@ -172,8 +231,8 @@ function renderTickerStrip() {
             ${matches.map((match) => `
                 <article class="ticker-card">
                     <div class="ticker-meta">
-                        <div class="ticker-date">${match.isCompleted ? 'Final' : 'Upcoming'} • ${match.date || 'TBA'}</div>
-                        <div class="status-pill ${match.isCompleted ? 'final' : 'upcoming'}">${match.isCompleted ? 'Result' : 'Next'}</div>
+                        <div class="ticker-date">${matchTickerLine(match)}</div>
+                        <div class="status-pill ${match.isCompleted ? 'final' : 'upcoming'}">${matchStatusText(match)}</div>
                     </div>
                     <div class="ticker-lines">
                         <div class="ticker-team">
@@ -232,11 +291,11 @@ function renderFeaturedCards() {
 
     if (featuredMatch) {
         const isFinal = featuredMatch.isCompleted;
-        const status = isFinal ? 'Latest Result' : 'Next Fixture';
+        const status = matchFeatureLabel(featuredMatch);
         matchCard.innerHTML = isFinal ? `
             <div class="feature-label">${status}</div>
             <div class="feature-title">${shortTeamName(featuredMatch.teamA)} vs ${shortTeamName(featuredMatch.teamB)}</div>
-            <p class="feature-copy">${featuredMatch.date || 'Date TBA'}</p>
+            <p class="feature-copy">${matchFeatureCopy(featuredMatch)}</p>
             <div class="feature-score">
                 <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamA)}</div><div class="score-badge">${featuredMatch.scoreA}</div></div>
                 <div class="score-side"><div class="status-pill final">Result</div></div>
@@ -245,10 +304,10 @@ function renderFeaturedCards() {
         ` : `
             <div class="feature-label">${status}</div>
             <div class="feature-title">${shortTeamName(featuredMatch.teamA)} vs ${shortTeamName(featuredMatch.teamB)}</div>
-            <p class="feature-copy">${featuredMatch.date || 'Date TBA'}</p>
+            <p class="feature-copy">${matchFeatureCopy(featuredMatch)}</p>
             <div class="feature-score">
                 <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamA)}</div></div>
-                <div class="score-side"><div class="status-pill upcoming">Upcoming</div></div>
+                <div class="score-side"><div class="status-pill upcoming">${matchStatusText(featuredMatch)}</div></div>
                 <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamB)}</div></div>
             </div>
         `;
@@ -481,15 +540,17 @@ function renderGames() {
     const visibleMatches = matches.slice(0, state.gamesVisibleCount);
     grid.innerHTML = visibleMatches.map((match) => {
         const statusClass = match.isCompleted ? 'final' : 'upcoming';
-        const statusLabel = match.isCompleted ? 'Result' : 'Upcoming';
+        const statusLabel = matchStatusText(match);
         const action = match.isCompleted
             ? `<button class="btn btn-primary" type="button" onclick="openMatchModal(${match.id}, '${match.teamA}', '${match.teamB}')">View Box Score</button>`
-            : `<button class="btn btn-secondary" type="button" onclick="document.getElementById('teams').scrollIntoView({ behavior: 'smooth' })">Browse Teams</button>`;
+            : match.stage
+                ? `<button class="btn btn-secondary" type="button" onclick="document.getElementById('playoffs').scrollIntoView({ behavior: 'smooth' })">View Playoff Picture</button>`
+                : `<button class="btn btn-secondary" type="button" onclick="document.getElementById('teams').scrollIntoView({ behavior: 'smooth' })">Browse Teams</button>`;
 
         return `
             <article class="game-card">
-                <div class="game-meta"><span>Game ${match.id}</span><span class="status-pill ${statusClass}">${statusLabel}</span></div>
-                <div class="muted">${match.date || 'Date TBA'}</div>
+                <div class="game-meta"><span>${matchCollectionLabel(match)}</span><span class="status-pill ${statusClass}">${statusLabel}</span></div>
+                <div class="muted">${matchFixtureLine(match)}</div>
                 <div class="matchup">
                     <div class="team-line">${logoMarkup(match.teamA, 42)}<div class="team-line-name">${shortTeamName(match.teamA)}</div><div class="team-line-score">${match.isCompleted ? match.scoreA : ''}</div></div>
                     <div class="team-line">${logoMarkup(match.teamB, 42)}<div class="team-line-name">${shortTeamName(match.teamB)}</div><div class="team-line-score">${match.isCompleted ? match.scoreB : ''}</div></div>
@@ -687,10 +748,18 @@ function renderPlayoffPicture() {
     }
 
     const [seed1, seed2, seed3, seed4] = seeds;
+    const playoffDayOne = upcomingMatches().filter((match) => match.stage === 'Playoff Day 1').sort((a, b) => a.id - b.id);
+    const qualifierOne = playoffDayOne.find((match) => match.round === 'Qualifier 1');
+    const eliminator = playoffDayOne.find((match) => match.round === 'Eliminator');
+    const eliminatorTwo = upcomingMatches().find((match) => match.round === 'Eliminator 2');
+    const finalMatch = upcomingMatches().find((match) => match.round === 'Final');
+    const openerLine = playoffDayOne.length
+        ? 'Playoff Day 1 tips off on April 8. Eliminator 2 follows on April 9, and the HJNBL Season 2 final lands on April 11.'
+        : 'The league stage is complete. Seed 1 and Seed 2 are locked into Qualifier 1, while Seed 3 and Seed 4 meet in the Eliminator.';
 
     container.innerHTML = `
         <div class="card-label">Confirmed Playoff Field</div>
-        <div class="muted">The league stage is complete. Seed 1 and Seed 2 are locked into Qualifier 1, while Seed 3 and Seed 4 meet in the Eliminator.</div>
+        <div class="muted">${openerLine}</div>
         <div class="playoff-seeds">
             ${seeds.map((team, index) => `
                 <div class="seed-card">
@@ -706,29 +775,29 @@ function renderPlayoffPicture() {
                     <div class="bracket-label">Qualifier 1</div>
                     <div class="bracket-team">${logoMarkup(seed1.team, 34)}<div><strong>${fullTeamName(seed1.team)}</strong><span>Seed 1 • ${seed1.wins}-${seed1.losses} • ${seed1.pts} pts</span></div></div>
                     <div class="bracket-team">${logoMarkup(seed2.team, 34)}<div><strong>${fullTeamName(seed2.team)}</strong><span>Seed 2 • ${seed2.wins}-${seed2.losses} • ${seed2.pts} pts</span></div></div>
-                    <div class="bracket-note">Winner goes directly to the final. Loser gets one more chance in Qualifier 2.</div>
+                    <div class="bracket-note">${qualifierOne ? `${qualifierOne.stage} • ${qualifierOne.date}. ` : ''}Winner goes directly to the final. Loser gets one more chance in Qualifier 2.</div>
                 </div>
                 <div class="bracket-match">
                     <div class="bracket-label">Eliminator</div>
                     <div class="bracket-team">${logoMarkup(seed3.team, 34)}<div><strong>${fullTeamName(seed3.team)}</strong><span>Seed 3 • ${seed3.wins}-${seed3.losses} • ${seed3.pts} pts</span></div></div>
                     <div class="bracket-team">${logoMarkup(seed4.team, 34)}<div><strong>${fullTeamName(seed4.team)}</strong><span>Seed 4 • ${seed4.wins}-${seed4.losses} • ${seed4.pts} pts</span></div></div>
-                    <div class="bracket-note">Winner advances to Qualifier 2. Loser is eliminated.</div>
+                    <div class="bracket-note">${eliminator ? `${eliminator.stage} • ${eliminator.date}. ` : ''}Winner advances to Qualifier 2. Loser is eliminated.</div>
                 </div>
             </div>
             <div class="bracket-column center">
                 <div class="bracket-match">
-                    <div class="bracket-label">Qualifier 2</div>
+                    <div class="bracket-label">Eliminator 2</div>
                     <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">Q1-L</div><div><strong>Loser Qualifier 1</strong><span>Second chance route</span></div></div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E-W</div><div><strong>Winner Eliminator</strong><span>Must win again</span></div></div>
-                    <div class="bracket-note">Winner reaches the final.</div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E1-W</div><div><strong>Winner Eliminator</strong><span>Must win again</span></div></div>
+                    <div class="bracket-note">${eliminatorTwo ? `${eliminatorTwo.stage} • ${eliminatorTwo.date}. ` : ''}Winner reaches the final.</div>
                 </div>
             </div>
             <div class="bracket-column">
                 <div class="bracket-match final-match">
                     <div class="bracket-label">Final</div>
                     <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">Q1-W</div><div><strong>Winner Qualifier 1</strong><span>Direct finalist</span></div></div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">Q2-W</div><div><strong>Winner Qualifier 2</strong><span>Survives the bracket</span></div></div>
-                    <div class="bracket-note">Championship game for HJNBL Season 2.</div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E2-W</div><div><strong>Winner Eliminator 2</strong><span>Survives the bracket</span></div></div>
+                    <div class="bracket-note">${finalMatch ? `${finalMatch.stage} • ${finalMatch.date}. ` : ''}Championship game for HJNBL Season 2.</div>
                 </div>
             </div>
         </div>
