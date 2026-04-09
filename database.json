@@ -357,15 +357,15 @@
       "date": "April 9",
       "stage": "Playoff Day 2",
       "round": "Eliminator 2",
-      "teamA": "QUALIFIER 1 LOSER",
-      "teamB": "ELIMINATOR 1 WINNER"
+      "teamA": "GGIC",
+      "teamB": "TIMES"
     },
     {
       "id": 60,
       "date": "April 11",
       "stage": "Finals",
       "round": "Final",
-      "teamA": "QUALIFIER 1 WINNER",
+      "teamA": "ARMY",
       "teamB": "ELIMINATOR 2 WINNER"
     }
   ],
