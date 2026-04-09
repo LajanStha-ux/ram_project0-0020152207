@@ -1,16 +1,20 @@
----
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/hjnblcom/public_html/myapp
+
     - /bin/mkdir -p $DEPLOYPATH
+
     - /bin/cp server.js $DEPLOYPATH/server.js
     - /bin/cp package.json $DEPLOYPATH/package.json
     - /bin/cp package-lock.json $DEPLOYPATH/package-lock.json
     - /bin/cp database.json $DEPLOYPATH/database.json
+
     - /bin/rm -rf $DEPLOYPATH/public
     - /bin/rm -rf $DEPLOYPATH/assets
     - /bin/rm -rf $DEPLOYPATH/player_photo
+
     - /bin/cp -R public $DEPLOYPATH/public
     - /bin/cp -R assets $DEPLOYPATH/assets
     - /bin/cp -R player_photo $DEPLOYPATH/player_photo
-    - source /home2/hjnblcom/nodevenv/public_html/myapp/22/bin/activate && cd $DEPLOYPATH && npm install
+
+    - cd $DEPLOYPATH && npm install
