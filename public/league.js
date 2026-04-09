@@ -826,6 +826,10 @@ function renderPlayoffPicture() {
                 </div>
             </div>
         </div>
+        <div class="playoff-links">
+            <a class="btn btn-primary" href="/eliminator2.html">Open Eliminator 2 Fan Page</a>
+            <a class="btn btn-secondary" href="/finals.html">Open Finals Fan Page</a>
+        </div>
     `;
 }
 
