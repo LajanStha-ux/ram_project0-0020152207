@@ -18,7 +18,7 @@ const teamShortNames = {
     'GGIC': 'GGIC',
     'PLAYBOX': 'PLAYBOX',
     'QUALIFIER 1 LOSER': 'Q1-L',
-    'ELIMINATOR WINNER': 'E1-W',
+    'ELIMINATOR 1 WINNER': 'E1-W',
     'QUALIFIER 1 WINNER': 'Q1-W',
     'ELIMINATOR 2 WINNER': 'E2-W'
 };
@@ -33,7 +33,7 @@ const teamNames = {
     'GGIC': 'Golden Gate International',
     'PLAYBOX': 'Playbox Arena',
     'QUALIFIER 1 LOSER': 'Qualifier 1 Loser',
-    'ELIMINATOR WINNER': 'Winner Eliminator',
+    'ELIMINATOR 1 WINNER': 'Winner Eliminator 1',
     'QUALIFIER 1 WINNER': 'Qualifier 1 Winner',
     'ELIMINATOR 2 WINNER': 'Winner Eliminator 2'
 };
@@ -132,6 +132,14 @@ function matchFixtureLine(match) {
     }
     parts.push(date);
     return parts.join(' • ');
+}
+
+function playoffMatchStatusText(match, upcomingFallback) {
+    if (!match) return upcomingFallback;
+    if (match.isCompleted) {
+        return `Final • ${match.date} • ${match.scoreA}-${match.scoreB}`;
+    }
+    return `${match.stage || match.round || 'Upcoming'} • ${match.date}`;
 }
 
 function logoMarkup(team, size = 48) {
@@ -748,14 +756,14 @@ function renderPlayoffPicture() {
     }
 
     const [seed1, seed2, seed3, seed4] = seeds;
-    const playoffDayOne = upcomingMatches().filter((match) => match.stage === 'Playoff Day 1').sort((a, b) => a.id - b.id);
-    const qualifierOne = playoffDayOne.find((match) => match.round === 'Qualifier 1');
-    const eliminator = playoffDayOne.find((match) => match.round === 'Eliminator');
-    const eliminatorTwo = upcomingMatches().find((match) => match.round === 'Eliminator 2');
-    const finalMatch = upcomingMatches().find((match) => match.round === 'Final');
-    const openerLine = playoffDayOne.length
-        ? 'Playoff Day 1 tips off on April 8. Eliminator 2 follows on April 9, and the HJNBL Season 2 final lands on April 11.'
-        : 'The league stage is complete. Seed 1 and Seed 2 are locked into Qualifier 1, while Seed 3 and Seed 4 meet in the Eliminator.';
+    const playoffMatches = matchesWithSummary().filter((match) => Number(match.id) >= 57 && Number(match.id) <= 60);
+    const qualifierOne = playoffMatches.find((match) => match.round === 'Qualifier 1');
+    const eliminatorOne = playoffMatches.find((match) => match.round === 'Eliminator 1');
+    const eliminatorTwo = playoffMatches.find((match) => match.round === 'Eliminator 2');
+    const finalMatch = playoffMatches.find((match) => match.round === 'Final');
+    const openerLine = qualifierOne?.isCompleted || eliminatorOne?.isCompleted
+        ? 'Qualifier 1 and Eliminator 1 are complete. Eliminator 2 is on April 9, and the HJNBL Season 2 final is on April 11.'
+        : 'The league stage is complete. Seed 1 and Seed 2 are locked into Qualifier 1, while Seed 3 and Seed 4 meet in Eliminator 1.';
 
     container.innerHTML = `
         <div class="card-label">Confirmed Playoff Field</div>
@@ -775,21 +783,21 @@ function renderPlayoffPicture() {
                     <div class="bracket-label">Qualifier 1</div>
                     <div class="bracket-team">${logoMarkup(seed1.team, 34)}<div><strong>${fullTeamName(seed1.team)}</strong><span>Seed 1 • ${seed1.wins}-${seed1.losses} • ${seed1.pts} pts</span></div></div>
                     <div class="bracket-team">${logoMarkup(seed2.team, 34)}<div><strong>${fullTeamName(seed2.team)}</strong><span>Seed 2 • ${seed2.wins}-${seed2.losses} • ${seed2.pts} pts</span></div></div>
-                    <div class="bracket-note">${qualifierOne ? `${qualifierOne.stage} • ${qualifierOne.date}. ` : ''}Winner goes directly to the final. Loser gets one more chance in Qualifier 2.</div>
+                    <div class="bracket-note">${playoffMatchStatusText(qualifierOne, 'Qualifier 1 is first up.')} Winner goes directly to the final. Loser gets one more chance in Eliminator 2.</div>
                 </div>
                 <div class="bracket-match">
-                    <div class="bracket-label">Eliminator</div>
+                    <div class="bracket-label">Eliminator 1</div>
                     <div class="bracket-team">${logoMarkup(seed3.team, 34)}<div><strong>${fullTeamName(seed3.team)}</strong><span>Seed 3 • ${seed3.wins}-${seed3.losses} • ${seed3.pts} pts</span></div></div>
                     <div class="bracket-team">${logoMarkup(seed4.team, 34)}<div><strong>${fullTeamName(seed4.team)}</strong><span>Seed 4 • ${seed4.wins}-${seed4.losses} • ${seed4.pts} pts</span></div></div>
-                    <div class="bracket-note">${eliminator ? `${eliminator.stage} • ${eliminator.date}. ` : ''}Winner advances to Qualifier 2. Loser is eliminated.</div>
+                    <div class="bracket-note">${playoffMatchStatusText(eliminatorOne, 'Eliminator 1 follows Qualifier 1.')} Winner advances to Eliminator 2. Loser is eliminated.</div>
                 </div>
             </div>
             <div class="bracket-column center">
                 <div class="bracket-match">
                     <div class="bracket-label">Eliminator 2</div>
                     <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">Q1-L</div><div><strong>Loser Qualifier 1</strong><span>Second chance route</span></div></div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E1-W</div><div><strong>Winner Eliminator</strong><span>Must win again</span></div></div>
-                    <div class="bracket-note">${eliminatorTwo ? `${eliminatorTwo.stage} • ${eliminatorTwo.date}. ` : ''}Winner reaches the final.</div>
+                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E1-W</div><div><strong>Winner Eliminator 1</strong><span>Must win again</span></div></div>
+                    <div class="bracket-note">${playoffMatchStatusText(eliminatorTwo, 'Eliminator 2 decides the second finalist.')} Winner reaches the final.</div>
                 </div>
             </div>
             <div class="bracket-column">
@@ -797,7 +805,7 @@ function renderPlayoffPicture() {
                     <div class="bracket-label">Final</div>
                     <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">Q1-W</div><div><strong>Winner Qualifier 1</strong><span>Direct finalist</span></div></div>
                     <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E2-W</div><div><strong>Winner Eliminator 2</strong><span>Survives the bracket</span></div></div>
-                    <div class="bracket-note">${finalMatch ? `${finalMatch.stage} • ${finalMatch.date}. ` : ''}Championship game for HJNBL Season 2.</div>
+                    <div class="bracket-note">${playoffMatchStatusText(finalMatch, 'The championship game closes HJNBL Season 2.')} Championship game for HJNBL Season 2.</div>
                 </div>
             </div>
         </div>

@@ -444,6 +444,9 @@ const getHeadToHeadTable = (teams, completedResults) => {
     return table;
 };
 
+const LEAGUE_STANDINGS_MATCH_LIMIT = 56;
+const isLeagueStandingsMatch = (match) => Number(match.id) <= LEAGUE_STANDINGS_MATCH_LIMIT;
+
 const sortStandingsByLeagueRules = (rows, completedResults) => {
     const pointsGroups = new Map();
     rows.forEach((row) => {
@@ -475,7 +478,7 @@ const sortStandingsByLeagueRules = (rows, completedResults) => {
 app.get('/api/standings', (req, res) => {
     loadDB();
     let standings = {};
-    const completedResults = getCompletedResults();
+    const completedResults = getCompletedResults().filter((match) => isLeagueStandingsMatch(match));
     Object.keys(rosters).forEach(t => standings[t] = { team: t, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, pd: 0, pts: 0 });
     completedResults.forEach(match => {
         standings[match.teamA].played++;

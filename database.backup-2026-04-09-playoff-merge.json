@@ -338,19 +338,19 @@
     },
     {
       "id": 57,
-      "date": "April 7",
-      "teamA": "ARMY",
-      "teamB": "GGIC",
+      "date": "April 8",
       "stage": "Playoff Day 1",
-      "round": "Qualifier 1"
+      "round": "Qualifier 1",
+      "teamA": "ARMY",
+      "teamB": "GGIC"
     },
     {
       "id": 58,
-      "date": "April 7",
-      "teamA": "TIMES",
-      "teamB": "KVC HOUNDS",
+      "date": "April 8",
       "stage": "Playoff Day 1",
-      "round": "Eliminator 1"
+      "round": "Eliminator",
+      "teamA": "TIMES",
+      "teamB": "KVC HOUNDS"
     },
     {
       "id": 59,
@@ -358,7 +358,7 @@
       "stage": "Playoff Day 2",
       "round": "Eliminator 2",
       "teamA": "QUALIFIER 1 LOSER",
-      "teamB": "ELIMINATOR 1 WINNER"
+      "teamB": "ELIMINATOR WINNER"
     },
     {
       "id": 60,
@@ -377,7 +377,7 @@
         "position": "PG/SG",
         "height": "5'6",
         "age": "-",
-        "photo": "/photos/Kirtipur/4.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/4.png?v=1775384022000"
       },
       {
         "jersey": 5,
@@ -385,7 +385,7 @@
         "position": "SF",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Kirtipur/5.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/5.png?v=1775384022000"
       },
       {
         "jersey": 6,
@@ -393,7 +393,7 @@
         "position": "SG",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Kirtipur/6.png?v=1775557595000"
+        "photo": "/photos/Kirtipur/6.png?v=1775384022000"
       },
       {
         "jersey": 8,
@@ -401,7 +401,7 @@
         "position": "PF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Kirtipur/8.png?v=1775557595000"
+        "photo": "/photos/Kirtipur/8.png?v=1775384022000"
       },
       {
         "jersey": 9,
@@ -409,7 +409,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Kirtipur/9.png?v=1775557595000"
+        "photo": "/photos/Kirtipur/9.png?v=1775384022000"
       },
       {
         "jersey": 11,
@@ -417,7 +417,7 @@
         "position": "PG",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Kirtipur/11.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/11.png?v=1775384021000"
       },
       {
         "jersey": 12,
@@ -425,7 +425,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Kirtipur/12.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/12.png?v=1775384021000"
       },
       {
         "jersey": 17,
@@ -433,7 +433,7 @@
         "position": "PF",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/Kirtipur/17.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/17.png?v=1775384022000"
       },
       {
         "jersey": 23,
@@ -441,7 +441,7 @@
         "position": "PG",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Kirtipur/23.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/23.png?v=1775384022000"
       },
       {
         "jersey": 25,
@@ -465,7 +465,7 @@
         "position": "G",
         "height": "6'5",
         "age": "-",
-        "photo": "/photos/Kirtipur/42.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/42.png?v=1775384022000"
       },
       {
         "jersey": 44,
@@ -473,7 +473,7 @@
         "position": "SG",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Kirtipur/44.png?v=1775557594000"
+        "photo": "/photos/Kirtipur/44.png?v=1775384022000"
       },
       {
         "jersey": 77,
@@ -481,7 +481,7 @@
         "position": "C",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/Kirtipur/77.png?v=1775557595000"
+        "photo": "/photos/Kirtipur/77.png?v=1775384022000"
       }
     ],
     "KVC HOUNDS": [
@@ -491,7 +491,7 @@
         "position": "CF",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/KVC Hounds/3.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/3.png?v=1775384023000"
       },
       {
         "jersey": 4,
@@ -499,7 +499,7 @@
         "position": "C/PF",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/KVC Hounds/4.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/4.png?v=1775384023000"
       },
       {
         "jersey": 5,
@@ -507,7 +507,7 @@
         "position": "PG/SG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/KVC Hounds/5.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/5.png?v=1775384023000"
       },
       {
         "jersey": 7,
@@ -515,7 +515,7 @@
         "position": "G",
         "height": "5'1",
         "age": "-",
-        "photo": "/photos/KVC Hounds/7.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/7.png?v=1775384024000"
       },
       {
         "jersey": 10,
@@ -531,7 +531,7 @@
         "position": "SF/PF",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/KVC Hounds/13.png?v=1775557595000"
+        "photo": "/photos/KVC Hounds/13.png?v=1775384023000"
       },
       {
         "jersey": 15,
@@ -539,7 +539,7 @@
         "position": "PG/SG",
         "height": "5'1",
         "age": "-",
-        "photo": "/photos/KVC Hounds/15.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/15.png?v=1775384023000"
       },
       {
         "jersey": 18,
@@ -547,7 +547,7 @@
         "position": "PF/C",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/KVC Hounds/18.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/18.png?v=1775384023000"
       },
       {
         "jersey": 21,
@@ -555,7 +555,7 @@
         "position": "SF/SG",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/KVC Hounds/21.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/21.png?v=1775384023000"
       },
       {
         "jersey": 22,
@@ -571,7 +571,7 @@
         "position": "SF/SG",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/KVC Hounds/23.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/23.png?v=1775384023000"
       },
       {
         "jersey": 29,
@@ -579,7 +579,7 @@
         "position": "SG",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/KVC Hounds/29.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/29.png?v=1775384023000"
       },
       {
         "jersey": 31,
@@ -595,7 +595,7 @@
         "position": "C",
         "height": "6'6",
         "age": "-",
-        "photo": "/photos/KVC Hounds/35.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/35.png?v=1775384023000"
       },
       {
         "jersey": 77,
@@ -603,7 +603,7 @@
         "position": "PF",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/KVC Hounds/77.png?v=1775557596000"
+        "photo": "/photos/KVC Hounds/77.png?v=1775384024000"
       }
     ],
     "PLAYBOX": [
@@ -613,7 +613,7 @@
         "position": "PG/SG",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Playbox/1.png?v=1775557598000"
+        "photo": "/photos/Playbox/1.png?v=1775384025000"
       },
       {
         "jersey": 2,
@@ -621,7 +621,7 @@
         "position": "PF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Playbox/2.png?v=1775557598000"
+        "photo": "/photos/Playbox/2.png?v=1775384026000"
       },
       {
         "jersey": 3,
@@ -629,7 +629,7 @@
         "position": "PF",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Playbox/3.png?v=1775557599000"
+        "photo": "/photos/Playbox/3.png?v=1775384026000"
       },
       {
         "jersey": 6,
@@ -637,7 +637,7 @@
         "position": "PG",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Playbox/6.png?v=1775557599000"
+        "photo": "/photos/Playbox/6.png?v=1775384026000"
       },
       {
         "jersey": 8,
@@ -645,7 +645,7 @@
         "position": "SF",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Playbox/8.png?v=1775557599000"
+        "photo": "/photos/Playbox/8.png?v=1775384026000"
       },
       {
         "jersey": 9,
@@ -653,7 +653,7 @@
         "position": "PF",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/Playbox/9.png?v=1775557599000"
+        "photo": "/photos/Playbox/9.png?v=1775384026000"
       },
       {
         "jersey": 11,
@@ -661,7 +661,7 @@
         "position": "C",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/Playbox/11.png?v=1775557598000"
+        "photo": "/photos/Playbox/11.png?v=1775384025000"
       },
       {
         "jersey": 12,
@@ -669,7 +669,7 @@
         "position": "PG",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Playbox/12.png?v=1775557598000"
+        "photo": "/photos/Playbox/12.png?v=1775384025000"
       },
       {
         "jersey": 20,
@@ -685,7 +685,7 @@
         "position": "C",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Playbox/25.png?v=1775557599000"
+        "photo": "/photos/Playbox/25.png?v=1775384026000"
       },
       {
         "jersey": 26,
@@ -693,7 +693,7 @@
         "position": "SF",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Playbox/26.png?v=1775557599000"
+        "photo": "/photos/Playbox/26.png?v=1775384026000"
       },
       {
         "jersey": 30,
@@ -701,7 +701,7 @@
         "position": "SG",
         "height": "5'1",
         "age": "-",
-        "photo": "/photos/Playbox/30.png?v=1775557599000"
+        "photo": "/photos/Playbox/30.png?v=1775384026000"
       },
       {
         "jersey": 32,
@@ -709,7 +709,7 @@
         "position": "C",
         "height": "6'4",
         "age": "-",
-        "photo": "/photos/Playbox/32.png?v=1775557599000"
+        "photo": "/photos/Playbox/32.png?v=1775384026000"
       },
       {
         "jersey": 36,
@@ -725,7 +725,7 @@
         "position": "SG",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Playbox/77.png?v=1775557599000"
+        "photo": "/photos/Playbox/77.png?v=1775384026000"
       }
     ],
     "SOLO": [
@@ -735,7 +735,7 @@
         "position": "SG",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Solo/1.png?v=1775557602000"
+        "photo": "/photos/Solo/1.png?v=1775384029000"
       },
       {
         "jersey": 2,
@@ -743,7 +743,7 @@
         "position": "PG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/Solo/2.png?v=1775557602000"
+        "photo": "/photos/Solo/2.png?v=1775384029000"
       },
       {
         "jersey": 3,
@@ -783,7 +783,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Solo/7.png?v=1775557602000"
+        "photo": "/photos/Solo/7.png?v=1775384030000"
       },
       {
         "jersey": 8,
@@ -791,7 +791,7 @@
         "position": "SG",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Solo/8.png?v=1775557603000"
+        "photo": "/photos/Solo/8.png?v=1775384030000"
       },
       {
         "jersey": 9,
@@ -799,7 +799,7 @@
         "position": "PG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/Solo/9.png?v=1775557603000"
+        "photo": "/photos/Solo/9.png?v=1775384030000"
       },
       {
         "jersey": 10,
@@ -807,7 +807,7 @@
         "position": "SF",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Solo/10.png?v=1775557602000"
+        "photo": "/photos/Solo/10.png?v=1775384029000"
       },
       {
         "jersey": 11,
@@ -823,7 +823,7 @@
         "position": "PF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Solo/12.png?v=1775557602000"
+        "photo": "/photos/Solo/12.png?v=1775384029000"
       },
       {
         "jersey": 15,
@@ -831,7 +831,7 @@
         "position": "C",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/Solo/15.png?v=1775557602000"
+        "photo": "/photos/Solo/15.png?v=1775384029000"
       },
       {
         "jersey": 24,
@@ -847,7 +847,7 @@
         "position": "PG",
         "height": "5'0",
         "age": "-",
-        "photo": "/photos/Solo/34.png?v=1775557602000"
+        "photo": "/photos/Solo/34.png?v=1775384030000"
       }
     ],
     "ROYAL": [
@@ -857,7 +857,7 @@
         "position": "PG",
         "height": "5'2",
         "age": "-",
-        "photo": "/photos/Royal/3.png?v=1775557600000"
+        "photo": "/photos/Royal/3.png?v=1775384027000"
       },
       {
         "jersey": 4,
@@ -865,7 +865,7 @@
         "position": "G/F",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Royal/4.png?v=1775557600000"
+        "photo": "/photos/Royal/4.png?v=1775384027000"
       },
       {
         "jersey": 5,
@@ -873,7 +873,7 @@
         "position": "SG/SF",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Royal/5.png?v=1775557600000"
+        "photo": "/photos/Royal/5.png?v=1775384027000"
       },
       {
         "jersey": 6,
@@ -881,7 +881,7 @@
         "position": "SF",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/Royal/6.png?v=1775557601000"
+        "photo": "/photos/Royal/6.png?v=1775384027000"
       },
       {
         "jersey": 7,
@@ -889,7 +889,7 @@
         "position": "SF",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Royal/7.png?v=1775557601000"
+        "photo": "/photos/Royal/7.png?v=1775384028000"
       },
       {
         "jersey": 9,
@@ -897,7 +897,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Royal/9.png?v=1775557601000"
+        "photo": "/photos/Royal/9.png?v=1775384028000"
       },
       {
         "jersey": 10,
@@ -905,7 +905,7 @@
         "position": "SG",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Royal/10.png?v=1775557600000"
+        "photo": "/photos/Royal/10.png?v=1775384027000"
       },
       {
         "jersey": 11,
@@ -913,7 +913,7 @@
         "position": "C",
         "height": "7'0",
         "age": "-",
-        "photo": "/photos/Royal/11.png?v=1775557600000"
+        "photo": "/photos/Royal/11.png?v=1775384027000"
       },
       {
         "jersey": 12,
@@ -921,7 +921,7 @@
         "position": "PG/SG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/Royal/12.png?v=1775557600000"
+        "photo": "/photos/Royal/12.png?v=1775384027000"
       },
       {
         "jersey": 13,
@@ -929,7 +929,7 @@
         "position": "SF",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Royal/13.png?v=1775557600000"
+        "photo": "/photos/Royal/13.png?v=1775384027000"
       },
       {
         "jersey": 15,
@@ -937,7 +937,7 @@
         "position": "PG",
         "height": "5'6",
         "age": "-",
-        "photo": "/photos/Royal/15.png?v=1775557600000"
+        "photo": "/photos/Royal/15.png?v=1775384027000"
       },
       {
         "jersey": 23,
@@ -945,7 +945,7 @@
         "position": "C/PF",
         "height": "6'3",
         "age": "-",
-        "photo": "/photos/Royal/23.png?v=1775557600000"
+        "photo": "/photos/Royal/23.png?v=1775384027000"
       },
       {
         "jersey": 24,
@@ -953,7 +953,7 @@
         "position": "PG/SG",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Royal/24.png?v=1775557600000"
+        "photo": "/photos/Royal/24.png?v=1775384027000"
       },
       {
         "jersey": 28,
@@ -961,7 +961,7 @@
         "position": "PG",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Royal/28.png?v=1775557600000"
+        "photo": "/photos/Royal/28.png?v=1775384027000"
       },
       {
         "jersey": 30,
@@ -969,7 +969,7 @@
         "position": "SF",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/Royal/30.png?v=1775557600000"
+        "photo": "/photos/Royal/30.png?v=1775384027000"
       }
     ],
     "ARMY": [
@@ -979,7 +979,7 @@
         "position": "SG",
         "height": "5'10",
         "age": "-",
-        "photo": "/photos/Army/0.png?v=1775557589000"
+        "photo": "/photos/Army/0.png?v=1775384017000"
       },
       {
         "jersey": 5,
@@ -987,7 +987,7 @@
         "position": "G",
         "height": "5'9",
         "age": "-",
-        "photo": "/photos/Army/5.png?v=1775557589000"
+        "photo": "/photos/Army/5.png?v=1775384018000"
       },
       {
         "jersey": 6,
@@ -995,7 +995,7 @@
         "position": "C",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Army/6.png?v=1775557590000"
+        "photo": "/photos/Army/6.png?v=1775384018000"
       },
       {
         "jersey": 8,
@@ -1003,7 +1003,7 @@
         "position": "PG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/Army/8.png?v=1775557590000"
+        "photo": "/photos/Army/8.png?v=1775384018000"
       },
       {
         "jersey": 9,
@@ -1011,7 +1011,7 @@
         "position": "SG",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/Army/9.png?v=1775557590000"
+        "photo": "/photos/Army/9.png?v=1775384018000"
       },
       {
         "jersey": 10,
@@ -1019,7 +1019,7 @@
         "position": "C",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Army/10.png?v=1775557589000"
+        "photo": "/photos/Army/10.png?v=1775384017000"
       },
       {
         "jersey": 11,
@@ -1027,7 +1027,7 @@
         "position": "PG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/Army/11.png?v=1775557589000"
+        "photo": "/photos/Army/11.png?v=1775384018000"
       },
       {
         "jersey": 15,
@@ -1035,7 +1035,7 @@
         "position": "C",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Army/15.png?v=1775557589000"
+        "photo": "/photos/Army/15.png?v=1775384018000"
       },
       {
         "jersey": 18,
@@ -1059,7 +1059,7 @@
         "position": "PG",
         "height": "5'6",
         "age": "-",
-        "photo": "/photos/Army/24.png?v=1775557589000"
+        "photo": "/photos/Army/24.png?v=1775384018000"
       },
       {
         "jersey": 30,
@@ -1075,7 +1075,7 @@
         "position": "PG",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Army/33.png?v=1775557589000"
+        "photo": "/photos/Army/33.png?v=1775384018000"
       },
       {
         "jersey": 55,
@@ -1083,7 +1083,7 @@
         "position": "PF",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/Army/55.png?v=1775557589000"
+        "photo": "/photos/Army/55.png?v=1775384018000"
       },
       {
         "jersey": 77,
@@ -1091,7 +1091,7 @@
         "position": "PF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Army/77.png?v=1775557590000"
+        "photo": "/photos/Army/77.png?v=1775384018000"
       }
     ],
     "TIMES": [
@@ -1109,7 +1109,7 @@
         "position": "PG",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/Times/2.png?v=1775557603000"
+        "photo": "/photos/Times/2.png?v=1775384030000"
       },
       {
         "jersey": 3,
@@ -1117,7 +1117,7 @@
         "position": "SG",
         "height": "5'1",
         "age": "-",
-        "photo": "/photos/Times/3.png?v=1775557603000"
+        "photo": "/photos/Times/3.png?v=1775384031000"
       },
       {
         "jersey": 4,
@@ -1125,7 +1125,7 @@
         "position": "SG",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Times/4.png?v=1775557604000"
+        "photo": "/photos/Times/4.png?v=1775384031000"
       },
       {
         "jersey": 5,
@@ -1133,7 +1133,7 @@
         "position": "G",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/Times/5.png?v=1775557604000"
+        "photo": "/photos/Times/5.png?v=1775384031000"
       },
       {
         "jersey": 7,
@@ -1141,7 +1141,7 @@
         "position": "PG",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Times/7.png?v=1775557604000"
+        "photo": "/photos/Times/7.png?v=1775384031000"
       },
       {
         "jersey": 8,
@@ -1165,7 +1165,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Times/12.png?v=1775557603000"
+        "photo": "/photos/Times/12.png?v=1775384030000"
       },
       {
         "jersey": 13,
@@ -1173,7 +1173,7 @@
         "position": "PF",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Times/13.png?v=1775557603000"
+        "photo": "/photos/Times/13.png?v=1775384030000"
       },
       {
         "jersey": 17,
@@ -1181,7 +1181,7 @@
         "position": "SF",
         "height": "6'3",
         "age": "-",
-        "photo": "/photos/Times/17.png?v=1775557603000"
+        "photo": "/photos/Times/17.png?v=1775384030000"
       },
       {
         "jersey": 24,
@@ -1189,7 +1189,7 @@
         "position": "C",
         "height": "6'6",
         "age": "-",
-        "photo": "/photos/Times/24.png?v=1775557603000"
+        "photo": "/photos/Times/24.png?v=1775384030000"
       },
       {
         "jersey": 31,
@@ -1197,7 +1197,7 @@
         "position": "G",
         "height": "6'1",
         "age": "-",
-        "photo": "/photos/Times/31.png?v=1775557603000"
+        "photo": "/photos/Times/31.png?v=1775384031000"
       },
       {
         "jersey": 35,
@@ -1205,7 +1205,7 @@
         "position": "SG",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/Times/35.png?v=1775557604000"
+        "photo": "/photos/Times/35.png?v=1775384031000"
       },
       {
         "jersey": 60,
@@ -1213,7 +1213,7 @@
         "position": "PF",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/Times/60.png?v=1775557604000"
+        "photo": "/photos/Times/60.png?v=1775384031000"
       }
     ],
     "GGIC": [
@@ -1223,7 +1223,7 @@
         "position": "PF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/GoldenGate/0.png?v=1775557591000"
+        "photo": "/photos/GoldenGate/0.png?v=1775384019000"
       },
       {
         "jersey": 1,
@@ -1239,7 +1239,7 @@
         "position": "G/F",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/GoldenGate/4.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/4.png?v=1775384020000"
       },
       {
         "jersey": 6,
@@ -1255,7 +1255,7 @@
         "position": "PG",
         "height": "6'0",
         "age": "-",
-        "photo": "/photos/GoldenGate/7.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/7.png?v=1775384020000"
       },
       {
         "jersey": 8,
@@ -1263,7 +1263,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/GoldenGate/8.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/8.png?v=1775384020000"
       },
       {
         "jersey": 9,
@@ -1271,7 +1271,7 @@
         "position": "SF",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/GoldenGate/9.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/9.png?v=1775384020000"
       },
       {
         "jersey": 12,
@@ -1279,7 +1279,7 @@
         "position": "G",
         "height": "5'7",
         "age": "-",
-        "photo": "/photos/GoldenGate/12.png?v=1775557591000"
+        "photo": "/photos/GoldenGate/12.png?v=1775384019000"
       },
       {
         "jersey": 15,
@@ -1287,7 +1287,7 @@
         "position": "F/C",
         "height": "6'2",
         "age": "-",
-        "photo": "/photos/GoldenGate/15.png?v=1775557591000"
+        "photo": "/photos/GoldenGate/15.png?v=1775384019000"
       },
       {
         "jersey": 23,
@@ -1295,7 +1295,7 @@
         "position": "SG",
         "height": "5'11",
         "age": "-",
-        "photo": "/photos/GoldenGate/23.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/23.png?v=1775384020000"
       },
       {
         "jersey": 24,
@@ -1303,7 +1303,7 @@
         "position": "SF",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/GoldenGate/24.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/24.png?v=1775384020000"
       },
       {
         "jersey": 28,
@@ -1327,7 +1327,7 @@
         "position": "SG",
         "height": "5'5",
         "age": "-",
-        "photo": "/photos/GoldenGate/33.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/33.png?v=1775384020000"
       },
       {
         "jersey": 34,
@@ -1343,7 +1343,7 @@
         "position": "G/F",
         "height": "5'8",
         "age": "-",
-        "photo": "/photos/GoldenGate/44.png?v=1775557592000"
+        "photo": "/photos/GoldenGate/44.png?v=1775384020000"
       }
     ]
   },
@@ -4207,29 +4207,6 @@
           "tov": 0,
           "foul": 0
         },
-        "10": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
         "13": {
           "q1_1": 0,
           "q1_2": 0,
@@ -4462,29 +4439,6 @@
         }
       },
       "TIMES": {
-        "1": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
         "2": {
           "q1_1": 0,
           "q1_2": 0,
@@ -4578,29 +4532,6 @@
           "foul": 0
         },
         "7": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "8": {
           "q1_1": 0,
           "q1_2": 0,
           "q1_3": 0,
@@ -10458,52 +10389,6 @@
           "tov": 2,
           "foul": 0
         },
-        "18": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "23": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
         "24": {
           "q1_1": 0,
           "q1_2": 0,
@@ -10525,29 +10410,6 @@
           "stl": 2,
           "blk": 0,
           "tov": 2,
-          "foul": 0
-        },
-        "30": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
           "foul": 0
         },
         "33": {
@@ -10806,29 +10668,6 @@
           "foul": 0
         },
         "23": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "25": {
           "q1_1": 0,
           "q1_2": 0,
           "q1_3": 0,
@@ -40196,1423 +40035,6 @@
           "stl": 2,
           "blk": 1,
           "tov": 5,
-          "foul": 0
-        }
-      }
-    },
-    "57": {
-      "isCompleted": true,
-      "ARMY": {
-        "0": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "5": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 3,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 4,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "6": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "8": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 1,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 1,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 1,
-          "ast": 3,
-          "stl": 1,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "9": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 2,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 3,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 4,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "10": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 1,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "11": {
-          "q1_1": 0,
-          "q1_2": 2,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 3,
-          "q4_2": 1,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 7,
-          "ast": 8,
-          "stl": 0,
-          "blk": 0,
-          "tov": 3,
-          "foul": 0
-        },
-        "15": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 5,
-          "ast": 1,
-          "stl": 0,
-          "blk": 0,
-          "tov": 2,
-          "foul": 0
-        },
-        "18": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "23": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "24": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "30": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "33": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "55": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 1,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 1,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 8,
-          "ast": 1,
-          "stl": 0,
-          "blk": 0,
-          "tov": 4,
-          "foul": 0
-        },
-        "77": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 2,
-          "q3_1": 0,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 3,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 11,
-          "ast": 8,
-          "stl": 0,
-          "blk": 0,
-          "tov": 6,
-          "foul": 0
-        }
-      },
-      "GGIC": {
-        "0": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 1,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "1": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "4": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 2,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 2,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 6,
-          "ast": 5,
-          "stl": 0,
-          "blk": 0,
-          "tov": 2,
-          "foul": 0
-        },
-        "6": {
-          "q1_1": 0,
-          "q1_2": 2,
-          "q1_3": 0,
-          "q2_1": 1,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 1,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 10,
-          "ast": 4,
-          "stl": 1,
-          "blk": 0,
-          "tov": 3,
-          "foul": 0
-        },
-        "7": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 2,
-          "q3_2": 3,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 1,
-          "ast": 9,
-          "stl": 2,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "8": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "9": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 2,
-          "q2_3": 0,
-          "q3_1": 2,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 7,
-          "ast": 1,
-          "stl": 2,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "12": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "15": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "23": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 3,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 2,
-          "ast": 3,
-          "stl": 2,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "24": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "28": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 1,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "30": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "33": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "34": {
-          "q1_1": 1,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 2,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 2,
-          "q3_2": 2,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 7,
-          "ast": 1,
-          "stl": 2,
-          "blk": 2,
-          "tov": 1,
-          "foul": 0
-        },
-        "44": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 1,
-          "ast": 0,
-          "stl": 0,
-          "blk": 1,
-          "tov": 1,
-          "foul": 0
-        }
-      }
-    },
-    "58": {
-      "isCompleted": true,
-      "TIMES": {
-        "1": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "2": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "3": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "4": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 2,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 2,
-          "ast": 4,
-          "stl": 4,
-          "blk": 0,
-          "tov": 3,
-          "foul": 0
-        },
-        "5": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "7": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "8": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 9,
-          "ast": 4,
-          "stl": 2,
-          "blk": 0,
-          "tov": 2,
-          "foul": 0
-        },
-        "10": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "12": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 1,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 2,
-          "ast": 1,
-          "stl": 1,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "13": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 2,
-          "q2_1": 1,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 3,
-          "q3_2": 2,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 1,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 8,
-          "ast": 7,
-          "stl": 2,
-          "blk": 0,
-          "tov": 7,
-          "foul": 0
-        },
-        "17": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "24": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 1,
-          "ast": 0,
-          "stl": 1,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "31": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "35": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 2,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 1,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 2,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 2,
-          "ast": 7,
-          "stl": 4,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "60": {
-          "q1_1": 0,
-          "q1_2": 3,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 1,
-          "q3_2": 4,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 4,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 5,
-          "ast": 1,
-          "stl": 1,
-          "blk": 1,
-          "tov": 2,
-          "foul": 0
-        }
-      },
-      "KVC HOUNDS": {
-        "3": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "4": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "5": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 2,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 2,
-          "ast": 1,
-          "stl": 0,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "7": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "10": {
-          "q1_1": 0,
-          "q1_2": 2,
-          "q1_3": 0,
-          "q2_1": 2,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 2,
-          "q4_2": 4,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 5,
-          "ast": 0,
-          "stl": 1,
-          "blk": 1,
-          "tov": 2,
-          "foul": 0
-        },
-        "13": {
-          "q1_1": 0,
-          "q1_2": 2,
-          "q1_3": 0,
-          "q2_1": 1,
-          "q2_2": 4,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 2,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 2,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 7,
-          "ast": 1,
-          "stl": 2,
-          "blk": 0,
-          "tov": 5,
-          "foul": 0
-        },
-        "15": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 1,
-          "q2_3": 0,
-          "q3_1": 4,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 4,
-          "ast": 8,
-          "stl": 2,
-          "blk": 0,
-          "tov": 4,
-          "foul": 0
-        },
-        "18": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "21": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 1,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 2,
-          "stl": 0,
-          "blk": 0,
-          "tov": 1,
-          "foul": 0
-        },
-        "22": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "23": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 1,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 9,
-          "ast": 8,
-          "stl": 1,
-          "blk": 0,
-          "tov": 5,
-          "foul": 0
-        },
-        "29": {
-          "q1_1": 0,
-          "q1_2": 1,
-          "q1_3": 0,
-          "q2_1": 2,
-          "q2_2": 0,
-          "q2_3": 1,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 1,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 2,
-          "ast": 1,
-          "stl": 0,
-          "blk": 0,
-          "tov": 3,
-          "foul": 0
-        },
-        "31": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "35": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
-          "foul": 0
-        },
-        "77": {
-          "q1_1": 0,
-          "q1_2": 0,
-          "q1_3": 0,
-          "q2_1": 0,
-          "q2_2": 0,
-          "q2_3": 0,
-          "q3_1": 0,
-          "q3_2": 0,
-          "q3_3": 0,
-          "q4_1": 0,
-          "q4_2": 0,
-          "q4_3": 0,
-          "ot_1": 0,
-          "ot_2": 0,
-          "ot_3": 0,
-          "reb": 0,
-          "ast": 0,
-          "stl": 0,
-          "blk": 0,
-          "tov": 0,
           "foul": 0
         }
       }
