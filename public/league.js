@@ -156,6 +156,44 @@ function playoffLoser(match) {
     return null;
 }
 
+function isPlaceholderPlayoffTeam(team) {
+    return !team || String(team).includes('WINNER') || String(team).includes('LOSER');
+}
+
+function resolveHomepageFinalMatch(playoffMatches) {
+    const qualifierOne = playoffMatches.find((match) => match.round === 'Qualifier 1');
+    const eliminatorTwo = playoffMatches.find((match) => match.round === 'Eliminator 2');
+    const explicitFinal = playoffMatches.find((match) => match.round === 'Final');
+    const qualifierWinner = playoffWinner(qualifierOne);
+    const eliminatorTwoWinner = playoffWinner(eliminatorTwo);
+
+    if (explicitFinal && !isPlaceholderPlayoffTeam(explicitFinal.teamA) && !isPlaceholderPlayoffTeam(explicitFinal.teamB)) {
+        return explicitFinal;
+    }
+
+    if (explicitFinal && (qualifierWinner || eliminatorTwoWinner)) {
+        return {
+            ...explicitFinal,
+            teamA: !isPlaceholderPlayoffTeam(explicitFinal.teamA) ? explicitFinal.teamA : (qualifierWinner || explicitFinal.teamA),
+            teamB: !isPlaceholderPlayoffTeam(explicitFinal.teamB) ? explicitFinal.teamB : (eliminatorTwoWinner || explicitFinal.teamB)
+        };
+    }
+
+    if (!qualifierWinner || !eliminatorTwoWinner) return explicitFinal || null;
+
+    return {
+        id: 60,
+        date: 'April 11',
+        stage: 'Finals',
+        round: 'Final',
+        teamA: qualifierWinner,
+        teamB: eliminatorTwoWinner,
+        isCompleted: false,
+        scoreA: null,
+        scoreB: null
+    };
+}
+
 function logoMarkup(team, size = 48) {
     const url = state.scheduleData?.teamLogos?.[team];
     if (url) {
@@ -343,7 +381,7 @@ function renderFeaturedCards() {
         `;
     }
 
-    const finalMatch = matchesWithSummary().find((match) => match.round === 'Final');
+    const finalMatch = resolveHomepageFinalMatch(matchesWithSummary().filter((match) => Number(match.id) >= 57 && Number(match.id) <= 60));
     if (finalsSpotlight) {
         if (!finalMatch) {
             finalsSpotlight.innerHTML = '';
@@ -814,7 +852,7 @@ function renderPlayoffPicture() {
     const qualifierOne = playoffMatches.find((match) => match.round === 'Qualifier 1');
     const eliminatorOne = playoffMatches.find((match) => match.round === 'Eliminator 1');
     const eliminatorTwo = playoffMatches.find((match) => match.round === 'Eliminator 2');
-    const finalMatch = playoffMatches.find((match) => match.round === 'Final');
+    const finalMatch = resolveHomepageFinalMatch(playoffMatches);
     const qualifierOneWinner = playoffWinner(qualifierOne);
     const qualifierOneLoser = playoffLoser(qualifierOne);
     const eliminatorOneWinner = playoffWinner(eliminatorOne);

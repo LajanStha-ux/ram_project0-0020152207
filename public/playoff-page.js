@@ -30,8 +30,12 @@ const PLAYOFF_TEAM_NAMES = {
 };
 
 const TICKET_LINK = 'https://www.ticketsanjal.com/events/282';
-const WATCH_LINK = 'https://www.youtube.com/@WatchDGO';
+const WATCH_LINK = 'https://www.youtube.com/@ActionSportsNepal';
 const PLAYLIST_LINK = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
+
+function isPlaceholderTeam(team) {
+    return !team || String(team).includes('WINNER') || String(team).includes('LOSER');
+}
 
 function playoffTeamName(team) {
     return PLAYOFF_TEAM_NAMES[team] || team;
@@ -67,13 +71,61 @@ function computeScore(statsBlock) {
     }, 0);
 }
 
+function matchScore(matchStats, team) {
+    return computeScore(matchStats?.[team]);
+}
+
+function completedWinner(match, matchStats) {
+    if (!match || !matchStats?.isCompleted) return null;
+    const scoreA = matchScore(matchStats, match.teamA);
+    const scoreB = matchScore(matchStats, match.teamB);
+    if (scoreA > scoreB) return match.teamA;
+    if (scoreB > scoreA) return match.teamB;
+    return null;
+}
+
+function resolveFinalMatch(scheduleData) {
+    const schedule = scheduleData.schedule || [];
+    const matchStats = scheduleData.matchStats || {};
+    const explicitFinal = schedule.find((item) => Number(item.id) === 60);
+    const qualifierOne = schedule.find((item) => Number(item.id) === 57);
+    const eliminatorTwo = schedule.find((item) => Number(item.id) === 59);
+    const qualifierWinner = completedWinner(qualifierOne, matchStats[57]);
+    const eliminatorTwoWinner = completedWinner(eliminatorTwo, matchStats[59]);
+
+    if (explicitFinal && !isPlaceholderTeam(explicitFinal.teamA) && !isPlaceholderTeam(explicitFinal.teamB)) {
+        return explicitFinal;
+    }
+
+    if (explicitFinal && (qualifierWinner || eliminatorTwoWinner)) {
+        return {
+            ...explicitFinal,
+            teamA: !isPlaceholderTeam(explicitFinal.teamA) ? explicitFinal.teamA : (qualifierWinner || explicitFinal.teamA),
+            teamB: !isPlaceholderTeam(explicitFinal.teamB) ? explicitFinal.teamB : (eliminatorTwoWinner || explicitFinal.teamB)
+        };
+    }
+
+    if (!qualifierWinner || !eliminatorTwoWinner) {
+        return explicitFinal || null;
+    }
+
+    return {
+        id: 60,
+        date: explicitFinal?.date || 'April 11',
+        stage: explicitFinal?.stage || 'Finals',
+        round: explicitFinal?.round || 'Final',
+        teamA: qualifierWinner,
+        teamB: eliminatorTwoWinner
+    };
+}
+
 function matchupStatus(match, stats) {
     if (!stats?.isCompleted) {
-        return `${match.stage || match.round} • ${match.date}`;
+        return `${match.stage || match.round} - ${match.date}`;
     }
-    const scoreA = computeScore(stats[match.teamA]);
-    const scoreB = computeScore(stats[match.teamB]);
-    return `Final • ${match.date} • ${scoreA}-${scoreB}`;
+    const scoreA = matchScore(stats, match.teamA);
+    const scoreB = matchScore(stats, match.teamB);
+    return `Final - ${match.date} - ${scoreA}-${scoreB}`;
 }
 
 function topPlayersForTeam(tournamentData, team) {
@@ -83,13 +135,27 @@ function topPlayersForTeam(tournamentData, team) {
         .slice(0, 2);
 }
 
+function finalHeroTitle(match) {
+    if (!match) return PLAYOFF_PAGE_CONFIG.final.subtitle;
+    return `${playoffTeamName(match.teamA)} vs ${playoffTeamName(match.teamB)} for the crown.`;
+}
+
+function finalHeroStake(matchStats) {
+    if (matchStats?.isCompleted) {
+        return 'The title is decided. Relive the championship matchup and the standout performers from finals night.';
+    }
+    return 'The last game of the season decides the HJNBL Season 2 champion.';
+}
+
 function renderPlayoffPage(scheduleData, standings, tournamentData) {
     const root = document.getElementById('playoffPageRoot');
     const body = document.body;
     const pageType = body.dataset.pageType;
     const config = PLAYOFF_PAGE_CONFIG[pageType];
     const matchId = Number(body.dataset.matchId || config.matchId);
-    const match = (scheduleData.schedule || []).find((item) => Number(item.id) === matchId);
+    const match = pageType === 'final'
+        ? resolveFinalMatch(scheduleData)
+        : (scheduleData.schedule || []).find((item) => Number(item.id) === matchId);
     const matchStats = scheduleData.matchStats?.[matchId];
 
     if (!match) {
@@ -99,18 +165,25 @@ function renderPlayoffPage(scheduleData, standings, tournamentData) {
 
     const teamAStanding = standings.find((row) => row.team === match.teamA);
     const teamBStanding = standings.find((row) => row.team === match.teamB);
-    const teamAScore = matchStats?.isCompleted ? computeScore(matchStats[match.teamA]) : null;
-    const teamBScore = matchStats?.isCompleted ? computeScore(matchStats[match.teamB]) : null;
+    const teamAScore = matchStats?.isCompleted ? matchScore(matchStats, match.teamA) : null;
+    const teamBScore = matchStats?.isCompleted ? matchScore(matchStats, match.teamB) : null;
     const featuredPlayers = pageType === 'final'
         ? [...topPlayersForTeam(tournamentData, match.teamA), ...topPlayersForTeam(tournamentData, match.teamB)]
         : [];
+    const heroTitle = pageType === 'final' ? finalHeroTitle(match) : config.subtitle;
+    const heroStake = pageType === 'final' ? finalHeroStake(matchStats) : config.stake;
+    const pageLine = pageType === 'final'
+        ? (matchStats?.isCompleted
+            ? 'Championship game complete.'
+            : 'Championship tip-off is set.')
+        : 'Win and advance.';
 
     root.innerHTML = `
         <section class="playoff-hero ${config.accentClass}">
             <div class="playoff-hero-copy">
                 <div class="eyebrow">${config.title}</div>
-                <h1 class="playoff-hero-title">${config.subtitle}</h1>
-                <p class="playoff-hero-copyline">${config.stake}</p>
+                <h1 class="playoff-hero-title">${heroTitle}</h1>
+                <p class="playoff-hero-copyline">${heroStake}</p>
                 <div class="playoff-status-line">${matchupStatus(match, matchStats)}</div>
                 <div class="playoff-actions">
                     <a class="btn btn-primary" href="${TICKET_LINK}" target="_blank" rel="noopener noreferrer">Book Tickets</a>
@@ -145,7 +218,7 @@ function renderPlayoffPage(scheduleData, standings, tournamentData) {
             <article class="playoff-info-card">
                 <div class="card-label">Matchday Energy</div>
                 <strong>${match.round}</strong>
-                <p class="muted">${match.date} • ${match.stage || 'Playoffs'} • HJNBL Season 2</p>
+                <p class="muted">${match.date} - ${match.stage || 'Playoffs'} - ${pageLine}</p>
             </article>
             <article class="playoff-info-card">
                 <div class="card-label">What To Do</div>
@@ -163,8 +236,8 @@ function renderPlayoffPage(scheduleData, standings, tournamentData) {
                             <img class="playoff-star-photo" src="${playoffPlayerPhoto(player)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
                             <div class="playoff-star-meta">
                                 <strong>${player.name}</strong>
-                                <span>${playoffTeamName(player.team)} • #${player.jersey}</span>
-                                <div class="playoff-star-stats">${player.pts} PTS • ${player.reb} REB • ${player.ast} AST</div>
+                                <span>${playoffTeamName(player.team)} - #${player.jersey}</span>
+                                <div class="playoff-star-stats">${player.pts} PTS - ${player.reb} REB - ${player.ast} AST</div>
                             </div>
                         </article>
                     `).join('')}
