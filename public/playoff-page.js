@@ -9,7 +9,7 @@ const PLAYOFF_PAGE_CONFIG = {
     final: {
         matchId: 60,
         title: 'HJNBL Final',
-        subtitle: 'One game for the crown.',
+        subtitle: 'Army vs GGIC for the crown.',
         stake: 'The last game of the season decides the HJNBL Season 2 champion.',
         accentClass: 'is-final'
     }
@@ -39,6 +39,10 @@ function playoffTeamName(team) {
 
 function playoffLogoUrl(scheduleData, team) {
     return scheduleData?.teamLogos?.[team] || '/assets/tour_logo.png';
+}
+
+function playoffPlayerPhoto(player) {
+    return player?.photo && player.photo !== 'undefined' ? player.photo : '/assets/tour_logo.png';
 }
 
 function cheerTag(team) {
@@ -72,7 +76,14 @@ function matchupStatus(match, stats) {
     return `Final • ${match.date} • ${scoreA}-${scoreB}`;
 }
 
-function renderPlayoffPage(scheduleData, standings) {
+function topPlayersForTeam(tournamentData, team) {
+    return [...(tournamentData?.allPlayers || [])]
+        .filter((player) => player.team === team)
+        .sort((a, b) => b.pts - a.pts || b.gp - a.gp || a.jersey - b.jersey)
+        .slice(0, 2);
+}
+
+function renderPlayoffPage(scheduleData, standings, tournamentData) {
     const root = document.getElementById('playoffPageRoot');
     const body = document.body;
     const pageType = body.dataset.pageType;
@@ -90,6 +101,9 @@ function renderPlayoffPage(scheduleData, standings) {
     const teamBStanding = standings.find((row) => row.team === match.teamB);
     const teamAScore = matchStats?.isCompleted ? computeScore(matchStats[match.teamA]) : null;
     const teamBScore = matchStats?.isCompleted ? computeScore(matchStats[match.teamB]) : null;
+    const featuredPlayers = pageType === 'final'
+        ? [...topPlayersForTeam(tournamentData, match.teamA), ...topPlayersForTeam(tournamentData, match.teamB)]
+        : [];
 
     root.innerHTML = `
         <section class="playoff-hero ${config.accentClass}">
@@ -126,7 +140,7 @@ function renderPlayoffPage(scheduleData, standings) {
             <article class="playoff-info-card">
                 <div class="card-label">Venue</div>
                 <strong>Dashrath Rangasala Covered Hall</strong>
-                <p class="muted">Show up loud, show up early, and turn the arena into a playoff wall.</p>
+                <p class="muted">Show up loud, show up early, and turn the arena into a finals wall.</p>
             </article>
             <article class="playoff-info-card">
                 <div class="card-label">Matchday Energy</div>
@@ -136,21 +150,41 @@ function renderPlayoffPage(scheduleData, standings) {
             <article class="playoff-info-card">
                 <div class="card-label">What To Do</div>
                 <strong>Tickets, live stream, and share</strong>
-                <p class="muted">Use this page as a clean playoff link for fans before tip-off.</p>
+                <p class="muted">Use this page as a clean finals link for fans before tip-off.</p>
             </article>
         </section>
+        ${featuredPlayers.length ? `
+            <section class="playoff-stars-panel">
+                <div class="eyebrow">Finals Focus</div>
+                <h2 class="playoff-stars-title">The players shaping the Army vs GGIC title night.</h2>
+                <div class="playoff-stars-grid">
+                    ${featuredPlayers.map((player) => `
+                        <article class="playoff-star-card">
+                            <img class="playoff-star-photo" src="${playoffPlayerPhoto(player)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
+                            <div class="playoff-star-meta">
+                                <strong>${player.name}</strong>
+                                <span>${playoffTeamName(player.team)} • #${player.jersey}</span>
+                                <div class="playoff-star-stats">${player.pts} PTS • ${player.reb} REB • ${player.ast} AST</div>
+                            </div>
+                        </article>
+                    `).join('')}
+                </div>
+            </section>
+        ` : ''}
     `;
 }
 
 async function initPlayoffPage() {
     try {
-        const [scheduleRes, standingsRes] = await Promise.all([
+        const [scheduleRes, standingsRes, tournamentRes] = await Promise.all([
             fetch('/api/schedule'),
-            fetch('/api/standings')
+            fetch('/api/standings'),
+            fetch('/api/tournament-stats')
         ]);
         const scheduleData = await scheduleRes.json();
         const standings = await standingsRes.json();
-        renderPlayoffPage(scheduleData, standings);
+        const tournamentData = await tournamentRes.json();
+        renderPlayoffPage(scheduleData, standings, tournamentData);
     } catch (error) {
         console.error('Failed to load playoff page', error);
         document.getElementById('playoffPageRoot').innerHTML = '<div class="muted">Failed to load playoff page data.</div>';

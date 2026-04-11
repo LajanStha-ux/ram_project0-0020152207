@@ -182,6 +182,13 @@ function playerPhotoUrl(player, teamOverride = '') {
     return '/assets/tour_logo.png';
 }
 
+function getTopPlayersByTeam(team, count = 2) {
+    return [...(state.tournamentData?.allPlayers || [])]
+        .filter((player) => player.team === team)
+        .sort((a, b) => b.pts - a.pts || b.gp - a.gp || a.jersey - b.jersey)
+        .slice(0, count);
+}
+
 function getTeamTotals(teamStats) {
     const totals = { q1: 0, q2: 0, q3: 0, q4: 0, ot: 0, total: 0 };
     if (!teamStats) return totals;
@@ -310,6 +317,7 @@ function renderFeaturedCards() {
     const nextUpcoming = [...upcomingMatches()].sort((a, b) => a.id - b.id)[0];
     const featuredMatch = nextUpcoming || latestCompleted;
     const matchCard = document.getElementById('featuredMatchCard');
+    const finalsSpotlight = document.getElementById('finalsSpotlight');
 
     if (featuredMatch) {
         const isFinal = featuredMatch.isCompleted;
@@ -333,6 +341,38 @@ function renderFeaturedCards() {
                 <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamB)}</div></div>
             </div>
         `;
+    }
+
+    const finalMatch = matchesWithSummary().find((match) => match.round === 'Final');
+    if (finalsSpotlight) {
+        if (!finalMatch) {
+            finalsSpotlight.innerHTML = '';
+        } else {
+            const finalists = [finalMatch.teamA, finalMatch.teamB];
+            const featuredPlayers = finalists.flatMap((team) => getTopPlayersByTeam(team, 2).map((player) => ({ ...player, team }))).slice(0, 4);
+            finalsSpotlight.innerHTML = `
+                <div class="finals-spotlight-card">
+                    <div class="finals-spotlight-copy">
+                        <div class="feature-label">Finals Tonight</div>
+                        <div class="finals-spotlight-title">${shortTeamName(finalMatch.teamA)} vs ${shortTeamName(finalMatch.teamB)}</div>
+                        <p class="feature-copy">${matchFeatureCopy(finalMatch)} • One game decides the champion.</p>
+                        <div class="finals-spotlight-actions">
+                            <a class="btn btn-primary" href="/finals.html">Open Finals Page</a>
+                            <a class="btn btn-secondary" href="${ticketLink}" target="_blank" rel="noopener noreferrer">Book Finals Tickets</a>
+                        </div>
+                    </div>
+                    <div class="finals-player-strip">
+                        ${featuredPlayers.map((player) => `
+                            <button class="finals-player-card" type="button" onclick="openPlayerSheet('${player.team}', ${player.jersey})">
+                                <img src="${playerPhotoUrl(player, player.team)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
+                                <span>${player.name}</span>
+                                <small>${shortTeamName(player.team)} • ${player.pts} pts</small>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
     }
 
     const topPlayer = state.tournamentData?.leaders?.pts?.[0];
@@ -778,8 +818,13 @@ function renderPlayoffPicture() {
     const qualifierOneWinner = playoffWinner(qualifierOne);
     const qualifierOneLoser = playoffLoser(qualifierOne);
     const eliminatorOneWinner = playoffWinner(eliminatorOne);
-    const openerLine = qualifierOneWinner && eliminatorOneWinner
-        ? `${fullTeamName(qualifierOneWinner)} is already through to the final. ${fullTeamName(qualifierOneLoser)} meets ${fullTeamName(eliminatorOneWinner)} in Eliminator 2 on April 9.`
+    const eliminatorTwoWinner = finalMatch?.teamB && !finalMatch.teamB.includes('WINNER')
+        ? finalMatch.teamB
+        : playoffWinner(eliminatorTwo);
+    const openerLine = qualifierOneWinner && eliminatorTwoWinner
+        ? `${fullTeamName(qualifierOneWinner)} and ${fullTeamName(eliminatorTwoWinner)} are locked into the HJNBL Season 2 final.`
+        : qualifierOneWinner && eliminatorOneWinner
+            ? `${fullTeamName(qualifierOneWinner)} is already through to the final. ${fullTeamName(qualifierOneLoser)} meets ${fullTeamName(eliminatorOneWinner)} in Eliminator 2 on April 9.`
         : 'The league stage is complete. Seed 1 and Seed 2 are locked into Qualifier 1, while Seed 3 and Seed 4 meet in Eliminator 1.';
 
     container.innerHTML = `
@@ -821,7 +866,7 @@ function renderPlayoffPicture() {
                 <div class="bracket-match final-match">
                     <div class="bracket-label">Final</div>
                     <div class="bracket-team ${qualifierOneWinner ? '' : 'bracket-team-placeholder'}">${logoMarkup(finalMatch?.teamA || qualifierOneWinner || 'QUALIFIER 1 WINNER', 34)}<div><strong>${fullTeamName(finalMatch?.teamA || qualifierOneWinner || 'QUALIFIER 1 WINNER')}</strong><span>${qualifierOneWinner ? 'Qualified through Qualifier 1' : 'Direct finalist'}</span></div></div>
-                    <div class="bracket-team bracket-team-placeholder"><div class="bracket-placeholder-badge">E2-W</div><div><strong>${fullTeamName(finalMatch?.teamB || 'ELIMINATOR 2 WINNER')}</strong><span>Survives the bracket</span></div></div>
+                    <div class="bracket-team ${eliminatorTwoWinner ? '' : 'bracket-team-placeholder'}">${eliminatorTwoWinner ? logoMarkup(eliminatorTwoWinner, 34) : '<div class="bracket-placeholder-badge">E2-W</div>'}<div><strong>${fullTeamName(finalMatch?.teamB || eliminatorTwoWinner || 'ELIMINATOR 2 WINNER')}</strong><span>${eliminatorTwoWinner ? 'Won Eliminator 2' : 'Survives the bracket'}</span></div></div>
                     <div class="bracket-note">${playoffMatchStatusText(finalMatch, 'The championship game closes HJNBL Season 2.')} Championship game for HJNBL Season 2.</div>
                 </div>
             </div>

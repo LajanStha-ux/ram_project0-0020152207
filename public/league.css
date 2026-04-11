@@ -394,6 +394,70 @@ body::before {
 .hero-text { max-width: 620px; margin: 0 0 28px; font-size: 17px; line-height: 1.7; color: #d7e5fb; }
 .hero-actions, .filters, .card-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .sponsor-surface { margin-bottom: 22px; }
+.finals-spotlight-card {
+    display: grid;
+    grid-template-columns: 1.15fr .95fr;
+    gap: 18px;
+    margin: 10px 0 24px;
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: linear-gradient(135deg, rgba(255,107,53,.16), rgba(244,197,66,.09), rgba(0,194,255,.08));
+}
+.finals-spotlight-title {
+    margin: 8px 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: .92;
+    text-transform: uppercase;
+}
+.finals-spotlight-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+.finals-player-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+.finals-player-card {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 18px;
+    background: rgba(7,17,31,.58);
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+.finals-player-card img {
+    width: 82px;
+    height: 82px;
+    border-radius: 20px;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid rgba(255,255,255,.12);
+}
+.finals-player-card span,
+.finals-player-card small {
+    display: block;
+}
+.finals-player-card span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    line-height: .92;
+    text-transform: uppercase;
+}
+.finals-player-card small {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
 .hero-main .eyebrow {
     animation: heroBadgePulse 6s ease-in-out infinite;
 }
@@ -1384,6 +1448,8 @@ tbody tr:last-child td { border-bottom: 0; }
         overflow-x: auto;
         overflow-y: hidden;
     }
+    .finals-spotlight-card,
+    .finals-player-strip { grid-template-columns: 1fr; }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }
     .media-spotlight h3 { font-size: 34px; }
