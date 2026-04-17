@@ -5,7 +5,7 @@
     fixtureFilter: 'all',
     mediaTab: 'recaps',
     playerVisibleCount: 10,
-    gamesVisibleCount: 9
+    gamesVisibleCount: 20
 };
 
 const teamShortNames = {
@@ -38,12 +38,14 @@ const teamNames = {
     'ELIMINATOR 2 WINNER': 'Winner Eliminator 2'
 };
 
-const ticketLink = 'https://www.ticketsanjal.com/events/282';
 const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
 const liveChannelLink = 'https://www.youtube.com/@ActionSportsNepal';
-const ticketThumbnail = '/sponsors/Ticket%20Sanjal.png';
 const actionSportsLogo = 'https://yt3.ggpht.com/TD6TfMc9pm3Qucwo4MlH0nQhN3iBoATFP-5dmEUVYALRsY6dwUpp8DX0eMcuBykAGTsx0oxmPQ=s176-c-k-c0x00ffffff-no-rj';
 const playlistVideos = [
+    { videoId: 'jg_mO4dPyl4', title: 'ARMY VS GOLDEN GATE | GRAND FINAL | HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026', thumbnail: 'https://i.ytimg.com/vi/jg_mO4dPyl4/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=jg_mO4dPyl4&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: '8UeYu7osi2Y', title: 'GOLDEN GATE VS TIMES | PLAYOFFS QUALIFIER 2 | HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026', thumbnail: 'https://i.ytimg.com/vi/8UeYu7osi2Y/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=8UeYu7osi2Y&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'LjdYtsEgsDk', title: 'TIMES VS KVC HOUNDS | PLAYOFFS QUALIFIER 1 MATCH 1 | HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026', thumbnail: 'https://i.ytimg.com/vi/LjdYtsEgsDk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=LjdYtsEgsDk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: '393bElu5FjE', title: 'ARMY VS GOLDEN GATE | PLAYOFFS QUALIFIER 1 MATCH 1 | HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026', thumbnail: 'https://i.ytimg.com/vi/393bElu5FjE/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=393bElu5FjE&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: '0JtdXrI-WZA', title: 'TIMES VS GOLDEN GATE || MATCH - 56 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/0JtdXrI-WZA/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=0JtdXrI-WZA&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: '_6OQKbMg80A', title: 'KVC HOUNDS VS ARMY || MATCH - 55 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/_6OQKbMg80A/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=_6OQKbMg80A&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'aym9dtXgPmA', title: 'SOLO VS PLAYBOX || MATCH - 54 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/aym9dtXgPmA/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=aym9dtXgPmA&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
@@ -51,7 +53,15 @@ const playlistVideos = [
     { videoId: '-TqcZ6QDqLo', title: 'ARMY VS GOLDEN GATE || MATCH - 52 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/-TqcZ6QDqLo/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=-TqcZ6QDqLo&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'IuA9TTpTF6Q', title: 'KVC HOUNDS VS TIMES || MATCH - 51 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/IuA9TTpTF6Q/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=IuA9TTpTF6Q&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
     { videoId: 'M8mb8akLGEk', title: 'IIMS KIRTIPUR VS PLAYBOX || MATCH - 50 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/M8mb8akLGEk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=M8mb8akLGEk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
-    { videoId: '7Ldo_Be_m-s', title: 'ROYAL VS SOLO || MATCH - 49 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/7Ldo_Be_m-s/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=7Ldo_Be_m-s&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' }
+    { videoId: '7Ldo_Be_m-s', title: 'ROYAL VS SOLO || MATCH - 49 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/7Ldo_Be_m-s/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=7Ldo_Be_m-s&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'x7OkDPUWF9M', title: 'ARMY VS TIMES || MATCH - 48 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/x7OkDPUWF9M/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=x7OkDPUWF9M&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'rLX-Wzbllro', title: 'KVC HOUNDS VS GOLDEN GATE || MATCH - 47 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/rLX-Wzbllro/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=rLX-Wzbllro&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'xLgH97aTbpk', title: 'IIMS KIRTIPUR VS SOLO || MATCH - 46 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/xLgH97aTbpk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=xLgH97aTbpk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'yzXLzVMc-mg', title: 'ROYAL VS PLAYBOX || MATCH - 45 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/yzXLzVMc-mg/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=yzXLzVMc-mg&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'OuJ5QaMki0A', title: 'ARMY VS IIMS KIRTIPUR || MATCH - 44 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/OuJ5QaMki0A/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=OuJ5QaMki0A&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'MU2hJdXuAZE', title: 'KVC HOUNDS VS ROYAL || MATCH - 43 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/MU2hJdXuAZE/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=MU2hJdXuAZE&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: '_aycljydBJk', title: 'GOLDENGATE VS PLAYBOX || MATCH - 42 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/_aycljydBJk/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=_aycljydBJk&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' },
+    { videoId: 'NbWvmCSRp7k', title: 'TIMES VS SOLO || MATCH - 41 || HIMALAYAN JAVA NATIONAL BASKETBALL LEAGUE 2026 ||', thumbnail: 'https://i.ytimg.com/vi/NbWvmCSRp7k/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=NbWvmCSRp7k&list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl' }
 ];
 
 const teamPhotoFolders = {
@@ -278,28 +288,52 @@ function findPlaylistVideoForMatch(match) {
     const byMatchId = playlistVideos.find((video) => getVideoMatchId(video) === Number(match.id));
     if (byMatchId) return byMatchId;
 
-    const teamA = normalizeMatchText(fullTeamName(match.teamA));
-    const teamB = normalizeMatchText(fullTeamName(match.teamB));
-    return playlistVideos.find((video) => {
+    const playoffFallbacks = {
+        60: 'jg_mO4dPyl4',
+        59: '8UeYu7osi2Y',
+        58: 'LjdYtsEgsDk',
+        57: '393bElu5FjE'
+    };
+    const fallbackVideoId = playoffFallbacks[Number(match.id)];
+    if (fallbackVideoId) {
+        return playlistVideos.find((video) => video.videoId === fallbackVideoId) || null;
+    }
+
+    const aliases = {
+        ARMY: ['army', 'tac', 'tribhuwan army'],
+        GGIC: ['ggic', 'golden gate', 'goldengate', 'golden gate international'],
+        TIMES: ['times', 'times club'],
+        'KVC HOUNDS': ['kvc', 'kvc hounds'],
+        PLAYBOX: ['playbox', 'playbox arena'],
+        SOLO: ['solo', 'solo basketball'],
+        ROYAL: ['royal'],
+        KIRTIPUR: ['kirtipur', 'iims kirtipur']
+    };
+    const teamAAliases = aliases[match.teamA] || [normalizeMatchText(fullTeamName(match.teamA))];
+    const teamBAliases = aliases[match.teamB] || [normalizeMatchText(fullTeamName(match.teamB))];
+    const byTeamNames = playlistVideos.find((video) => {
         const title = normalizeMatchText(video.title);
-        return title.includes(teamA) && title.includes(teamB);
-    }) || null;
+        return teamAAliases.some((alias) => title.includes(alias)) && teamBAliases.some((alias) => title.includes(alias));
+    });
+    if (byTeamNames) return byTeamNames;
+    return null;
 }
 
 function renderTickerStrip() {
     const strip = document.getElementById('tickerStrip');
-    const matches = [
-        ...upcomingMatches().sort((a, b) => a.id - b.id).slice(0, 4),
-        ...completedMatches().sort((a, b) => b.id - a.id).slice(0, 4)
-    ];
+    const matches = completedMatches().sort((a, b) => b.id - a.id).slice(0, 20);
 
     strip.innerHTML = `
         <div class="ticker-track">
-            ${matches.map((match) => `
+            ${matches.map((match) => {
+                const video = findPlaylistVideoForMatch(match);
+                return `
                 <article class="ticker-card">
+                    <a class="ticker-thumb" href="${video?.url || livePlaylistLink}" target="_blank" rel="noopener noreferrer">
+                        <img src="${video?.thumbnail || teamLogoUrl(match.teamA)}" alt="${shortTeamName(match.teamA)} vs ${shortTeamName(match.teamB)} recap thumbnail" onerror="this.src='/assets/tour_logo.png'">
+                    </a>
                     <div class="ticker-meta">
                         <div class="ticker-date">${matchTickerLine(match)}</div>
-                        <div class="status-pill ${match.isCompleted ? 'final' : 'upcoming'}">${matchStatusText(match)}</div>
                     </div>
                     <div class="ticker-lines">
                         <div class="ticker-team">
@@ -314,7 +348,7 @@ function renderTickerStrip() {
                         </div>
                     </div>
                 </article>
-            `).join('')}
+            `;}).join('')}
         </div>
     `;
 }
@@ -374,7 +408,11 @@ function renderFeaturedCards() {
                         <div class="champion-copy">
                             <div class="feature-label">HJNBL Season 2 Champions</div>
                             <h3>${fullTeamName(finalWinner)}</h3>
-                            <p>Golden Gate International close the season on top after a ${winnerScore}-${loserScore} finals win over ${fullTeamName(finalLoser)}.</p>
+                            <div class="champion-scoreline">
+                                <span>${shortTeamName(finalWinner)} ${winnerScore}</span>
+                                <span>${shortTeamName(finalLoser)} ${loserScore}</span>
+                            </div>
+                            <p>Golden Gate International close the season on top after a commanding finals win over ${fullTeamName(finalLoser)}.</p>
                         </div>
                     </article>
                     <article class="champion-feature-card mvp-feature-card">
@@ -399,7 +437,7 @@ function renderFeaturedCards() {
             <p class="feature-copy">${matchFeatureCopy(featuredMatch)}</p>
             <div class="feature-score">
                 <div class="score-side">${logoMarkup(featuredMatch.teamA, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamA)}</div><div class="score-badge">${featuredMatch.scoreA}</div></div>
-                <div class="score-side"><div class="status-pill final">Result</div></div>
+                <div class="score-side"><div class="game-number">Final Score</div></div>
                 <div class="score-side">${logoMarkup(featuredMatch.teamB, 50)}<div class="team-pill">${shortTeamName(featuredMatch.teamB)}</div><div class="score-badge">${featuredMatch.scoreB}</div></div>
             </div>
         ` : `
@@ -474,8 +512,7 @@ function renderFeaturedCards() {
 function renderMediaHub() {
     const tabs = [
         { key: 'recaps', label: 'Game Recaps' },
-        { key: 'watch', label: 'Watch Live' },
-        { key: 'tickets', label: 'Tickets' }
+        { key: 'watch', label: 'Watch Live' }
     ];
 
     document.getElementById('mediaHubTabs').innerHTML = `
@@ -487,7 +524,7 @@ function renderMediaHub() {
     `;
 
     const latestCompleted = [...completedMatches()].sort((a, b) => b.id - a.id);
-    const recapCards = latestCompleted.slice(0, 8).map((match) => {
+    const recapCards = latestCompleted.slice(0, 20).map((match) => {
         const video = findPlaylistVideoForMatch(match);
         return `
         <article class="recap-card">
@@ -495,8 +532,7 @@ function renderMediaHub() {
                 <img src="${video?.thumbnail || teamLogoUrl(match.teamA)}" alt="${fullTeamName(match.teamA)} vs ${fullTeamName(match.teamB)} thumbnail" onerror="this.src='/assets/tour_logo.png'">
             </a>
             <div class="recap-topline">
-                <div class="card-label">${match.date || 'Game Recap'}</div>
-                <div class="status-pill final">Recap</div>
+                <div class="card-label">Game ${match.id} - ${match.date || 'Game Recap'}</div>
             </div>
             <div class="recap-title">${shortTeamName(match.teamA)} vs ${shortTeamName(match.teamB)}</div>
             <div class="recap-matchup">
@@ -531,50 +567,11 @@ function renderMediaHub() {
     `).join('');
 
     const contentByTab = {
-        tickets: `
-            <div class="media-feature">
-                <div class="media-spotlight ticket">
-                    <div class="eyebrow">Official Ticketing</div>
-                    <h3>Book HJNBL Season 2 seats through Ticket Sanjal.</h3>
-                    <p>Use the official booking page to reserve seats for the remaining league nights and playoff atmosphere. This is the direct ticketing route for fans following the tournament in person.</p>
-                    <div class="media-actions">
-                        <a class="btn btn-primary" href="${ticketLink}" target="_blank" rel="noopener noreferrer">Book Tickets</a>
-                        <a class="btn btn-secondary" href="#game-center">See Fixtures First</a>
-                    </div>
-                </div>
-                <div class="media-rail">
-                    <div class="media-rail-item">
-                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="card-label">Official Link</div>
-                        <div class="media-rail-copy">
-                            <strong>Ticket Sanjal Event Page</strong>
-                            <div class="muted">Reserve seats for HJNBL Season 2 through the official booking page.</div>
-                        </div>
-                    </div>
-                    <div class="media-rail-item">
-                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="status-pill upcoming">Matchday</div>
-                        <div class="media-rail-copy">
-                            <strong>Use before every game night</strong>
-                            <div class="muted">Perfect for fans planning arena visits and sharing the booking page.</div>
-                        </div>
-                    </div>
-                    <div class="media-rail-item">
-                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket Sanjal logo" style="width:56px;height:56px;object-fit:contain;" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="card-label">Direct URL</div>
-                        <div class="media-rail-copy">
-                            <strong>ticketsanjal.com/events/282</strong>
-                            <div class="muted">Fast access to the HJNBL ticket page.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `,
         watch: `
             <div class="media-feature">
                 <div class="media-spotlight watch">
                     <div class="eyebrow">Watch Live</div>
-                    <h3>Watch HJNBL live and replay games on the Watch DGO YouTube channel.</h3>
+                    <h3>Watch HJNBL replays on the Action Sports Nepal YouTube channel.</h3>
                     <p>Go straight to the current official playlist source for live coverage, recent uploads, and direct access to the HJNBL video stream destination.</p>
                     <div class="media-actions">
                         <a class="btn btn-primary" href="${liveChannelLink}" target="_blank" rel="noopener noreferrer">Open Channel</a>
@@ -583,9 +580,9 @@ function renderMediaHub() {
                 </div>
                 <div class="media-rail">
                     <div class="media-rail-item">
-                        <img src="${actionSportsLogo}" alt="Watch DGO logo" style="width:56px;height:56px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
+                        <img src="${actionSportsLogo}" alt="Action Sports Nepal logo" style="width:56px;height:56px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
                         <div class="media-rail-copy">
-                            <strong>Watch DGO</strong>
+                            <strong>Action Sports Nepal</strong>
                             <div class="muted">Current YouTube source carrying the HJNBL playlist and replay updates.</div>
                         </div>
                     </div>
@@ -598,17 +595,17 @@ function renderMediaHub() {
             <div class="media-feature">
                 <div class="media-spotlight recaps">
                     <div class="eyebrow">Season Recaps</div>
-                    <h3>Catch the latest full game recaps from HJNBL Season 2.</h3>
-                    <p>This section works like a league content rail: recent final scores, quick recap cards, and one direct path to the full replay playlist for the latest completed games.</p>
+                    <h3>Championship result and the latest 20 HJNBL game recaps.</h3>
+                    <p>This section now starts from Match 60 and moves backward through the season with final scores, official playlist thumbnails, and quick replay links.</p>
                     <div class="media-actions">
                         <a class="btn btn-primary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Watch Recaps</a>
-                        <a class="btn btn-secondary" href="${ticketLink}" target="_blank" rel="noopener noreferrer">Buy Tickets</a>
+                        <a class="btn btn-secondary" href="/finals.html">Open Championship Page</a>
                     </div>
                 </div>
                 <div class="media-rail">
                     <div class="media-rail-item">
                         <img src="${playlistVideos[0]?.thumbnail || '/assets/tour_logo.png'}" alt="Latest recap thumbnail" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="status-pill final">Latest Finals</div>
+                        <div class="game-number">Latest Finals</div>
                         <div class="media-rail-copy">
                             <strong>${latestCompleted.length} completed games tracked so far</strong>
                             <div class="muted">Latest recap cards are based on the official completed match data already in the system.</div>
@@ -620,14 +617,6 @@ function renderMediaHub() {
                         <div class="media-rail-copy">
                             <strong>Official YouTube recap and live stream hub</strong>
                             <div class="muted">One destination for live broadcasts, replays, and match recap viewing.</div>
-                        </div>
-                    </div>
-                    <div class="media-rail-item">
-                        <img src="/sponsors/Ticket%20Sanjal.png" alt="Ticket thumbnail" style="width:72px;height:72px;object-fit:contain;border-radius:14px;background:rgba(255,255,255,.04);padding:8px;" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="card-label">Tickets</div>
-                        <div class="media-rail-copy">
-                            <strong>Go from recap to matchday</strong>
-                            <div class="muted">Book the next visit to the arena directly from the official ticket link.</div>
                         </div>
                     </div>
                 </div>
@@ -665,7 +654,7 @@ function renderGames() {
         if (state.fixtureFilter === 'completed') return match.isCompleted;
         if (state.fixtureFilter === 'upcoming') return !match.isCompleted;
         return true;
-    });
+    }).sort((a, b) => b.id - a.id);
 
     const grid = document.getElementById('gamesGrid');
     const loadMoreBtn = document.getElementById('gamesLoadMoreBtn');
@@ -677,8 +666,6 @@ function renderGames() {
 
     const visibleMatches = matches.slice(0, state.gamesVisibleCount);
     grid.innerHTML = visibleMatches.map((match) => {
-        const statusClass = match.isCompleted ? 'final' : 'upcoming';
-        const statusLabel = matchStatusText(match);
         const action = match.isCompleted
             ? `<button class="btn btn-primary" type="button" onclick="openMatchModal(${match.id}, '${match.teamA}', '${match.teamB}')">View Box Score</button>`
             : match.stage
@@ -687,7 +674,7 @@ function renderGames() {
 
         return `
             <article class="game-card">
-                <div class="game-meta"><span>${matchCollectionLabel(match)}</span><span class="status-pill ${statusClass}">${statusLabel}</span></div>
+                <div class="game-meta"><span>${matchCollectionLabel(match)}</span><span class="game-number">Game ${match.id}</span></div>
                 <div class="muted">${matchFixtureLine(match)}</div>
                 <div class="matchup">
                     <div class="team-line">${logoMarkup(match.teamA, 42)}<div class="team-line-name">${shortTeamName(match.teamA)}</div><div class="team-line-score">${match.isCompleted ? match.scoreA : ''}</div></div>
@@ -698,19 +685,19 @@ function renderGames() {
         `;
     }).join('');
 
-    if (matches.length <= 9) {
+    if (matches.length <= 20) {
         loadMoreBtn.style.display = 'none';
     } else {
         loadMoreBtn.style.display = 'inline-flex';
         loadMoreBtn.textContent = state.gamesVisibleCount >= matches.length
-            ? 'Show First 9 Matches'
+            ? 'Show First 20 Matches'
             : `Load More Matches (${matches.length - state.gamesVisibleCount} more)`;
     }
 }
 
 function setFixtureFilter(filterKey) {
     state.fixtureFilter = filterKey;
-    state.gamesVisibleCount = 9;
+    state.gamesVisibleCount = 20;
     renderGames();
 }
 
@@ -1223,7 +1210,7 @@ function toggleGamesLoadMore() {
         return true;
     });
 
-    state.gamesVisibleCount = state.gamesVisibleCount >= matches.length ? 9 : state.gamesVisibleCount + 9;
+    state.gamesVisibleCount = state.gamesVisibleCount >= matches.length ? 20 : state.gamesVisibleCount + 20;
     renderGames();
 }
 
