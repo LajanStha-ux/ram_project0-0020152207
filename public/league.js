@@ -40,7 +40,7 @@ const teamNames = {
 
 const ticketLink = 'https://www.ticketsanjal.com/events/282';
 const livePlaylistLink = 'https://www.youtube.com/playlist?list=PLt2JXivkzbis7vapKY-A1wRBommM-sQjl';
-const liveChannelLink = 'https://www.youtube.com/@WatchDGO';
+const liveChannelLink = 'https://www.youtube.com/@ActionSportsNepal';
 const ticketThumbnail = '/sponsors/Ticket%20Sanjal.png';
 const actionSportsLogo = 'https://yt3.ggpht.com/TD6TfMc9pm3Qucwo4MlH0nQhN3iBoATFP-5dmEUVYALRsY6dwUpp8DX0eMcuBykAGTsx0oxmPQ=s176-c-k-c0x00ffffff-no-rj';
 const playlistVideos = [
@@ -356,6 +356,39 @@ function renderFeaturedCards() {
     const featuredMatch = nextUpcoming || latestCompleted;
     const matchCard = document.getElementById('featuredMatchCard');
     const finalsSpotlight = document.getElementById('finalsSpotlight');
+    const championshipShowcase = document.getElementById('championshipShowcase');
+    const finalMatch = resolveHomepageFinalMatch(matchesWithSummary().filter((match) => Number(match.id) >= 57 && Number(match.id) <= 60));
+    const finalWinner = playoffWinner(finalMatch);
+    const finalLoser = playoffLoser(finalMatch);
+
+    if (championshipShowcase) {
+        if (!finalWinner) {
+            championshipShowcase.innerHTML = '';
+        } else {
+            const winnerScore = finalWinner === finalMatch.teamA ? finalMatch.scoreA : finalMatch.scoreB;
+            const loserScore = finalLoser === finalMatch.teamA ? finalMatch.scoreA : finalMatch.scoreB;
+            championshipShowcase.innerHTML = `
+                <div class="championship-showcase">
+                    <article class="champion-feature-card champion-team-card">
+                        <img class="champion-poster" src="/assets/Champions.webp" alt="${fullTeamName(finalWinner)} champions poster" onerror="this.src='/assets/tour_logo.png'">
+                        <div class="champion-copy">
+                            <div class="feature-label">HJNBL Season 2 Champions</div>
+                            <h3>${fullTeamName(finalWinner)}</h3>
+                            <p>Golden Gate International close the season on top after a ${winnerScore}-${loserScore} finals win over ${fullTeamName(finalLoser)}.</p>
+                        </div>
+                    </article>
+                    <article class="champion-feature-card mvp-feature-card">
+                        <img class="champion-poster" src="/assets/MVP.webp" alt="Nikesh Rakhal Magar MVP poster" onerror="this.src='/assets/tour_logo.png'">
+                        <div class="champion-copy">
+                            <div class="feature-label">Most Valuable Player</div>
+                            <h3>Nikesh Rakhal Magar</h3>
+                            <p>GGIC's #7 earns the Season 2 MVP spotlight after leading the champions through the title run.</p>
+                        </div>
+                    </article>
+                </div>
+            `;
+        }
+    }
 
     if (featuredMatch) {
         const isFinal = featuredMatch.isCompleted;
@@ -381,22 +414,27 @@ function renderFeaturedCards() {
         `;
     }
 
-    const finalMatch = resolveHomepageFinalMatch(matchesWithSummary().filter((match) => Number(match.id) >= 57 && Number(match.id) <= 60));
     if (finalsSpotlight) {
         if (!finalMatch) {
             finalsSpotlight.innerHTML = '';
         } else {
+            const winnerLine = finalWinner
+                ? `${shortTeamName(finalWinner)} are champions`
+                : `${shortTeamName(finalMatch.teamA)} vs ${shortTeamName(finalMatch.teamB)}`;
+            const scoreLine = finalWinner
+                ? `Final score: ${shortTeamName(finalMatch.teamA)} ${finalMatch.scoreA} - ${shortTeamName(finalMatch.teamB)} ${finalMatch.scoreB}.`
+                : `${matchFeatureCopy(finalMatch)}. One game decides the champion.`;
             const finalists = [finalMatch.teamA, finalMatch.teamB];
             const featuredPlayers = finalists.flatMap((team) => getTopPlayersByTeam(team, 2).map((player) => ({ ...player, team }))).slice(0, 4);
             finalsSpotlight.innerHTML = `
                 <div class="finals-spotlight-card">
                     <div class="finals-spotlight-copy">
-                        <div class="feature-label">Finals Tonight</div>
-                        <div class="finals-spotlight-title">${shortTeamName(finalMatch.teamA)} vs ${shortTeamName(finalMatch.teamB)}</div>
-                        <p class="feature-copy">${matchFeatureCopy(finalMatch)} • One game decides the champion.</p>
+                        <div class="feature-label">${finalWinner ? 'Championship Result' : 'Finals Tonight'}</div>
+                        <div class="finals-spotlight-title">${winnerLine}</div>
+                        <p class="feature-copy">${scoreLine}</p>
                         <div class="finals-spotlight-actions">
                             <a class="btn btn-primary" href="/finals.html">Open Finals Page</a>
-                            <a class="btn btn-secondary" href="${ticketLink}" target="_blank" rel="noopener noreferrer">Book Finals Tickets</a>
+                            <a class="btn btn-secondary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Watch Final Replay</a>
                         </div>
                     </div>
                     <div class="finals-player-strip">

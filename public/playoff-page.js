@@ -135,14 +135,20 @@ function topPlayersForTeam(tournamentData, team) {
         .slice(0, 2);
 }
 
-function finalHeroTitle(match) {
+function finalHeroTitle(match, matchStats) {
     if (!match) return PLAYOFF_PAGE_CONFIG.final.subtitle;
+    const winner = completedWinner(match, matchStats);
+    if (winner) return `${playoffTeamName(winner)} are champions.`;
     return `${playoffTeamName(match.teamA)} vs ${playoffTeamName(match.teamB)} for the crown.`;
 }
 
-function finalHeroStake(matchStats) {
+function finalHeroStake(match, matchStats) {
     if (matchStats?.isCompleted) {
-        return 'The title is decided. Relive the championship matchup and the standout performers from finals night.';
+        const winner = completedWinner(match, matchStats);
+        const loser = winner === match.teamA ? match.teamB : match.teamA;
+        const winnerScore = matchScore(matchStats, winner);
+        const loserScore = matchScore(matchStats, loser);
+        return `${playoffTeamName(winner)} beat ${playoffTeamName(loser)} ${winnerScore}-${loserScore} to win HJNBL Season 2.`;
     }
     return 'The last game of the season decides the HJNBL Season 2 champion.';
 }
@@ -170,11 +176,11 @@ function renderPlayoffPage(scheduleData, standings, tournamentData) {
     const featuredPlayers = pageType === 'final'
         ? [...topPlayersForTeam(tournamentData, match.teamA), ...topPlayersForTeam(tournamentData, match.teamB)]
         : [];
-    const heroTitle = pageType === 'final' ? finalHeroTitle(match) : config.subtitle;
-    const heroStake = pageType === 'final' ? finalHeroStake(matchStats) : config.stake;
+    const heroTitle = pageType === 'final' ? finalHeroTitle(match, matchStats) : config.subtitle;
+    const heroStake = pageType === 'final' ? finalHeroStake(match, matchStats) : config.stake;
     const pageLine = pageType === 'final'
         ? (matchStats?.isCompleted
-            ? 'Championship game complete.'
+            ? 'Champion crowned.'
             : 'Championship tip-off is set.')
         : 'Win and advance.';
 
