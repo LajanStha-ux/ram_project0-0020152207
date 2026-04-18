@@ -344,7 +344,6 @@ function renderTickerStrip() {
                             <div class="ticker-score">${match.isCompleted ? match.scoreB : ''}</div>
                         </div>
                     </div>
-                    <div class="ticker-footnote">Season 2 completed result</div>
                 </article>
             `;}).join('')}
         </div>
@@ -392,7 +391,10 @@ function renderFeaturedCards() {
     const finalMatch = resolveHomepageFinalMatch(matchesWithSummary().filter((match) => Number(match.id) >= 57 && Number(match.id) <= 60));
     const finalWinner = playoffWinner(finalMatch);
     const finalLoser = playoffLoser(finalMatch);
-    const topPlayer = state.tournamentData?.leaders?.pts?.[0];
+    const leaders = state.tournamentData?.leaders || {};
+    const topPlayer = leaders.pts?.[0];
+    const assistsLeader = leaders.ast?.[0];
+    const blocksLeader = leaders.blk?.[0];
 
     if (championshipShowcase) {
         if (finalMatch && topPlayer) {
@@ -460,11 +462,11 @@ function renderFeaturedCards() {
     const playerCard = document.getElementById('featuredPlayerCard');
     if (topPlayer) {
         playerCard.innerHTML = `
-            <div class="feature-label">Tournament Points Leader</div>
-            <div class="leader-top" style="margin-top:12px;">
+            <div class="feature-label">Points Leader</div>
+            <div class="leader-top hero-leader-top" style="margin-top:12px;">
                 <img class="leader-photo" src="${playerPhotoUrl(topPlayer)}" alt="${topPlayer.name}" onerror="this.src='/assets/tour_logo.png'">
-                <div>
-                    <div class="feature-title" style="font-size:32px;">${topPlayer.name}</div>
+                <div class="leader-meta">
+                    <div class="feature-title hero-leader-title">${topPlayer.name}</div>
                     <p class="feature-copy">${fullTeamName(topPlayer.team)}</p>
                 </div>
             </div>
@@ -472,6 +474,34 @@ function renderFeaturedCards() {
                 <div class="feature-stat-box"><div class="card-label">PTS</div><div class="leader-value">${topPlayer.pts}</div></div>
                 <div class="feature-stat-box"><div class="card-label">REB</div><div class="leader-value">${topPlayer.reb}</div></div>
                 <div class="feature-stat-box"><div class="card-label">AST</div><div class="leader-value">${topPlayer.ast}</div></div>
+            </div>
+            <div class="leaders-mini-grid">
+                ${assistsLeader ? `
+                    <article class="leaders-mini-card">
+                        <div class="card-label">Assists Board</div>
+                        <div class="leaders-mini-top">
+                            <img class="leader-photo mini" src="${playerPhotoUrl(assistsLeader)}" alt="${assistsLeader.name}" onerror="this.src='/assets/tour_logo.png'">
+                            <div>
+                                <strong>${assistsLeader.name}</strong>
+                                <span>${fullTeamName(assistsLeader.team)}</span>
+                            </div>
+                        </div>
+                        <div class="leaders-mini-value">${assistsLeader.ast}</div>
+                    </article>
+                ` : ''}
+                ${blocksLeader ? `
+                    <article class="leaders-mini-card">
+                        <div class="card-label">Blocks Board</div>
+                        <div class="leaders-mini-top">
+                            <img class="leader-photo mini" src="${playerPhotoUrl(blocksLeader)}" alt="${blocksLeader.name}" onerror="this.src='/assets/tour_logo.png'">
+                            <div>
+                                <strong>${blocksLeader.name}</strong>
+                                <span>${fullTeamName(blocksLeader.team)}</span>
+                            </div>
+                        </div>
+                        <div class="leaders-mini-value">${blocksLeader.blk}</div>
+                    </article>
+                ` : ''}
             </div>
             <div class="feature-score" style="margin-top:14px;">
                 <button class="btn btn-secondary" type="button" onclick="openPlayerSheet('${topPlayer.team}', ${topPlayer.jersey})">Open Profile</button>
@@ -494,14 +524,16 @@ function applyPageView() {
     const allSectionIds = ['media-hub', 'game-center', 'standings', 'players', 'records', 'teams', 'playoffs', 'league-identity'];
     const hero = document.querySelector('.hero');
     const overview = document.getElementById('overviewStats');
+    const mobileShortcuts = document.querySelector('.mobile-shortcuts');
 
     if (view === 'home') {
         if (hero) hero.hidden = false;
         if (overview) overview.hidden = false;
         allSectionIds.forEach((id) => {
             const el = document.getElementById(id);
-            if (el) el.hidden = false;
+            if (el) el.hidden = true;
         });
+        if (mobileShortcuts) mobileShortcuts.hidden = true;
     } else {
         if (hero) hero.hidden = true;
         if (overview) overview.hidden = true;
@@ -509,6 +541,7 @@ function applyPageView() {
             const el = document.getElementById(id);
             if (el) el.hidden = !(sectionMap[view] || []).includes(id);
         });
+        if (mobileShortcuts) mobileShortcuts.hidden = false;
     }
 
     document.querySelectorAll('[data-view-link]').forEach((link) => {
@@ -592,11 +625,11 @@ function renderMediaHub() {
                     </div>
                 </div>
                 <div class="media-rail">
-                    <div class="media-rail-item">
-                        <img src="${actionSportsLogo}" alt="Action Sports Nepal logo" style="width:56px;height:56px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
+                    <div class="media-rail-item article">
+                        <div class="card-label">Channel Note</div>
                         <div class="media-rail-copy">
-                            <strong>Action Sports Nepal</strong>
-                            <div class="muted">Current YouTube source carrying the HJNBL playlist and replay updates.</div>
+                            <strong>Action Sports Nepal stays as the official replay destination.</strong>
+                            <div class="muted">Use the YouTube channel and playlist as the fastest way to watch back the season's biggest nights.</div>
                         </div>
                     </div>
                     <div class="card-label">Playlist Matches</div>
@@ -616,20 +649,18 @@ function renderMediaHub() {
                     </div>
                 </div>
                 <div class="media-rail">
-                    <div class="media-rail-item">
-                        <img src="${playlistVideos[0]?.thumbnail || '/assets/tour_logo.png'}" alt="Latest recap thumbnail" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
+                    <div class="media-rail-item article">
                         <div class="game-number">Latest Finals</div>
                         <div class="media-rail-copy">
                             <strong>${latestCompleted.length} completed games tracked so far</strong>
-                            <div class="muted">Latest recap cards are based on the official completed match data already in the system.</div>
+                            <div class="muted">The recap page now reads like a running article rail, starting from the grand finals and moving backward through the season.</div>
                         </div>
                     </div>
-                    <div class="media-rail-item">
-                        <img src="${playlistVideos[1]?.thumbnail || '/assets/tour_logo.png'}" alt="Playlist thumbnail" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.src='/assets/tour_logo.png'">
+                    <div class="media-rail-item article">
                         <div class="card-label">Playlist</div>
                         <div class="media-rail-copy">
                             <strong>Official YouTube recap and live stream hub</strong>
-                            <div class="muted">One destination for live broadcasts, replays, and match recap viewing.</div>
+                            <div class="muted">One destination for live broadcasts, replays, and match recap viewing, without the extra poster clutter.</div>
                         </div>
                     </div>
                 </div>
