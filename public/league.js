@@ -409,7 +409,6 @@ function renderFeaturedCards() {
                                 <span>${shortTeamName(finalMatch.teamA)} ${finalMatch.scoreA}</span>
                                 <span>${shortTeamName(finalMatch.teamB)} ${finalMatch.scoreB}</span>
                             </div>
-                            <p>${fullTeamName(finalWinner || finalMatch.teamA)} closed the season on top after the grand finals win over ${fullTeamName(finalLoser || finalMatch.teamB)}.</p>
                         </div>
                     </article>
                     <article class="champion-feature-card mvp-feature-card">
@@ -421,7 +420,6 @@ function renderFeaturedCards() {
                                 <span>GGIC</span>
                                 <span>#7</span>
                             </div>
-                            <p>The Golden Gate International guard finishes the title run with the MVP spotlight on the biggest night of the season.</p>
                         </div>
                     </article>
                 </div>

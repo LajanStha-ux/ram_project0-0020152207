@@ -113,14 +113,20 @@ body::before {
     flex: 1 1 auto;
     min-width: 0;
     position: relative;
-    overflow: visible;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 .nav-track {
-    width: auto;
-    min-width: 0;
-    overflow: visible;
+    width: max-content;
+    min-width: max-content;
+    overflow-x: auto;
+    overflow-y: hidden;
     scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
@@ -1683,7 +1689,8 @@ body[data-page-view="standings"] table {
         width: max-content;
         min-width: max-content;
         max-width: none;
-        overflow: visible;
+        overflow-x: auto;
+        overflow-y: hidden;
     }
     .nav-links {
         display: inline-flex;
@@ -1714,10 +1721,23 @@ body[data-page-view="standings"] table {
         overflow-y: hidden;
     }
     .finals-spotlight-card,
-    .championship-showcase,
+    .championship-showcase {
+        display: flex;
+        gap: 14px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 6px;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+    }
     .finals-player-strip { grid-template-columns: 1fr; }
     .champion-feature-card,
     .champion-poster { min-height: 240px; }
+    .champion-feature-card {
+        flex: 0 0 min(82vw, 360px);
+        scroll-snap-align: start;
+    }
     .players-toolbar, .section-header, .score-ribbon-grid { grid-template-columns: 1fr; }
     .feature-score, .card-actions { flex-direction: column; align-items: stretch; }
     .media-spotlight h3 { font-size: 34px; }
