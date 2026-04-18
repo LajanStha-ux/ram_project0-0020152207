@@ -397,27 +397,31 @@ function renderFeaturedCards() {
     if (championshipShowcase) {
         if (finalMatch && topPlayer) {
             championshipShowcase.innerHTML = `
-                <div class="hero-summary-grid">
-                    <div class="hero-summary-card">
-                        <div class="card-label">Grand Finals</div>
-                        <strong>${shortTeamName(finalMatch.teamA)} ${finalMatch.scoreA} - ${shortTeamName(finalMatch.teamB)} ${finalMatch.scoreB}</strong>
-                        <span>${matchFeatureCopy(finalMatch)}</span>
-                    </div>
-                    <div class="hero-summary-card">
-                        <div class="card-label">MVP</div>
-                        <strong>Nikesh Rakhal Magar</strong>
-                        <span>Golden Gate International</span>
-                    </div>
-                    <div class="hero-summary-card">
-                        <div class="card-label">Points Leader</div>
-                        <strong>${topPlayer.name}</strong>
-                        <span>${topPlayer.pts} total points</span>
-                    </div>
-                    <div class="hero-summary-card">
-                        <div class="card-label">Season Total</div>
-                        <strong>${matchesWithSummary().filter((match) => match.isCompleted).length} completed games</strong>
-                        <span>${Object.keys(state.scheduleData?.rosters || {}).length} teams tracked</span>
-                    </div>
+                <div class="championship-showcase">
+                    <article class="champion-feature-card">
+                        <img class="champion-poster" src="/assets/Champions.webp?v=20260418-home" alt="${fullTeamName(finalWinner || finalMatch.teamA)} champions poster" onerror="this.src='/assets/Cover%20Photo.jpg'">
+                        <div class="champion-copy">
+                            <div class="card-label">Season 2 Champions</div>
+                            <h3>${fullTeamName(finalWinner || finalMatch.teamA)}</h3>
+                            <div class="champion-scoreline">
+                                <span>${shortTeamName(finalMatch.teamA)} ${finalMatch.scoreA}</span>
+                                <span>${shortTeamName(finalMatch.teamB)} ${finalMatch.scoreB}</span>
+                            </div>
+                            <p>${fullTeamName(finalWinner || finalMatch.teamA)} closed the season on top after the grand finals win over ${fullTeamName(finalLoser || finalMatch.teamB)}.</p>
+                        </div>
+                    </article>
+                    <article class="champion-feature-card mvp-feature-card">
+                        <img class="champion-poster" src="/assets/MVP.webp?v=20260418-home" alt="Season 2 MVP poster" onerror="this.src='/assets/Cover%20Photo.jpg'">
+                        <div class="champion-copy">
+                            <div class="card-label">Finals MVP</div>
+                            <h3>Nikesh Rakhal Magar</h3>
+                            <div class="champion-scoreline">
+                                <span>GGIC</span>
+                                <span>#7</span>
+                            </div>
+                            <p>The Golden Gate International guard finishes the title run with the MVP spotlight on the biggest night of the season.</p>
+                        </div>
+                    </article>
                 </div>
             `;
         } else {
@@ -1226,6 +1230,20 @@ function toggleGamesLoadMore() {
     renderGames();
 }
 
+function warmNavigationCache() {
+    const urls = [...document.querySelectorAll('[data-view-link]')]
+        .map((link) => link.getAttribute('href'))
+        .filter((href) => href && href.endsWith('.html'));
+
+    [...new Set(urls)].forEach((href) => {
+        if (document.head.querySelector(`link[rel="prefetch"][href="${href}"]`)) return;
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = href;
+        document.head.appendChild(link);
+    });
+}
+
 function scrollHeaderTabs(amount) {
     const rail = document.querySelector('.nav-scroll');
     if (!rail) return;
@@ -1374,6 +1392,7 @@ async function init() {
         renderTeams();
         renderPlayoffPicture();
         applyPageView();
+        warmNavigationCache();
         attachEvents();
     } catch (error) {
         console.error('Failed to initialize HJNBL portal', error);

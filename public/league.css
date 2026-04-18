@@ -37,6 +37,18 @@ body {
         radial-gradient(circle at top left, rgba(0, 194, 255, 0.2), transparent 28%),
         radial-gradient(circle at top right, rgba(255, 107, 53, 0.18), transparent 30%),
         linear-gradient(180deg, #08111e 0%, #06101c 52%, #030912 100%);
+    animation: pageFadeIn .22s ease-out both;
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: .78;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 body::before {
@@ -230,7 +242,7 @@ body::before {
     font-size: 14px;
     font-weight: 700;
     background: transparent;
-    transition: .2s ease;
+    transition: transform .14s ease, background .14s ease, color .14s ease, opacity .14s ease;
     white-space: nowrap;
 }
 
@@ -1105,6 +1117,22 @@ th {
 }
 
 tbody tr:last-child td { border-bottom: 0; }
+body[data-page-view="standings"] {
+    --content: min(1760px, calc(100vw - 24px));
+}
+
+body[data-page-view="standings"] #standings {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+body[data-page-view="standings"] #standings > :last-child {
+    display: none;
+}
+
+body[data-page-view="standings"] table {
+    min-width: 100%;
+}
+
 .standings-row.playoff-zone td {
     background: rgba(144, 238, 144, 0.3) !important;
     border-bottom-color: rgba(120, 210, 120, 0.35);
