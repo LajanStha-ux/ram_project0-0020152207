@@ -392,43 +392,42 @@ function renderFeaturedCards() {
     const finalMatch = resolveHomepageFinalMatch(matchesWithSummary().filter((match) => Number(match.id) >= 57 && Number(match.id) <= 60));
     const finalWinner = playoffWinner(finalMatch);
     const finalLoser = playoffLoser(finalMatch);
+    const topPlayer = state.tournamentData?.leaders?.pts?.[0];
 
     if (championshipShowcase) {
-        if (!finalWinner) {
-            championshipShowcase.innerHTML = '';
-        } else {
-            const winnerScore = finalWinner === finalMatch.teamA ? finalMatch.scoreA : finalMatch.scoreB;
-            const loserScore = finalLoser === finalMatch.teamA ? finalMatch.scoreA : finalMatch.scoreB;
+        if (finalMatch && topPlayer) {
             championshipShowcase.innerHTML = `
-                <div class="championship-showcase">
-                    <article class="champion-feature-card champion-team-card">
-                        <img class="champion-poster" src="/assets/Champions.webp" alt="${fullTeamName(finalWinner)} champions poster" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="champion-copy">
-                            <div class="feature-label">HJNBL Season 2 Champions</div>
-                            <h3>${fullTeamName(finalWinner)}</h3>
-                            <div class="champion-scoreline">
-                                <span>${shortTeamName(finalWinner)} ${winnerScore}</span>
-                                <span>${shortTeamName(finalLoser)} ${loserScore}</span>
-                            </div>
-                            <p>Golden Gate International close the season on top after a commanding finals win over ${fullTeamName(finalLoser)}.</p>
-                        </div>
-                    </article>
-                    <article class="champion-feature-card mvp-feature-card">
-                        <img class="champion-poster" src="/assets/MVP.webp" alt="Nikesh Rakhal Magar MVP poster" onerror="this.src='/assets/tour_logo.png'">
-                        <div class="champion-copy">
-                            <div class="feature-label">Most Valuable Player</div>
-                            <h3>Nikesh Rakhal Magar</h3>
-                            <p>GGIC's #7 earns the Season 2 MVP spotlight after leading the champions through the title run.</p>
-                        </div>
-                    </article>
+                <div class="hero-summary-grid">
+                    <div class="hero-summary-card">
+                        <div class="card-label">Grand Finals</div>
+                        <strong>${shortTeamName(finalMatch.teamA)} ${finalMatch.scoreA} - ${shortTeamName(finalMatch.teamB)} ${finalMatch.scoreB}</strong>
+                        <span>${matchFeatureCopy(finalMatch)}</span>
+                    </div>
+                    <div class="hero-summary-card">
+                        <div class="card-label">MVP</div>
+                        <strong>Nikesh Rakhal Magar</strong>
+                        <span>Golden Gate International</span>
+                    </div>
+                    <div class="hero-summary-card">
+                        <div class="card-label">Points Leader</div>
+                        <strong>${topPlayer.name}</strong>
+                        <span>${topPlayer.pts} total points</span>
+                    </div>
+                    <div class="hero-summary-card">
+                        <div class="card-label">Season Total</div>
+                        <strong>${matchesWithSummary().filter((match) => match.isCompleted).length} completed games</strong>
+                        <span>${Object.keys(state.scheduleData?.rosters || {}).length} teams tracked</span>
+                    </div>
                 </div>
             `;
+        } else {
+            championshipShowcase.innerHTML = '';
         }
     }
 
     if (featuredMatch) {
         const isFinal = featuredMatch.isCompleted;
-        const status = matchFeatureLabel(featuredMatch);
+        const status = featuredMatch.round === 'Final' ? 'Grand Finals' : matchFeatureLabel(featuredMatch);
         matchCard.innerHTML = isFinal ? `
             <div class="feature-label">${status}</div>
             <div class="feature-title">${shortTeamName(featuredMatch.teamA)} vs ${shortTeamName(featuredMatch.teamB)}</div>
@@ -451,43 +450,9 @@ function renderFeaturedCards() {
     }
 
     if (finalsSpotlight) {
-        if (!finalMatch) {
-            finalsSpotlight.innerHTML = '';
-        } else {
-            const winnerLine = finalWinner
-                ? `${shortTeamName(finalWinner)} are champions`
-                : `${shortTeamName(finalMatch.teamA)} vs ${shortTeamName(finalMatch.teamB)}`;
-            const scoreLine = finalWinner
-                ? `Final score: ${shortTeamName(finalMatch.teamA)} ${finalMatch.scoreA} - ${shortTeamName(finalMatch.teamB)} ${finalMatch.scoreB}.`
-                : `${matchFeatureCopy(finalMatch)}. One game decides the champion.`;
-            const finalists = [finalMatch.teamA, finalMatch.teamB];
-            const featuredPlayers = finalists.flatMap((team) => getTopPlayersByTeam(team, 2).map((player) => ({ ...player, team }))).slice(0, 4);
-            finalsSpotlight.innerHTML = `
-                <div class="finals-spotlight-card">
-                    <div class="finals-spotlight-copy">
-                        <div class="feature-label">${finalWinner ? 'Championship Result' : 'Finals Tonight'}</div>
-                        <div class="finals-spotlight-title">${winnerLine}</div>
-                        <p class="feature-copy">${scoreLine}</p>
-                        <div class="finals-spotlight-actions">
-                            <a class="btn btn-primary" href="/finals.html">Open Finals Page</a>
-                            <a class="btn btn-secondary" href="${livePlaylistLink}" target="_blank" rel="noopener noreferrer">Watch Final Replay</a>
-                        </div>
-                    </div>
-                    <div class="finals-player-strip">
-                        ${featuredPlayers.map((player) => `
-                            <button class="finals-player-card" type="button" onclick="openPlayerSheet('${player.team}', ${player.jersey})">
-                                <img src="${playerPhotoUrl(player, player.team)}" alt="${player.name}" onerror="this.src='/assets/tour_logo.png'">
-                                <span>${player.name}</span>
-                                <small>${shortTeamName(player.team)} • ${player.pts} pts</small>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
+        finalsSpotlight.innerHTML = '';
     }
 
-    const topPlayer = state.tournamentData?.leaders?.pts?.[0];
     const playerCard = document.getElementById('featuredPlayerCard');
     if (topPlayer) {
         playerCard.innerHTML = `
@@ -499,12 +464,54 @@ function renderFeaturedCards() {
                     <p class="feature-copy">${fullTeamName(topPlayer.team)}</p>
                 </div>
             </div>
+            <div class="feature-stat-grid" style="margin-top:14px;">
+                <div class="feature-stat-box"><div class="card-label">PTS</div><div class="leader-value">${topPlayer.pts}</div></div>
+                <div class="feature-stat-box"><div class="card-label">REB</div><div class="leader-value">${topPlayer.reb}</div></div>
+                <div class="feature-stat-box"><div class="card-label">AST</div><div class="leader-value">${topPlayer.ast}</div></div>
+            </div>
             <div class="feature-score" style="margin-top:14px;">
-                <div><div class="card-label">Total Points</div><div class="leader-value">${topPlayer.pts}</div></div>
                 <button class="btn btn-secondary" type="button" onclick="openPlayerSheet('${topPlayer.team}', ${topPlayer.jersey})">Open Profile</button>
             </div>
         `;
     }
+}
+
+function applyPageView() {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get('view') || 'home';
+    const sectionMap = {
+        recaps: ['media-hub'],
+        games: ['game-center'],
+        standings: ['standings'],
+        players: ['players'],
+        teams: ['teams'],
+        playoffs: ['playoffs']
+    };
+    const allSectionIds = ['media-hub', 'game-center', 'standings', 'players', 'records', 'teams', 'playoffs', 'league-identity'];
+    const hero = document.querySelector('.hero');
+    const overview = document.getElementById('overviewStats');
+
+    if (view === 'home') {
+        if (hero) hero.hidden = false;
+        if (overview) overview.hidden = false;
+        allSectionIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.hidden = false;
+        });
+    } else {
+        if (hero) hero.hidden = true;
+        if (overview) overview.hidden = true;
+        allSectionIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.hidden = !(sectionMap[view] || []).includes(id);
+        });
+    }
+
+    document.querySelectorAll('[data-view-link]').forEach((link) => {
+        const isActive = link.dataset.viewLink === view;
+        link.classList.toggle('active', isActive);
+        link.setAttribute('aria-current', isActive ? 'page' : 'false');
+    });
 }
 
 function renderMediaHub() {
@@ -714,7 +721,10 @@ function renderHeadlineLeaders() {
     const groups = [
         { key: 'pts', label: 'Points' },
         { key: 'reb', label: 'Rebounds' },
-        { key: 'ast', label: 'Assists' }
+        { key: 'ast', label: 'Assists' },
+        { key: 'stl', label: 'Steals' },
+        { key: 'blk', label: 'Blocks' },
+        { key: 'threes', label: '3-Pointers' }
     ];
 
     document.getElementById('headlineLeaders').innerHTML = groups.map((group, index) => {
@@ -1359,6 +1369,7 @@ async function init() {
         renderPlayers();
         renderTeams();
         renderPlayoffPicture();
+        applyPageView();
         attachEvents();
     } catch (error) {
         console.error('Failed to initialize HJNBL portal', error);

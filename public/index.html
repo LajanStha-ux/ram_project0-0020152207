@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/league.css?v=20260417-polish">
+    <link rel="stylesheet" href="/league.css?v=20260418-views">
 </head>
 <body>
     <div class="page-shell">
@@ -17,21 +17,21 @@
             <header class="topbar">
                 <div class="brand">
                     <div class="brand-logo"><img src="/assets/tour_logo.png" alt="HJNBL logo" onerror="this.style.display='none'"></div>
-                    <div class="brand-copy">
+                    <a class="brand-copy" href="/">
                         <h1 class="brand-title">HJNBL Season 2</h1>
                         <p class="brand-subtitle">Nepal's National Basketball League</p>
-                    </div>
+                    </a>
                 </div>
                 <div class="nav-scroll">
                     <div class="nav-track">
                         <nav class="nav-links">
-                            <a href="#game-center">Games</a>
-                            <a href="#standings">Standings</a>
-                            <a href="#media-hub">Recaps</a>
+                            <a href="/?view=games" data-view-link="games">Games</a>
+                            <a href="/?view=standings" data-view-link="standings">Standings</a>
+                            <a href="/?view=recaps" data-view-link="recaps">Recaps</a>
                             <a href="https://www.youtube.com/@ActionSportsNepal" target="_blank" rel="noopener noreferrer">Watch Live</a>
-                            <a href="#playoffs">Playoff Picture</a>
-                            <a href="#players">Players</a>
-                            <a href="#teams">Teams</a>
+                            <a href="/?view=playoffs" data-view-link="playoffs">Playoff Picture</a>
+                            <a href="/?view=players" data-view-link="players">Players</a>
+                            <a href="/?view=teams" data-view-link="teams">Teams</a>
                         </nav>
                     </div>
                 </div>
@@ -47,9 +47,9 @@
                 <div id="championshipShowcase"></div>
                 <div id="finalsSpotlight"></div>
                 <div class="hero-actions">
-                    <a class="btn btn-primary" href="#game-center">Open Game Center</a>
+                    <a class="btn btn-primary" href="/?view=games">Open Game Center</a>
                     <a class="btn btn-secondary" href="https://www.youtube.com/@ActionSportsNepal" target="_blank" rel="noopener noreferrer">Watch Live</a>
-                    <a class="btn btn-secondary" href="#players">Explore Player Stats</a>
+                    <a class="btn btn-secondary" href="/?view=players">Explore Player Stats</a>
                 </div>
             </div>
             <aside class="hero-side">
@@ -289,6 +289,6 @@
         </div>
     </div>
 
-    <script src="/league.js?v=20260417-polish"></script>
+    <script src="/league.js?v=20260418-views"></script>
 </body>
 </html>
