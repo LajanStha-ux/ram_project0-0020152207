@@ -326,14 +326,11 @@ function renderTickerStrip() {
     strip.innerHTML = `
         <div class="ticker-track">
             ${matches.map((match) => {
-                const video = findPlaylistVideoForMatch(match);
                 return `
                 <article class="ticker-card">
-                    <a class="ticker-thumb" href="${video?.url || livePlaylistLink}" target="_blank" rel="noopener noreferrer">
-                        <img src="${video?.thumbnail || teamLogoUrl(match.teamA)}" alt="${shortTeamName(match.teamA)} vs ${shortTeamName(match.teamB)} recap thumbnail" onerror="this.src='/assets/tour_logo.png'">
-                    </a>
                     <div class="ticker-meta">
                         <div class="ticker-date">${matchTickerLine(match)}</div>
+                        <div class="ticker-matchid">Game ${match.id}</div>
                     </div>
                     <div class="ticker-lines">
                         <div class="ticker-team">
@@ -347,6 +344,7 @@ function renderTickerStrip() {
                             <div class="ticker-score">${match.isCompleted ? match.scoreB : ''}</div>
                         </div>
                     </div>
+                    <div class="ticker-footnote">Season 2 completed result</div>
                 </article>
             `;}).join('')}
         </div>
