@@ -478,7 +478,7 @@ function renderFeaturedCards() {
 
 function applyPageView() {
     const params = new URLSearchParams(window.location.search);
-    const view = params.get('view') || 'home';
+    const view = document.body.dataset.pageView || params.get('view') || 'home';
     const sectionMap = {
         recaps: ['media-hub'],
         games: ['game-center'],
@@ -510,7 +510,11 @@ function applyPageView() {
     document.querySelectorAll('[data-view-link]').forEach((link) => {
         const isActive = link.dataset.viewLink === view;
         link.classList.toggle('active', isActive);
-        link.setAttribute('aria-current', isActive ? 'page' : 'false');
+        if (isActive) {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
     });
 }
 
