@@ -1274,7 +1274,7 @@ function warmNavigationCache() {
 }
 
 function scrollHeaderTabs(amount) {
-    const rail = document.querySelector('.nav-scroll');
+    const rail = document.querySelector('.nav-track');
     if (!rail) return;
     rail.scrollBy({ left: amount, behavior: 'smooth' });
 }
@@ -1373,7 +1373,7 @@ function enableHorizontalDrag(element) {
 }
 
 function bindHorizontalRails() {
-    enableHorizontalDrag(document.querySelector('.nav-scroll'));
+    enableHorizontalDrag(document.querySelector('.nav-track'));
     enableHorizontalDrag(document.getElementById('mediaHubTabs'));
     enableHorizontalDrag(document.querySelector('.ticker-track'));
 }

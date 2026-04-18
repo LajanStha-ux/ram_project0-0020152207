@@ -113,15 +113,13 @@ body::before {
     flex: 1 1 auto;
     min-width: 0;
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
 }
 
 .nav-track {
-    width: max-content;
-    min-width: max-content;
+    display: flex;
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
@@ -1678,17 +1676,14 @@ body[data-page-view="standings"] table {
     .nav-scroll {
         width: 100%;
         max-width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
+        overflow: hidden;
         padding: 0 0 8px;
-        scroll-behavior: smooth;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
     }
     .nav-track {
-        width: max-content;
-        min-width: max-content;
-        max-width: none;
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
     }
